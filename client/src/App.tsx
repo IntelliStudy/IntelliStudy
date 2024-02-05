@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+import './App.css';
+import reactLogo from './assets/react.svg';
+import viteLogo from '/vite.svg';
 
 function App() {
   const [data, setData] = useState(null);
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,8 +20,6 @@ function App() {
 
     fetchData();
   }, []); // Empty dependency array to run the effect only once when the component mounts
-
-
 
   return (
     <>
@@ -48,7 +46,7 @@ function App() {
       </p>
       {data}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
