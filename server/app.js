@@ -41,15 +41,18 @@
 // module.exports = app;
 
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const port = 3000;
+
+app.use(cors())
 
 app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
 
 app.get('/test', (req, res) => {
-  res.json({"names":'Omar Aly & Omar Abotahoon'});
+  res.send('Omar Aly & Omar Abotahoon');
 });
 
 app.listen(port, () => {

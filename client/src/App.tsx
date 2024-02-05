@@ -8,22 +8,18 @@ function App() {
   const [data, setData] = useState(null);
   const [count, setCount] = useState(0)
 
-  useEffect(() => { 
-    // try { const response = await axios.get('/test');
-    // setData(response.data);
-    // } catch (error) { 
-    //   console.error(error);
-    // }
-  // }; 
-  fetch('/test')
-  .then((res) => {
-    setData(res.data.names);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get<any>('http://localhost:3000/test');
+        setData(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-  })
-
-  console.log("wys");
-  }
-  ,[]);
+    fetchData();
+  }, []); // Empty dependency array to run the effect only once when the component mounts
 
 
 
