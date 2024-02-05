@@ -48,6 +48,10 @@ app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
 
+app.get('/test', (req, res) => {
+  res.send('Omar Aly & Omar Abotahoon');
+});
+
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
