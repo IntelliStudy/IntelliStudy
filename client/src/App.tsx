@@ -1,10 +1,31 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import axios from 'axios';
 
 function App() {
+  const [data, setData] = useState(null);
   const [count, setCount] = useState(0)
+
+  useEffect(() => { 
+    // try { const response = await axios.get('/test');
+    // setData(response.data);
+    // } catch (error) { 
+    //   console.error(error);
+    // }
+  // }; 
+  fetch('/test')
+  .then((res) => {
+    setData(res.data.names);
+
+  })
+
+  console.log("wys");
+  }
+  ,[]);
+
+
 
   return (
     <>
@@ -25,9 +46,11 @@ function App() {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
+
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+      {data}
     </>
   )
 }

@@ -49,7 +49,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/test', (req, res) => {
-  res.send('Omar Aly & Omar Abotahoon');
+  res.json({"names":'Omar Aly & Omar Abotahoon'});
 });
 
 app.listen(port, () => {
