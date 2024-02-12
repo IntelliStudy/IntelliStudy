@@ -1,51 +1,24 @@
-// var createError = require('http-errors');
-// var express = require('express');
-// var path = require('path');
-// var cookieParser = require('cookie-parser');
-// var logger = require('morgan');
-
-// var indexRouter = require('./routes/index');
-// var usersRouter = require('./routes/users');
-
-// var app = express();
-
-// // view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade');
-
-// app.use(logger('dev'));
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
-// app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'public')));
-
-// app.use('/', indexRouter);
-// app.use('/users', usersRouter);
-
-// // catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   next(createError(404));
-// });
-
-// // error handler
-// app.use(function(err, req, res, next) {
-//   // set locals, only providing error in development
-//   res.locals.message = err.message;
-//   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-//   // render the error page
-//   res.status(err.status || 500);
-//   res.render('error');
-// });
-
-// module.exports = app;
-
+//Express initialization
 const express = require('express');
 const cors = require('cors');
+
 const app = express();
 const port = 3000;
 
-app.use(cors())
+app.use(cors());
+app.use(express.json());
+
+//Firestore imports
+const { initializeApp, cert } = require('firebase-admin/app');
+const { getFirestore } = require('firebase-admin/firestore');
+
+const serviceAccount = require('./serviceAccountKey.json');
+initializeApp({
+  credential: cert(serviceAccount),
+  databaseURL: process.env.DB_URL,
+});
+
+const db = getFirestore();
 
 app.get('/', (req, res) => {
   res.send('Hello, World!');
@@ -53,6 +26,46 @@ app.get('/', (req, res) => {
 
 app.get('/test', (req, res) => {
   res.send('Omar Aly & Omar Abotahoon');
+});
+
+// Sample post request to upload data into DB
+app.post('/testDB_post', async (req, res) => {
+  console.log(req.body);
+  await db.collection('testCollection').doc('testDoc').set(req.body);
+
+  res.send({ Message: 'Success' });
+});
+
+// Sample get request to get data from a certain document
+app.get('/testDB_get', async (req, res) => {
+  const testCollectionRef = db.collection('testCollection').doc('testDoc');
+  const doc = await testCollectionRef.get();
+
+  console.log(doc.data());
+
+  res.send(doc.data());
+});
+
+// Sample update request to update data in a certain document without overwriting other fields
+app.put('/testDB_update', async (req, res) => {
+  console.log(req.body);
+  await db.collection('testCollection').doc('testDoc').update(req.body);
+
+  res.send({ Message: 'Success' });
+});
+
+// Sample get query to get data from a certain document. Instead of getting the whole doc like the previous function
+// This query uses a where clause to filter out data
+app.get('/query', async (req, res) => {
+  const testCollectionRef = db.collection('testCollection');
+  const snapshot = await testCollectionRef.where('age', '==', 30).get();
+
+  snapshot.forEach((doc) => {
+    console.log(doc.data());
+  });
+
+  // res.send(snapshot.data());
+  res.send({ Message: 'Success' });
 });
 
 app.listen(port, () => {
