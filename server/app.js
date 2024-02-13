@@ -31,9 +31,10 @@ app.get('/test', (req, res) => {
 // Sample post request to upload data into DB
 app.post('/testDB_post', async (req, res) => {
   console.log(req.body);
-  await db.collection('testCollection').doc('testDoc').set(req.body);
+  await db.collection('testCollection').add(req.body);
 
-  res.send({ Message: 'Success' });
+  res.send({ Message: 'Success',
+            Body: req.body});
 });
 
 // Sample get request to get data from a certain document
