@@ -40,9 +40,6 @@ const {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } = require('firebase/auth');
-const auth = getAuth();
-
-const db = getFirestore();
 
 const {
   collection,
@@ -55,6 +52,9 @@ const {
   query,
   where,
 } = require('firebase/firestore');
+
+const auth = getAuth();
+const db = getFirestore();
 
 app.get('/', (req, res) => {
   res.send('Hello, World!');
@@ -125,6 +125,7 @@ app.post('/testAuth_create', async (req, res) => {
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
+      console.log(errorMessage);
       // ..
     });
 
