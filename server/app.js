@@ -7,6 +7,7 @@ const port = 3000;
 
 app.use(cors());
 app.use(express.json());
+require('dotenv').config();
 
 // //Firestore imports
 // const { initializeApp, cert } = require('firebase-admin/app');
@@ -24,12 +25,12 @@ const { initializeApp } = require('firebase/app');
 const { getFirestore } = require('firebase/firestore');
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDQi9MazxIeBVqRC3WKsMmORYgFqWV9kWE',
-  authDomain: 'intellistudy-capstone.firebaseapp.com',
-  projectId: 'intellistudy-capstone',
-  storageBucket: 'intellistudy-capstone.appspot.com',
-  messagingSenderId: '1042357477540',
-  appId: '1:1042357477540:web:4659117a935904c07e0631',
+  apiKey: process.env.API_KEY,
+  authDomain: process.env.AUTH_DOMAIN,
+  projectId: process.env.PROJECT_ID,
+  storageBucket: process.env.STORAGE_BUCKET,
+  messagingSenderId: process.env.MESSAGING_SENDER_ID,
+  appId: process.env.APP_ID,
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
