@@ -34,7 +34,11 @@ const firebaseConfig = {
 
 const firebaseApp = initializeApp(firebaseConfig);
 
-const { getAuth, createUserWithEmailAndPassword } = require('firebase/auth');
+const {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} = require('firebase/auth');
 const auth = getAuth();
 
 const db = getFirestore();
@@ -43,9 +47,12 @@ const {
   collection,
   doc,
   getDoc,
+  getDocs,
   setDoc,
   addDoc,
   updateDoc,
+  query,
+  where,
 } = require('firebase/firestore');
 
 app.get('/', (req, res) => {
@@ -93,10 +100,10 @@ app.put('/testDB_update', async (req, res) => {
 // Sample get query to get data from a certain document. Instead of getting the whole doc like the previous function
 // This query uses a where clause to filter out data
 app.get('/query', async (req, res) => {
-  const testCollectionRef = db.collection('testCollection');
-  const snapshot = await testCollectionRef.where('age', '==', 30).get();
+  const testCollectionRef = collection(db, 'testCollection');
+  const q = await getDocs(query(testCollectionRef, where('age', '==', 26)));
 
-  snapshot.forEach((doc) => {
+  q.forEach((doc) => {
     console.log(doc.data());
   });
 
@@ -104,6 +111,7 @@ app.get('/query', async (req, res) => {
   res.send({ Message: 'Success' });
 });
 
+// Sign up
 app.post('/testAuth_create', async (req, res) => {
   console.log(req.body);
 
@@ -117,6 +125,25 @@ app.post('/testAuth_create', async (req, res) => {
       const errorCode = error.code;
       const errorMessage = error.message;
       // ..
+    });
+
+  res.send({ Message: 'Success', Body: req.body });
+});
+
+// Sign in
+app.post('/testAuth_login', async (req, res) => {
+  console.log(req.body);
+
+  signInWithEmailAndPassword(auth, req.body.email, req.body.password)
+    .then((userCredential) => {
+      // Signed in
+      const user = userCredential.user;
+      console.log(user);
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
     });
 
   res.send({ Message: 'Success', Body: req.body });
