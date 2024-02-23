@@ -151,6 +151,19 @@ app.post('/testAuth_login', async (req, res) => {
   res.send({ Message: 'Success', Body: req.body });
 });
 
+//Sign out
+app.get('/testAuth_signout', async (req, res) => {
+  signOut(auth)
+    .then(() => {
+      // Sign-out successful.
+      console.log('Signed out');
+    })
+    .catch((error) => {
+      // An error happened.
+      console.log(error);
+    });
+});
+
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
