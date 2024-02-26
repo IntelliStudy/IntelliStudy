@@ -1,4 +1,4 @@
-//Express initialization
+// Express initialization
 const express = require('express');
 const cors = require('cors');
 
