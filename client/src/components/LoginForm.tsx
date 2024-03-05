@@ -1,12 +1,17 @@
-import { ChangeEvent, useState } from "react";
-import { login, signUp } from "../firebase/auth";
+import { ChangeEvent, useState } from 'react';
+import {
+  deleteUserHandler,
+  googleLoginHandler,
+  loginHandler,
+  signUpHandler,
+} from '../firebase/auth';
 
 const LoginForm = () => {
   const [create, setCreate] = useState(true);
-  const [email, setEmail] = useState("");
-  const [fName, setfName] = useState("");
-  const [lName, setlName] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [fName, setfName] = useState('');
+  const [lName, setlName] = useState('');
+  const [password, setPassword] = useState('');
 
   const handlefNameChange: any = (event: ChangeEvent<HTMLInputElement>) => {
     setfName(event.target.value);
@@ -25,15 +30,27 @@ const LoginForm = () => {
   };
 
   const handleSignup = () => {
-    console.log("Signing up with:", email, password, fName, lName);
+    console.log('Signing up with:', email, password, fName, lName);
 
-    signUp(email, password, fName, lName);
+    signUpHandler(email, password, fName, lName);
   };
 
   const handleLogin = () => {
-    console.log("Logging in with:", email, password);
+    console.log('Logging in with:', email, password);
 
-    login(email, password);
+    loginHandler(email, password);
+  };
+
+  const handleGoogleLogin = () => {
+    console.log('Logging in with Google');
+
+    googleLoginHandler();
+  };
+
+  const handleAccountDelete = () => {
+    console.log('Deleting user account');
+
+    deleteUserHandler();
   };
 
   return (
@@ -73,8 +90,14 @@ const LoginForm = () => {
         </div>
         Already have an account?
         <button onClick={() => setCreate(!create)}>
-          { create ? "Log In": "Sign Up"}
+          {create ? 'Log In' : 'Sign Up'}
         </button>
+        <div>
+          <button onClick={handleGoogleLogin}>Google Auth</button>
+        </div>
+        <div>
+          <button onClick={handleAccountDelete}>Delete account</button>
+        </div>
       </div>
     </>
   );
