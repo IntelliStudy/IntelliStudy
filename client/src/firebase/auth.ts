@@ -1,13 +1,14 @@
 import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
+  deleteUser,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from 'firebase/auth';
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { auth, db } from './firebase';
 
-export const signUp = (
+export const signUpHandler = (
   email: string,
   password: string,
   fName: string,
@@ -38,7 +39,7 @@ export const signUp = (
     });
 };
 
-export const login = (email: string, password: string) => {
+export const loginHandler = (email: string, password: string) => {
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
@@ -51,7 +52,7 @@ export const login = (email: string, password: string) => {
     });
 };
 
-export const googleLogin = () => {
+export const googleLoginHandler = () => {
   const provider = new GoogleAuthProvider();
   signInWithPopup(auth, provider)
     .then((userCredential) => {
@@ -73,4 +74,21 @@ export const googleLogin = () => {
       const errorMessage = error.message;
       console.log(errorCode, errorMessage);
     });
+};
+
+export const deleteUserHandler = () => {
+  const user = auth.currentUser;
+
+  if (user) {
+    deleteUser(user)
+      .then(() => {
+        deleteDoc(doc(db, 'users', user.uid));
+        console.log(`User ${user.uid} deleted`);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
+  }
 };

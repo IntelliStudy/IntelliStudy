@@ -1,5 +1,10 @@
 import { ChangeEvent, useState } from 'react';
-import { googleLogin, login, signUp } from '../firebase/auth';
+import {
+  deleteUserHandler,
+  googleLoginHandler,
+  loginHandler,
+  signUpHandler,
+} from '../firebase/auth';
 
 const LoginForm = () => {
   const [create, setCreate] = useState(true);
@@ -27,19 +32,25 @@ const LoginForm = () => {
   const handleSignup = () => {
     console.log('Signing up with:', email, password, fName, lName);
 
-    signUp(email, password, fName, lName);
+    signUpHandler(email, password, fName, lName);
   };
 
   const handleLogin = () => {
     console.log('Logging in with:', email, password);
 
-    login(email, password);
+    loginHandler(email, password);
   };
 
   const handleGoogleLogin = () => {
     console.log('Logging in with Google');
 
-    googleLogin();
+    googleLoginHandler();
+  };
+
+  const handleAccountDelete = () => {
+    console.log('Deleting user account');
+
+    deleteUserHandler();
   };
 
   return (
@@ -83,6 +94,9 @@ const LoginForm = () => {
         </button>
         <div>
           <button onClick={handleGoogleLogin}>Google Auth</button>
+        </div>
+        <div>
+          <button onClick={handleAccountDelete}>Delete account</button>
         </div>
       </div>
     </>
