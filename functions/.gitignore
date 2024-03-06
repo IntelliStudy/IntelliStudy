@@ -10,3 +10,5 @@ node_modules/
 
 saved-data/
 *.log
+
+.env
