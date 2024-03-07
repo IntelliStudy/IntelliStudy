@@ -1,4 +1,5 @@
 import { ChangeEvent, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   deleteUserHandler,
   googleLoginHandler,
@@ -97,6 +98,11 @@ const LoginForm = () => {
         </div>
         <div>
           <button onClick={handleAccountDelete}>Delete account</button>
+        </div>
+        <div>
+          <Link to={'/studyspot'}>
+            <button>Study Spot</button>
+          </Link>
         </div>
       </div>
     </>
