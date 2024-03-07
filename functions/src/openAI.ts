@@ -11,7 +11,8 @@ export const openAI = onRequest(async (request, response) => {
   console.log(assistant);
   const thread = await openai.beta.threads.create();
 
-  const message = await openai.beta.threads.messages.create(thread.id, {
+  // const message =
+  await openai.beta.threads.messages.create(thread.id, {
     role: 'user',
     content: 'What is 10 * 3?',
   });
@@ -21,6 +22,7 @@ export const openAI = onRequest(async (request, response) => {
   });
 
   const result = await openai.beta.threads.runs.retrieve(thread.id, run.id);
+  console.log(result);
 
   const messages = await openai.beta.threads.messages.list(thread.id);
 
