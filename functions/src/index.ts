@@ -14,6 +14,7 @@
 // https://firebase.google.com/docs/functions/typescript
 
 export { userDeleted, userSignup } from './addUser';
+export { openAI } from './openAI';
 export { testTrigger } from './testTrigger';
 
 // export FIREBASE_AUTH_EMULATOR_HOST="127.0.0.1:9099"
