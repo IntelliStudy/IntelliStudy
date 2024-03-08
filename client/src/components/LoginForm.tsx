@@ -46,15 +46,6 @@ const LoginForm = () => {
     loginHandler(email, password, () => {
       navigate('/studyspot');
     });
-
-    // const status = loginHandler(email, password);
-    // console.log(status);
-    // .then(() => {
-    //   navigate('/studyspot');
-    // })
-    // .catch((error) => {
-    //   console.error(error);
-    // });
   };
 
   const handleGoogleLogin = () => {
