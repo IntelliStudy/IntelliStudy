@@ -1,10 +1,11 @@
 import { ChangeEvent, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   deleteUserHandler,
   googleLoginHandler,
   loginHandler,
   signUpHandler,
+  userLogoutHandler,
 } from '../firebase/auth';
 
 const LoginForm = () => {
@@ -13,6 +14,7 @@ const LoginForm = () => {
   const [fName, setfName] = useState('');
   const [lName, setlName] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handlefNameChange: any = (event: ChangeEvent<HTMLInputElement>) => {
     setfName(event.target.value);
@@ -33,25 +35,46 @@ const LoginForm = () => {
   const handleSignup = () => {
     console.log('Signing up with:', email, password, fName, lName);
 
-    signUpHandler(email, password, fName, lName);
+    signUpHandler(email, password, fName, lName, () => {
+      navigate('/studyspot');
+    });
   };
 
   const handleLogin = () => {
     console.log('Logging in with:', email, password);
 
-    loginHandler(email, password);
+    loginHandler(email, password, () => {
+      navigate('/studyspot');
+    });
+
+    // const status = loginHandler(email, password);
+    // console.log(status);
+    // .then(() => {
+    //   navigate('/studyspot');
+    // })
+    // .catch((error) => {
+    //   console.error(error);
+    // });
   };
 
   const handleGoogleLogin = () => {
     console.log('Logging in with Google');
 
-    googleLoginHandler();
+    googleLoginHandler(() => {
+      navigate('/studyspot');
+    });
   };
 
   const handleAccountDelete = () => {
     console.log('Deleting user account');
 
     deleteUserHandler();
+  };
+
+  const handleLogout = () => {
+    console.log('Logging out');
+
+    userLogoutHandler();
   };
 
   return (
@@ -64,16 +87,19 @@ const LoginForm = () => {
               <label>First Name:</label>
               <input type="text" value={fName} onChange={handlefNameChange} />
             </div>
+            <br />
             <div>
               <label>Last Name:</label>
               <input type="text" value={lName} onChange={handlelNameChange} />
             </div>
           </>
         )}
+        <br />
         <div>
           <label>Email:</label>
           <input type="email" value={email} onChange={handleEmailChange} />
         </div>
+        <br />
         <div>
           <label>Password:</label>
           <input
@@ -98,6 +124,9 @@ const LoginForm = () => {
         </div>
         <div>
           <button onClick={handleAccountDelete}>Delete account</button>
+        </div>
+        <div>
+          <button onClick={handleLogout}>Logout</button>
         </div>
         <div>
           <Link to={'/studyspot'}>
