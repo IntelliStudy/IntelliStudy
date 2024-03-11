@@ -1,34 +1,50 @@
 import { onRequest } from 'firebase-functions/v2/https';
 import OpenAI from 'openai';
 
+function waitForOneSecond() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(1);
+    }, 1000); // 1000 milliseconds = 1 second
+  });
+}
+
 export const openAI = onRequest(async (request, response) => {
   const openai = new OpenAI();
 
+  
   const assistant = await openai.beta.assistants.retrieve(
     'asst_qtulEJHXsBw9v8vlFWf4TH0F'
   );
 
-  console.log(assistant);
   const thread = await openai.beta.threads.create();
 
   // const message =
   await openai.beta.threads.messages.create(thread.id, {
     role: 'user',
-    content: 'What is 10 * 3?',
+    content: 'What is 10 * 50?',
   });
 
   const run = await openai.beta.threads.runs.create(thread.id, {
     assistant_id: assistant.id,
   });
 
+  let status = '';
+
+  do {
   const result = await openai.beta.threads.runs.retrieve(thread.id, run.id);
-  console.log(result);
+    await waitForOneSecond();
+    status = result.status;
+
+  } while (status === 'in_progress' || status ==='queued')
 
   const messages = await openai.beta.threads.messages.list(thread.id);
 
-  messages.data.forEach((message) => {
-    console.log(message.content);
-  });
+  console.log(JSON.stringify(messages, null, 2));
+
+  // messages.data.forEach((message) => {
+  //   console.log(message.content);
+  // });
 
   // const assistant = await openai.beta.assistants.create({
   //   name: "Math Tutor",
@@ -38,4 +54,6 @@ export const openAI = onRequest(async (request, response) => {
   // });
 
   // response.send(assistant);
+
+  response.status(200).send('OK')
 });
