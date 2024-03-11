@@ -1,5 +1,5 @@
 import { User } from 'firebase/auth';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
 import {
