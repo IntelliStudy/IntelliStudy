@@ -4,6 +4,7 @@ import {
   deleteUser,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
 } from 'firebase/auth';
 import { deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { auth, db } from './firebase';
@@ -12,9 +13,10 @@ export const signUpHandler = (
   email: string,
   password: string,
   fName: string,
-  lName: string
+  lName: string,
+  onSuccess: () => void
 ) => {
-  createUserWithEmailAndPassword(auth, email, password)
+  return createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
 
@@ -32,18 +34,8 @@ export const signUpHandler = (
       );
       return user;
     })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode, errorMessage);
-    });
-};
-
-export const loginHandler = (email: string, password: string) => {
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      return user;
+    .then(() => {
+      onSuccess();
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -52,7 +44,27 @@ export const loginHandler = (email: string, password: string) => {
     });
 };
 
-export const googleLoginHandler = () => {
+export const loginHandler = (
+  email: string,
+  password: string,
+  onSuccess: () => void
+) => {
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      return user;
+    })
+    .then(() => {
+      onSuccess();
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode, errorMessage);
+    });
+};
+
+export const googleLoginHandler = (onSuccess: () => void) => {
   const provider = new GoogleAuthProvider();
   signInWithPopup(auth, provider)
     .then((userCredential) => {
@@ -69,6 +81,9 @@ export const googleLoginHandler = () => {
       );
       return user;
     })
+    .then(() => {
+      onSuccess();
+    })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -84,6 +99,22 @@ export const deleteUserHandler = () => {
       .then(() => {
         deleteDoc(doc(db, 'users', user.uid));
         console.log(`User ${user.uid} deleted`);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
+  }
+};
+
+export const userLogoutHandler = () => {
+  const user = auth.currentUser;
+
+  if (user) {
+    signOut(auth)
+      .then(() => {
+        console.log(`User ${user.uid} signed out`);
       })
       .catch((error) => {
         const errorCode = error.code;
