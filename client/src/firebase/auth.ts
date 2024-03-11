@@ -9,6 +9,16 @@ import {
 import { deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { auth, db } from './firebase';
 
+export const getCurrentlySignedInUserHandler = () => {
+  const user = auth.currentUser;
+
+  if (user) {
+    return user;
+  } else {
+    console.log('No user currently signed in');
+  }
+};
+
 export const signUpHandler = (
   email: string,
   password: string,
@@ -29,6 +39,7 @@ export const signUpHandler = (
           displayName: `${fName} ${lName}`,
           email: email,
           password: password,
+          signedIn: true,
         },
         { merge: true }
       );
@@ -49,10 +60,13 @@ export const loginHandler = (
   password: string,
   onSuccess: () => void
 ) => {
-  signInWithEmailAndPassword(auth, email, password)
+  return signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
-      return user;
+
+      setDoc(doc(db, 'users', user.uid), {
+        signedIn: true,
+      });
     })
     .then(() => {
       onSuccess();
@@ -66,7 +80,7 @@ export const loginHandler = (
 
 export const googleLoginHandler = (onSuccess: () => void) => {
   const provider = new GoogleAuthProvider();
-  signInWithPopup(auth, provider)
+  return signInWithPopup(auth, provider)
     .then((userCredential) => {
       const user = userCredential.user;
 
@@ -76,6 +90,7 @@ export const googleLoginHandler = (onSuccess: () => void) => {
           uid: user.uid,
           displayName: user.displayName,
           email: user.email,
+          signedIn: true,
         },
         { merge: true }
       );
@@ -95,7 +110,7 @@ export const deleteUserHandler = () => {
   const user = auth.currentUser;
 
   if (user) {
-    deleteUser(user)
+    return deleteUser(user)
       .then(() => {
         deleteDoc(doc(db, 'users', user.uid));
         console.log(`User ${user.uid} deleted`);
@@ -105,6 +120,8 @@ export const deleteUserHandler = () => {
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
       });
+  } else {
+    return Promise.resolve();
   }
 };
 
@@ -112,14 +129,20 @@ export const userLogoutHandler = () => {
   const user = auth.currentUser;
 
   if (user) {
-    signOut(auth)
+    return signOut(auth)
       .then(() => {
         console.log(`User ${user.uid} signed out`);
+
+        setDoc(doc(db, 'users', user.uid), {
+          signedIn: false,
+        });
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
       });
+  } else {
+    return Promise.resolve();
   }
 };
