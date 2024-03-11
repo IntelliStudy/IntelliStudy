@@ -1,7 +1,9 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { UserContext } from '../App';
 import {
   deleteUserHandler,
+  getCurrentlySignedInUserHandler,
   googleLoginHandler,
   loginHandler,
   signUpHandler,
@@ -16,15 +18,17 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handlefNameChange: any = (event: ChangeEvent<HTMLInputElement>) => {
+  const { currentUser, setCurrentUser } = useContext(UserContext);
+
+  const handlefNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setfName(event.target.value);
   };
 
-  const handlelNameChange: any = (event: ChangeEvent<HTMLInputElement>) => {
+  const handlelNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setlName(event.target.value);
   };
 
-  const handleEmailChange: any = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
 
@@ -37,6 +41,8 @@ const LoginForm = () => {
 
     signUpHandler(email, password, fName, lName, () => {
       navigate('/studyspot');
+    }).then(() => {
+      setCurrentUser(getCurrentlySignedInUserHandler);
     });
   };
 
@@ -45,6 +51,8 @@ const LoginForm = () => {
 
     loginHandler(email, password, () => {
       navigate('/studyspot');
+    }).then(() => {
+      setCurrentUser(getCurrentlySignedInUserHandler);
     });
   };
 
@@ -53,19 +61,25 @@ const LoginForm = () => {
 
     googleLoginHandler(() => {
       navigate('/studyspot');
+    }).then(() => {
+      setCurrentUser(getCurrentlySignedInUserHandler);
     });
   };
 
   const handleAccountDelete = () => {
     console.log('Deleting user account');
 
-    deleteUserHandler();
+    deleteUserHandler().then(() => {
+      setCurrentUser(getCurrentlySignedInUserHandler);
+    });
   };
 
   const handleLogout = () => {
     console.log('Logging out');
 
-    userLogoutHandler();
+    userLogoutHandler().then(() => {
+      setCurrentUser(getCurrentlySignedInUserHandler);
+    });
   };
 
   return (
