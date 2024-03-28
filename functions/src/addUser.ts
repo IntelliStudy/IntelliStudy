@@ -4,9 +4,6 @@ import {
   onDocumentUpdated,
 } from 'firebase-functions/v2/firestore';
 
-// Start writing functions
-// https://firebase.google.com/docs/functions/typescript
-
 export const testTrigger = onDocumentUpdated('frontendTest/{wys}', (event) => {
   const snapshot = event.data;
   if (!snapshot) {
