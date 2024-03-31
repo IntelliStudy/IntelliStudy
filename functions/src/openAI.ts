@@ -1,4 +1,6 @@
-import { onRequest } from 'firebase-functions/v2/https';
+import { onDocumentCreated } from 'firebase-functions/v2/firestore';
+import { addDoc, collection, doc, setDoc } from "firebase/firestore"; 
+import { db } from '../../client/src/firebase/firebase';
 import OpenAI from 'openai';
 
 function waitForOneSecond() {
@@ -9,9 +11,10 @@ function waitForOneSecond() {
   });
 }
 
-export const openAI = onRequest(async (request, response) => {
-  const openai = new OpenAI();
+export const openAI = onDocumentCreated('users/{userId}/requests/{requestId}', async (event) => {
 
+  console.log("EVENT",event);
+  const openai = new OpenAI();
   
   const assistant = await openai.beta.assistants.retrieve(
     'asst_qtulEJHXsBw9v8vlFWf4TH0F'
@@ -22,7 +25,7 @@ export const openAI = onRequest(async (request, response) => {
   // const message =
   await openai.beta.threads.messages.create(thread.id, {
     role: 'user',
-    content: 'What is 10 * 50?',
+    content: 'Make and output a 5 question multiple choice quiz in JSON format based on the file provided with multiple choice options and the correct answers both provided. Do not respond with anything else except the JSON. Do not introduce or explain anything in plain text. Your response should strictly be a JSON object.',
   });
 
   const run = await openai.beta.threads.runs.create(thread.id, {
@@ -40,7 +43,8 @@ export const openAI = onRequest(async (request, response) => {
 
   const messages = await openai.beta.threads.messages.list(thread.id);
 
-  console.log(JSON.stringify(messages, null, 2));
+  const quiz = (messages.data[0].content[0] as { text: { value: string } }).text.value;
+
 
   // messages.data.forEach((message) => {
   //   console.log(message.content);
@@ -55,5 +59,8 @@ export const openAI = onRequest(async (request, response) => {
 
   // response.send(assistant);
 
-  response.status(200).send('OK')
+  const quizzesRef = doc(db, 'users', event.params.userId,'quizzes',event.params.requestId);
+  setDoc(quizzesRef, {id: event.params.requestId, quiz: quiz});
 });
+
+

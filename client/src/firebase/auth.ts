@@ -6,7 +6,7 @@ import {
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
-import { deleteDoc, doc, setDoc } from 'firebase/firestore';
+import { deleteDoc, doc, setDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from './firebase';
 
 export const getCurrentlySignedInUserHandler = () => {
@@ -133,8 +133,8 @@ export const userLogoutHandler = () => {
       .then(() => {
         console.log(`User ${user.uid} signed out`);
 
-        setDoc(doc(db, 'users', user.uid), {
-          signedIn: false,
+        updateDoc(doc(db, 'users', user.uid), {
+          signedIn: false
         });
       })
       .catch((error) => {
