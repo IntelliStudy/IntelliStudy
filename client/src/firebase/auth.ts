@@ -6,7 +6,11 @@ import {
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
+<<<<<<< HEAD
 import { deleteDoc, doc, getDoc, setDoc } from 'firebase/firestore';
+=======
+import { deleteDoc, doc, setDoc, updateDoc } from 'firebase/firestore';
+>>>>>>> bbd689a (WIP: Generate Quiz button in database)
 import { auth, db } from './firebase';
 
 // Function used to retreive user status (signed in or not)
@@ -168,6 +172,7 @@ export const userLogoutHandler = () => {
       .then(() => {
         console.log(`User ${user.uid} signed out`);
 
+<<<<<<< HEAD
         // Updating DB record to indicate that user is signed out
         setDoc(
           doc(db, 'users', user.uid),
@@ -176,6 +181,11 @@ export const userLogoutHandler = () => {
           },
           { merge: true }
         );
+=======
+        updateDoc(doc(db, 'users', user.uid), {
+          signedIn: false
+        });
+>>>>>>> bbd689a (WIP: Generate Quiz button in database)
       })
       .catch((error) => {
         const errorCode = error.code;
