@@ -2,7 +2,7 @@ const CourseCard = () => {
   return (
     <>
       <div
-        className="bg-yellow-500 m-3"
+        className="bg-salmon m-3"
         style={{ height: '200px', width: '150px' }}
       >
         <h2>ITI 1120</h2>

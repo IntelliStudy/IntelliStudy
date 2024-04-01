@@ -1,19 +1,7 @@
 import {
   onDocumentCreated,
   onDocumentDeleted,
-  onDocumentUpdated,
 } from 'firebase-functions/v2/firestore';
-
-export const testTrigger = onDocumentUpdated('frontendTest/{wys}', (event) => {
-  const snapshot = event.data;
-  if (!snapshot) {
-    console.log('No data associated with the event');
-    return;
-  }
-  // if (event.data?.before.data().generate !== event.data?.after.data().generate) {
-  console.log('It changed from the frontend!');
-  // }
-});
 
 export const userSignup = onDocumentCreated('users/{userId}', (event) => {
   const snapshot = event.data;
