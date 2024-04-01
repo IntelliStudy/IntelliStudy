@@ -8,14 +8,9 @@ import {
 
 const Navbar = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
-  if (currentUser) {
-    console.log('Navbar: user logged in');
-  } else {
-    console.log('Navbar: user not logged in');
-  }
 
   const handleLogout = () => {
-    console.log('Logging out');
+    console.log('Logging out user:', currentUser?.displayName);
 
     userLogoutHandler().then(() => {
       setCurrentUser(getCurrentlySignedInUserHandler);
@@ -25,7 +20,7 @@ const Navbar = () => {
   return (
     <>
       <nav className="sticky w-full flex bg-salmon top-0 justify-between px-4 h-12">
-        <Link to={'/studyspot'}>
+        <Link to={currentUser ? '/studyspot' : '/'}>
           <h3>Navbar</h3>
         </Link>
         <ul className="list-none justify-end">
@@ -34,12 +29,13 @@ const Navbar = () => {
               <Link to={'/profile'}>
                 <li className="inline">Profile</li>
               </Link>
-              <div>
-                <button onClick={handleLogout}>Logout</button>
-              </div>
+              <Link to={'/'}>
+                <div>
+                  <button onClick={handleLogout}>Logout</button>
+                </div>
+              </Link>
             </div>
           )}
-
           {!currentUser && (
             <div>
               <Link to={'/login'}>

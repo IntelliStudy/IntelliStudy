@@ -19,6 +19,7 @@ const CourseDashboard = () => {
   }, [files]);
 
   const handleSubmit = async () => {
+    // Appends file blob object to formData for subission to BE
     if (fileCount > 0) {
       const formData = new FormData();
       files.forEach((currFile) => {
@@ -46,7 +47,7 @@ const CourseDashboard = () => {
         if (response.status === 200) {
           // Update document in Firebase only if the POST request succeeds
           await setDoc(
-            doc(db, 'users', currentUser.uid),
+            doc(db, 'users', currentUser!.uid),
             {
               uploadedFiles: true,
             },
@@ -63,7 +64,7 @@ const CourseDashboard = () => {
     // Handle no files uploaded
     else {
       setDoc(
-        doc(db, 'users', currentUser.uid),
+        doc(db, 'users', currentUser!.uid),
         {
           uploadedFiles: false,
         },

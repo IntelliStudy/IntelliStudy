@@ -1,5 +1,5 @@
-import { User } from 'firebase/auth';
-import { createContext, useState } from 'react';
+import { User, onAuthStateChanged } from 'firebase/auth';
+import { createContext, useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
 import {
@@ -12,7 +12,9 @@ import {
   StudySpot,
 } from './components';
 import { getCurrentlySignedInUserHandler } from './firebase/auth';
+import { auth } from './firebase/firebase';
 
+// Context for managing user
 export const UserContext = createContext<{
   currentUser: User | undefined;
   setCurrentUser: (value: React.SetStateAction<User | undefined>) => void;
@@ -27,19 +29,25 @@ function useDisplayNavbar() {
 }
 
 function App() {
-  const [currentUser, setCurrentUser] = useState<User>();
+  const [currentUser, setCurrentUser] = useState<User | undefined>(
+    getCurrentlySignedInUserHandler
+  );
   const displayNavbar = useDisplayNavbar();
 
-  function login() {
-    setCurrentUser(getCurrentlySignedInUserHandler);
-  }
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user !== null) {
+        setCurrentUser(user);
+      } else {
+        setCurrentUser(undefined);
+      }
+    });
+  }, []);
 
   return (
     <>
       <UserContext.Provider value={{ currentUser, setCurrentUser }}>
         {displayNavbar && <Navbar />}
-
-        <button onClick={login}>User status</button>
 
         <Routes>
           <Route path="/" element={<Home />} />

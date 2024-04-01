@@ -1,18 +1,7 @@
-// import { onDocumentUpdated } from 'firebase-functions/v2/firestore';
 import * as Busboy from 'busboy';
 import { onRequest } from 'firebase-functions/v2/https';
 
-// export const fileUpload = onDocumentUpdated('users/{userId}', (event) => {
-//   if (event.data !== undefined) {
-//     const newValue = event.data.after.data();
-//     const oldValue = event.data.before.data();
-
-//     if (newValue.uploadedFiles === true && oldValue.uploadedFiles !== true) {
-//       console.log('Files uploaded cloud function');
-//     }
-//   }
-// });
-
+// Cloud function for accessing file blob object passed from FE using middlewear
 export const fileUpload = onRequest({ cors: true }, async (req, res) => {
   const bb = Busboy({ headers: req.headers });
 

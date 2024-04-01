@@ -13,6 +13,8 @@ const firebaseConfig = {
 
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
-connectFirestoreEmulator(db, '127.0.0.1', 8080);
 export const auth = getAuth(app);
+
+// Used to enable emulator for dev
+connectFirestoreEmulator(db, '127.0.0.1', 8080);
 connectAuthEmulator(auth, 'http://127.0.0.1:9099');

@@ -1,13 +1,11 @@
 import { ChangeEvent, useContext, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../App';
 import {
-  deleteUserHandler,
   getCurrentlySignedInUserHandler,
   googleLoginHandler,
   loginHandler,
   signUpHandler,
-  userLogoutHandler,
 } from '../firebase/auth';
 
 const LoginForm = () => {
@@ -36,6 +34,7 @@ const LoginForm = () => {
     setPassword(event.target.value);
   };
 
+  // Sign up with email and password
   const handleSignup = () => {
     console.log('Signing up with:', email, password, fName, lName);
 
@@ -46,6 +45,7 @@ const LoginForm = () => {
     });
   };
 
+  // Login with email and password
   const handleLogin = () => {
     console.log('Logging in with:', email, password);
 
@@ -56,28 +56,13 @@ const LoginForm = () => {
     });
   };
 
+  // Sign up or login using Google account
   const handleGoogleLogin = () => {
-    console.log('Logging in with Google');
+    console.log('Signing up / logging in with Google');
 
     googleLoginHandler(() => {
       navigate('/studyspot');
     }).then(() => {
-      setCurrentUser(getCurrentlySignedInUserHandler);
-    });
-  };
-
-  const handleAccountDelete = () => {
-    console.log('Deleting user account');
-
-    deleteUserHandler().then(() => {
-      setCurrentUser(getCurrentlySignedInUserHandler);
-    });
-  };
-
-  const handleLogout = () => {
-    console.log('Logging out');
-
-    userLogoutHandler().then(() => {
       setCurrentUser(getCurrentlySignedInUserHandler);
     });
   };
@@ -126,17 +111,6 @@ const LoginForm = () => {
         </button>
         <div>
           <button onClick={handleGoogleLogin}>Google Auth</button>
-        </div>
-        <div>
-          <button onClick={handleAccountDelete}>Delete account</button>
-        </div>
-        <div>
-          <button onClick={handleLogout}>Logout</button>
-        </div>
-        <div>
-          <Link to={'/studyspot'}>
-            <button>Study Spot</button>
-          </Link>
         </div>
       </div>
     </>
