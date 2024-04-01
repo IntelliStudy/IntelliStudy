@@ -14,6 +14,7 @@
 // https://firebase.google.com/docs/functions/typescript
 
 export { userDeleted, userSignup } from './addUser';
+export { fileUpload } from './fileUpload';
 export { openAI } from './openAI';
 export { testTrigger } from './testTrigger';
 

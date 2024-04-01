@@ -6,7 +6,7 @@ import {
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
-import { deleteDoc, doc, setDoc } from 'firebase/firestore';
+import { deleteDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 import { auth, db } from './firebase';
 
 export const getCurrentlySignedInUserHandler = () => {
@@ -40,6 +40,7 @@ export const signUpHandler = (
           email: email,
           password: password,
           signedIn: true,
+          uploadedFiles: false,
         },
         { merge: true }
       );
@@ -64,9 +65,13 @@ export const loginHandler = (
     .then((userCredential) => {
       const user = userCredential.user;
 
-      setDoc(doc(db, 'users', user.uid), {
-        signedIn: true,
-      });
+      setDoc(
+        doc(db, 'users', user.uid),
+        {
+          signedIn: true,
+        },
+        { merge: true }
+      );
     })
     .then(() => {
       onSuccess();
@@ -81,8 +86,17 @@ export const loginHandler = (
 export const googleLoginHandler = (onSuccess: () => void) => {
   const provider = new GoogleAuthProvider();
   return signInWithPopup(auth, provider)
-    .then((userCredential) => {
+    .then(async (userCredential) => {
       const user = userCredential.user;
+
+      // Check if the user exists in the database
+      const userRef = doc(db, 'users', user.uid);
+      const userDoc = await getDoc(userRef);
+
+      // Determine the value of uploadedFiles based on user existence
+      const uploadedFiles = userDoc.exists()
+        ? userDoc.data().uploadedFiles
+        : false;
 
       setDoc(
         doc(db, 'users', user.uid),
@@ -91,6 +105,7 @@ export const googleLoginHandler = (onSuccess: () => void) => {
           displayName: user.displayName,
           email: user.email,
           signedIn: true,
+          uploadedFiles: uploadedFiles,
         },
         { merge: true }
       );
@@ -133,9 +148,13 @@ export const userLogoutHandler = () => {
       .then(() => {
         console.log(`User ${user.uid} signed out`);
 
-        setDoc(doc(db, 'users', user.uid), {
-          signedIn: false,
-        });
+        setDoc(
+          doc(db, 'users', user.uid),
+          {
+            signedIn: false,
+          },
+          { merge: true }
+        );
       })
       .catch((error) => {
         const errorCode = error.code;
