@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { db } from '../firebase/firebase';
+import { serverTimestamp } from 'firebase/firestore';
 import { addDoc, collection, doc } from 'firebase/firestore';
 import { useContext, useState } from 'react';
 import { UserContext } from '../App';
@@ -9,7 +10,7 @@ import { UserContext } from '../App';
 const onGenerate = (uid: string) => {
   const requestsRef = collection(db, 'users',`${uid}`,'requests');
   addDoc(requestsRef,{
-    test: true
+    createdAt: serverTimestamp()
   });
   
 }

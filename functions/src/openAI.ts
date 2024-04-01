@@ -11,7 +11,7 @@ function waitForOneSecond() {
   });
 }
 
-export const openAI = onDocumentCreated('users/{userId}/requests/{requestId}', async (event) => {
+export const openAI = onDocumentCreated('users/{userId}/quizzes/{quizId}', async (event) => {
 
   console.log("EVENT",event);
   const openai = new OpenAI();
@@ -25,7 +25,7 @@ export const openAI = onDocumentCreated('users/{userId}/requests/{requestId}', a
   // const message =
   await openai.beta.threads.messages.create(thread.id, {
     role: 'user',
-    content: 'Make and output a 5 question multiple choice quiz in JSON format based on the file provided with multiple choice options and the correct answers both provided. Do not respond with anything else except the JSON. Do not introduce or explain anything in plain text. Your response should strictly be a JSON object.',
+    content: 'Make and output a 5 question multiple choice quiz in JSON format based on the file provided with multiple choice options and the correct answers both provided. Do not respond with anything else except the JSON. Do not introduce or explain anything in plain text. Your response should strictly be a JSON object. DO NOT include "```json" at the start or "```" at the end. Your response should follow the format of the example given in the instructions.',
   });
 
   const run = await openai.beta.threads.runs.create(thread.id, {
@@ -39,28 +39,36 @@ export const openAI = onDocumentCreated('users/{userId}/requests/{requestId}', a
     await waitForOneSecond();
     status = result.status;
 
+
+    console.log("STATUS",status);
+
   } while (status === 'in_progress' || status ==='queued')
 
-  const messages = await openai.beta.threads.messages.list(thread.id);
-
-  const quiz = (messages.data[0].content[0] as { text: { value: string } }).text.value;
 
 
-  // messages.data.forEach((message) => {
-  //   console.log(message.content);
-  // });
+  console.log("STATUS",status);
 
-  // const assistant = await openai.beta.assistants.create({
-  //   name: "Math Tutor",
-  //   instructions: "You are a personal math tutor. Write and run code to answer math questions.",
-  //   tools: [{ type: "code_interpreter" }],
-  //   model: "gpt-3.5-turbo"
-  // });
+  if (status === 'failed'){
 
-  // response.send(assistant);
+    const quizzesRef = doc(db, 'users', event.params.userId,'quizzes',event.params.quizId);
+    await setDoc(quizzesRef,{success: false, loading: false, quiz: "There was an error generating your quiz."},{merge: true});
+    const result = await openai.beta.threads.runs.retrieve(thread.id, run.id);
+    console.log("ERROR", result.last_error);
 
-  const quizzesRef = doc(db, 'users', event.params.userId,'quizzes',event.params.requestId);
-  setDoc(quizzesRef, {id: event.params.requestId, quiz: quiz});
+  } else {
+    const messages = await openai.beta.threads.messages.list(thread.id);
+    messages.data.forEach((message) => {
+      console.log("MESS",message.content);
+    });
+  
+    const quiz = (messages.data[0].content[0] as { text: { value: string } }).text.value;
+  
+    const quizzesRef = doc(db, 'users', event.params.userId,'quizzes',event.params.quizId);
+    await setDoc(quizzesRef,{success: true, loading: false, quiz: quiz},{merge: true});
+
+  }
+
+
 });
 
 
