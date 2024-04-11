@@ -13,16 +13,16 @@ function waitForOneSecond() {
 
 export const openAI = onDocumentCreated('users/{userId}/quizzes/{quizId}', async (event) => {
 
-  console.log("EVENT",event);
   const openai = new OpenAI();
   
   const assistant = await openai.beta.assistants.retrieve(
     'asst_qtulEJHXsBw9v8vlFWf4TH0F'
   );
 
+  //create thread with AI assistant
   const thread = await openai.beta.threads.create();
 
-  // const message =
+  //sending prompt to assistant to generate quiz
   await openai.beta.threads.messages.create(thread.id, {
     role: 'user',
     content: 'Make and output a 5 question multiple choice quiz in JSON format based on the file provided with multiple choice options and the correct answers both provided. Do not respond with anything else except the JSON. Do not introduce or explain anything in plain text. Your response should strictly be a JSON object. DO NOT include "```json" at the start or "```" at the end. Your response should follow the format of the example given in the instructions.',
@@ -34,6 +34,7 @@ export const openAI = onDocumentCreated('users/{userId}/quizzes/{quizId}', async
 
   let status = '';
 
+  //retrieving status of call until it is completed
   do {
   const result = await openai.beta.threads.runs.retrieve(thread.id, run.id);
     await waitForOneSecond();
@@ -48,6 +49,8 @@ export const openAI = onDocumentCreated('users/{userId}/quizzes/{quizId}', async
 
   console.log("STATUS",status);
 
+  //storing quiz or error message depending on call result
+
   if (status === 'failed'){
 
     const quizzesRef = doc(db, 'users', event.params.userId,'quizzes',event.params.quizId);
@@ -56,7 +59,7 @@ export const openAI = onDocumentCreated('users/{userId}/quizzes/{quizId}', async
     console.log("ERROR", result.last_error);
 
   } else {
-    const messages = await openai.beta.threads.messages.list(thread.id);
+    const messages = await openai.beta.threads.messages.list(thread.id, {order: 'desc', limit: 1});
     messages.data.forEach((message) => {
       console.log("MESS",message.content);
     });

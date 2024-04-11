@@ -22,7 +22,7 @@ import "filepond/dist/filepond.min.css";
 
 const CourseDashboard = () => {
 
-  const { currentUser } = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);  
 const [files, setFiles] = useState<File[]>([]);
 const [fileCount, setFileCount] = useState(0);
 const [loading, setLoading] = useState<boolean>(false);
