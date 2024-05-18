@@ -1,3 +1,6 @@
+import '@mantine/core/styles.css';
+
+import { MantineProvider } from '@mantine/core';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { createContext, useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
@@ -46,21 +49,23 @@ function App() {
 
   return (
     <>
-      <UserContext.Provider value={{ currentUser, setCurrentUser }}>
-        {displayNavbar && <Navbar />}
+      <MantineProvider>
+        <UserContext.Provider value={{ currentUser, setCurrentUser }}>
+          {displayNavbar && <Navbar />}
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/studyspot" element={<StudySpot />} />
-          <Route
-            path="/coursedashboard/:course"
-            element={<CourseDashboard />}
-          />
-          <Route path="/quiz" element={<Quiz />} />
-          <Route path="/profile" element={<Profile />} />
-        </Routes>
-      </UserContext.Provider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/studyspot" element={<StudySpot />} />
+            <Route
+              path="/coursedashboard/:course"
+              element={<CourseDashboard />}
+            />
+            <Route path="/quiz" element={<Quiz />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+        </UserContext.Provider>
+      </MantineProvider>
     </>
   );
 }
