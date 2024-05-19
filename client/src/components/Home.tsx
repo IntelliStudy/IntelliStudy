@@ -1,3 +1,4 @@
+import { Button } from '@mantine/core';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
@@ -7,6 +8,9 @@ const Home = () => {
         <div>
           <h1>IntelliStudy</h1>
           <h2>Your AI powered Study Buddy</h2>
+          <Button variant="gradient" gradient={{ from: 'indigo', to: 'cyan' }}>
+            Indigo cyan
+          </Button>
 
           <div>
             <Link to="/login">
