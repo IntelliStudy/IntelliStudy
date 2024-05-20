@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
+import { IconX } from "@tabler/icons-react";
 import {
   getCurrentlySignedInUserHandler,
   googleLoginHandler,
@@ -8,11 +9,7 @@ import {
   signUpHandler,
 } from "../firebase/auth";
 import { useForm } from "@mantine/form";
-import {
-  Notifications,
-  notifications,
-  showNotification,
-} from "@mantine/notifications";
+import { Notifications, notifications } from "@mantine/notifications";
 import {
   TextInput,
   PasswordInput,
@@ -26,14 +23,46 @@ import {
   Button,
   Divider,
   Stack,
-  Notification,
+  Image,
+  Center,
+  rem,
 } from "@mantine/core";
 import { GoogleButton } from "./GoogleButton";
+
+const errorMessages = {
+  "auth/email-already-exists": {
+    title: "Email Already Exists",
+    message: "The email address is already in use by another account.",
+  },
+  "auth/user-not-found": {
+    title: "User Not Found",
+    message: "No user found for the given email address.",
+  },
+  "auth/wrong-password": {
+    title: "Wrong username or password",
+    message: "Please try again.",
+  },
+};
+
+type ErrorCode =
+  | "auth/email-already-exists"
+  | "auth/user-not-found"
+  | "auth/wrong-password";
+
+function getErrorMessage(errorCode: ErrorCode) {
+  return errorMessages[errorCode];
+}
+
+// Example usage
+const errorCode: ErrorCode = "auth/email-already-exists";
+const errorMessage = getErrorMessage(errorCode);
+console.log(errorMessage.title); // Output: "Email Already Exists"
 
 const SlidingForm = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [isSignUp, setIsSignUp] = useState(false);
+  const xIcon = <IconX style={{ width: rem(20), height: rem(20) }} />;
 
   const signupForm = useForm({
     initialValues: {
@@ -49,9 +78,7 @@ const SlidingForm = () => {
       lName: (val: string) => (val.length <= 1 ? "Invalid name" : null),
       email: (val: string) => (/^\S+@\S+$/.test(val) ? null : "Invalid email"),
       password: (val: string) =>
-        val.length < 6
-          ? "Password should include at least 6 characters"
-          : null,
+        val.length < 6 ? "Password should include at least 6 characters" : null,
       confirmPassword: (value, values) =>
         value !== values.password ? "Passwords did not match" : null,
     },
@@ -78,9 +105,12 @@ const SlidingForm = () => {
         setCurrentUser(getCurrentlySignedInUserHandler);
       })
       .catch((error) => {
+        console.log("error", getErrorMessage(error.code));
         notifications.show({
-          title: error.code,
-          message: error.message,
+          icon: xIcon,
+          radius: "lg",
+          title: getErrorMessage(error.code).title,
+          message: getErrorMessage(error.code).message,
           color: "red",
         });
       });
@@ -120,9 +150,11 @@ const SlidingForm = () => {
         );
       })
       .catch((error) => {
+        console.log(error);
         notifications.show({
-          title: error.code,
-          message: error.message,
+          icon: xIcon,
+          title: getErrorMessage(error.code).title,
+          message: getErrorMessage(error.code).message,
           color: "red",
         });
       });
@@ -153,6 +185,8 @@ const SlidingForm = () => {
             justifyContent: "center",
             height: "100%",
             backgroundColor: "#f0f0f0",
+            transform: isSignUp ? "translateX(-100%)" : "translateX(0)",
+            transition: "transform 0.4s ease",
           }}
         >
           <Title ta="center">Welcome back!</Title>
@@ -246,6 +280,8 @@ const SlidingForm = () => {
             justifyContent: "center",
             height: "100%",
             backgroundColor: "#f0f0f0",
+            transform: isSignUp ? "translateX(0)" : "translateX(100%)",
+            transition: "transform 0.4s ease",
           }}
         >
           <Title ta="center">Sign up now!</Title>
@@ -375,7 +411,16 @@ const SlidingForm = () => {
             backgroundImage:
               "linear-gradient(to right, #2FAED7 0%, #0280C7 100%)", // Using hex codes
           }}
-        ></div>
+        >
+          <Center style={{ height: "100vh" }}>
+            <Stack align="center" gap="sm">
+              <Image radius="sm" w={300} src="./logo/logo-with-text.png" />
+              <Text ta="center" size="lg" fw={900} c="white">
+                The study buddy you've always wanted.
+              </Text>
+            </Stack>
+          </Center>
+        </div>
       </Container>
     </>
   );
