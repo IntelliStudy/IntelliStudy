@@ -9,7 +9,7 @@ const Home = () => {
         <section>
           <Flex direction="column" align="center">
             <div>
-              <h1>Don't</h1>
+              <h1>IS</h1>
             </div>
             <h2 className="text-[60px] font-bold text-wrap max-w-[500px] text-center">
               Your AI-Powered Study Buddy
