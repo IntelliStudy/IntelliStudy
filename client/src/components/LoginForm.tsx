@@ -189,7 +189,8 @@ const SlidingForm = () => {
             transition: "transform 0.4s ease",
           }}
         >
-          <Title ta="center">Welcome back!</Title>
+          <Title
+          ta="center">Welcome back!</Title>
 
           <Paper withBorder shadow="md" p={30} mt={30} w={500} radius="md">
             <Group grow mb="md" mt="md">
@@ -408,14 +409,14 @@ const SlidingForm = () => {
             left: isSignUp ? 0 : "50%",
             transition: "left 0.4s ease",
             zIndex: 1,
-            backgroundImage:
-              "linear-gradient(to right, #2FAED7 0%, #0280C7 100%)", // Using hex codes
+            backgroundImage: isSignUp ? "linear-gradient(to left, #2FAED7 0%, #0280C7 100%)"
+             : "linear-gradient(to right, #2FAED7 0%, #0280C7 100%)", // Using hex codes
           }}
         >
           <Center style={{ height: "100vh" }}>
             <Stack align="center" gap="sm">
               <Image radius="sm" w={300} src="./logo/logo-with-text.png" />
-              <Text ta="center" size="lg" fw={900} c="white">
+              <Text ta="center" size="lg" fw={700} c="white">
                 The study buddy you've always wanted.
               </Text>
             </Stack>
