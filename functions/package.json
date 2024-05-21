@@ -12,11 +12,13 @@
   "engines": {
     "node": "18"
   },
-  "main": "lib/index.js",
+  "main": "lib/functions/src/index.js",
   "dependencies": {
     "busboy": "^1.6.0",
+    "firebase": "^10.10.0",
     "firebase-admin": "^11.8.0",
     "firebase-functions": "^4.3.1",
+    "firestore": "^1.1.6",
     "openai": "^4.28.4"
   },
   "devDependencies": {

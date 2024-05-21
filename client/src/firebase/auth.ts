@@ -53,9 +53,10 @@ export const signUpHandler = (
       onSuccess();
     })
     .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode, errorMessage);
+      // const errorCode = error.code;
+      // const errorMessage = error.message;
+      // console.log(errorCode, errorMessage);
+      throw error;
     });
 };
 
@@ -82,9 +83,10 @@ export const loginHandler = (
       onSuccess();
     })
     .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode, errorMessage);
+      // const errorCode = error.code;
+      // const errorMessage = error.message;
+      // console.log(errorCode, errorMessage);
+      throw error;
     });
 };
 
