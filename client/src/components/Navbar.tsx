@@ -1,4 +1,4 @@
-import { Button } from '@mantine/core';
+import { Button, Flex, List, Text, Title } from '@mantine/core';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../App';
@@ -22,10 +22,56 @@ const Navbar = () => {
     <>
       <nav className="sticky w-full flex top-0 justify-between items-center px-4 h-[80px] bg-gradient-to-r from-navbarDark to-navbarLight">
         <Link to={currentUser ? '/studyspot' : '/'}>
-          <h3>Navbar</h3>
+          <Title order={3}>Navbar</Title>
         </Link>
         <div>
-          <ul className="list-none justify-end pr-10">
+          <List type="unordered" listStyleType="none" pr={'2.5rem'}>
+            {currentUser && (
+              <Flex direction={'row'} ml={'1rem'}>
+                <Link to={'/profile'}>
+                  <List.Item display={'inline'}>Profile</List.Item>
+                </Link>
+                <Link to={'/'}>
+                  <Button onClick={handleLogout}>Log out</Button>
+                </Link>
+              </Flex>
+            )}
+
+            {!currentUser && (
+              // User not logged in
+              <Flex align={'center'}>
+                <Link to={'/login'}>
+                  <List.Item
+                    display={'inline'}
+                    fz={'28px'}
+                    fw={'bold'}
+                    c="white"
+                  >
+                    Login
+                  </List.Item>
+                </Link>
+                <Link to={'/login'}>
+                  <List.Item>
+                    <Button
+                      p={0}
+                      ml={'2.5rem'}
+                      variant="gradient"
+                      gradient={{ from: '#FFFFFF', to: '#E0E0E0' }}
+                      radius={10}
+                      w="135px"
+                      h="50px"
+                    >
+                      <Text fz={'28px'} fw={'bold'} c={'black'}>
+                        Sign up
+                      </Text>
+                    </Button>
+                  </List.Item>
+                </Link>
+              </Flex>
+            )}
+          </List>
+
+          {/* <ul className="list-none justify-end pr-10">
             {currentUser && (
               <div className="flex flex-row ml-4">
                 <Link to={'/profile'}>
@@ -65,7 +111,7 @@ const Navbar = () => {
                 </Link>
               </div>
             )}
-          </ul>
+          </ul> */}
         </div>
       </nav>
     </>

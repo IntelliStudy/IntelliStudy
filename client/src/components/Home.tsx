@@ -1,4 +1,4 @@
-import { Button, Flex, Title } from '@mantine/core';
+import { Button, Container, Flex, Image, Text, Title } from '@mantine/core';
 import { Link } from 'react-router-dom';
 import { placeholder } from '../assets';
 
@@ -6,17 +6,15 @@ const Home = () => {
   return (
     <>
       <div>
-        <section>
+        <Container>
           <Flex direction="column" align="center">
-            <div>
-              <h1>IntelliStudy</h1>
-            </div>
-            <h2 className="text-[60px] font-bold text-wrap max-w-[500px] text-center">
+            <Title order={1}>IntelliStudy</Title>
+            <Title order={1} size={60} textWrap="wrap" maw={500} ta={'center'}>
               Your AI-Powered Study Buddy
-            </h2>
-            <p className="text-[24px] font-light mt-4 mb-20">
+            </Title>
+            <Text size="24px" fw={300} mt={'1rem'} mb={'5rem'}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            </p>
+            </Text>
             <Link to="/login">
               <Button
                 variant="gradient"
@@ -25,25 +23,73 @@ const Home = () => {
                 w="310px"
                 h="74px"
               >
-                <p className="text-[28px] font-bold">Try out now </p>
+                <Text size="28px" fw={'bold'}>
+                  Try out now
+                </Text>
               </Button>
             </Link>
           </Flex>
-        </section>
+        </Container>
 
-        <section className="mt-44 px-24">
+        <Container fluid mt={'11rem'} px={'6rem'}>
           <Flex direction="row" align="center" justify="center" gap="300px">
             <div>
-              <p className="text-[45px] font-bold max-w-[500px] leading-[55px] text-center inline-block bg-gradient-to-r from-homepgTestLight to-homepgTestDark text-transparent bg-clip-text">
+              <Text
+                size="45px"
+                fw={'bold'}
+                maw={500}
+                lh={'65px'}
+                ta={'center'}
+                display={'inline-block'}
+                variant="gradient"
+                gradient={{ from: '#109ECB', to: '#035481' }}
+              >
                 A Fun and Engaging way to Study and Learn New Concepts
-              </p>
+              </Text>
             </div>
 
             <div>
-              <img src={placeholder} className="w-[600px] h-[auto] " />
+              <Image src={placeholder} w={'600px'} h={'auto'}></Image>
             </div>
           </Flex>
-        </section>
+        </Container>
+
+        <Container fluid mt={'11rem'} px={'6rem'}>
+          <Flex
+            direction={'row'}
+            align={'center'}
+            justify={'center'}
+            gap={'100px'}
+          >
+            <Flex direction={'column'} align={'center'} maw={'50%'}>
+              <Title order={3} size={'28px'}>
+                Feature 1
+              </Title>
+              <Text size="24px" ta={'center'}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </Text>
+            </Flex>
+            <Flex direction={'column'} align={'center'} maw={'50%'}>
+              <Title order={3} size={'28px'}>
+                Feature 2
+              </Title>
+              <Text size="24px" ta={'center'}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </Text>
+            </Flex>
+            <Flex direction={'column'} align={'center'} maw={'50%'}>
+              <Title order={3} size={'28px'}>
+                Feature 3
+              </Title>
+              <Text size="24px" ta={'center'}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </Text>
+            </Flex>
+          </Flex>
+        </Container>
 
         <div>
           <Link to="/login">
