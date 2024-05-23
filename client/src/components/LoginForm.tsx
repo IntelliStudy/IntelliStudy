@@ -30,7 +30,7 @@ import {
 import { GoogleButton } from "./GoogleButton";
 
 const errorMessages = {
-  "auth/email-already-exists": {
+  "auth/email-already-in-use": {
     title: "Email Already Exists",
     message: "The email address is already in use by another account.",
   },
@@ -45,18 +45,13 @@ const errorMessages = {
 };
 
 type ErrorCode =
-  | "auth/email-already-exists"
+  | "auth/email-already-in-use"
   | "auth/user-not-found"
   | "auth/wrong-password";
 
 function getErrorMessage(errorCode: ErrorCode) {
   return errorMessages[errorCode];
 }
-
-// Example usage
-const errorCode: ErrorCode = "auth/email-already-exists";
-const errorMessage = getErrorMessage(errorCode);
-console.log(errorMessage.title); // Output: "Email Already Exists"
 
 const SlidingForm = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
@@ -189,8 +184,7 @@ const SlidingForm = () => {
             transition: "transform 0.4s ease",
           }}
         >
-          <Title
-          ta="center">Welcome back!</Title>
+          <Title ta="center">Welcome back!</Title>
 
           <Paper withBorder shadow="md" p={30} mt={30} w={500} radius="md">
             <Group grow mb="md" mt="md">
@@ -409,8 +403,9 @@ const SlidingForm = () => {
             left: isSignUp ? 0 : "50%",
             transition: "left 0.4s ease",
             zIndex: 1,
-            backgroundImage: isSignUp ? "linear-gradient(to left, #2FAED7 0%, #0280C7 100%)"
-             : "linear-gradient(to right, #2FAED7 0%, #0280C7 100%)", // Using hex codes
+            backgroundImage: isSignUp
+              ? "linear-gradient(to left, #2FAED7 0%, #0280C7 100%)"
+              : "linear-gradient(to right, #2FAED7 0%, #0280C7 100%)", // Using hex codes
           }}
         >
           <Center style={{ height: "100vh" }}>
