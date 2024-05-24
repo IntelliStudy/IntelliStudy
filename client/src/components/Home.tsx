@@ -2,13 +2,27 @@ import { Button, Container, Flex, Image, Text, Title } from '@mantine/core';
 import { Link } from 'react-router-dom';
 import { placeholder } from '../assets';
 
+import { features } from '../constants';
+import HomePageFeature from './Sub-Components/HomePageFeature';
+
 const Home = () => {
   return (
     <>
       <div>
         <Container>
           <Flex direction="column" align="center">
-            <Title order={1}>IntelliStudy</Title>
+            <Image
+              radius="sm"
+              mt={'100px'}
+              mb={'25px'}
+              w={200}
+              src="./logo/logo-no-text.png"
+              styles={{
+                root: {
+                  filter: 'drop-shadow(2px 5px 10px rgba(47, 47, 47, 0.20))',
+                },
+              }}
+            />
             <Title order={1} size={60} textWrap="wrap" maw={500} ta={'center'}>
               Your AI-Powered Study Buddy
             </Title>
@@ -18,10 +32,11 @@ const Home = () => {
             <Link to="/login">
               <Button
                 variant="gradient"
-                gradient={{ from: '#2FAED7', to: '#0280C7', deg: 180 }}
+                gradient={{ from: '#2FAED790', to: '#0280C7', deg: 180 }}
                 radius={15}
-                w="310px"
-                h="74px"
+                // w="310px"
+                // h="74px"
+                size="xl"
               >
                 <Text size="28px" fw={'bold'}>
                   Try out now
@@ -32,7 +47,7 @@ const Home = () => {
         </Container>
 
         <Container fluid mt={'11rem'} px={'6rem'}>
-          <Flex direction="row" align="center" justify="center" gap="300px">
+          <Flex direction="row" align="center" justify="center" gap="150px">
             <div>
               <Text
                 size="45px"
@@ -61,46 +76,35 @@ const Home = () => {
             justify={'center'}
             gap={'100px'}
           >
-            <Flex direction={'column'} align={'center'} maw={'50%'}>
-              <Title order={3} size={'28px'}>
-                Feature 1
-              </Title>
-              <Text size="24px" ta={'center'}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </Text>
-            </Flex>
-            <Flex direction={'column'} align={'center'} maw={'50%'}>
-              <Title order={3} size={'28px'}>
-                Feature 2
-              </Title>
-              <Text size="24px" ta={'center'}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </Text>
-            </Flex>
-            <Flex direction={'column'} align={'center'} maw={'50%'}>
-              <Title order={3} size={'28px'}>
-                Feature 3
-              </Title>
-              <Text size="24px" ta={'center'}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </Text>
-            </Flex>
+            {features.map((feature) => (
+              <HomePageFeature title={feature.title} text={feature.text} />
+            ))}
           </Flex>
         </Container>
 
-        <div>
-          <Link to="/login">
-            <button>Try the Quiz Maker</button>
-          </Link>
-        </div>
-        <div>
-          <Link to="/login">
-            <button>Try the Note Summarizer</button>
-          </Link>
-        </div>
+        <Container fluid mt={'11rem'} px={'6rem'}>
+          <Flex direction="row" align="center" justify="center" gap="150px">
+            <div>
+              <Image src={placeholder} w={'600px'} h={'auto'}></Image>
+            </div>
+
+            <div>
+              <Text
+                size="45px"
+                fw={'bold'}
+                maw={'650px'}
+                lh={'65px'}
+                ta={'center'}
+                display={'inline-block'}
+                variant="gradient"
+                gradient={{ from: '#109ECB', to: '#035481' }}
+              >
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore
+              </Text>
+            </div>
+          </Flex>
+        </Container>
       </div>
     </>
   );
