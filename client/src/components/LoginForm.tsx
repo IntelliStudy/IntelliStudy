@@ -1,33 +1,35 @@
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { UserContext } from "../App";
+import {
+  Anchor,
+  Button,
+  Center,
+  Checkbox,
+  Container,
+  Divider,
+  Flex,
+  Group,
+  Image,
+  Paper,
+  PasswordInput,
+  Stack,
+  Text,
+  TextInput,
+  Title,
+  rem,
+} from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { Notifications, notifications } from "@mantine/notifications";
 import { IconX } from "@tabler/icons-react";
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../App";
 import {
   getCurrentlySignedInUserHandler,
   googleLoginHandler,
   loginHandler,
   signUpHandler,
 } from "../firebase/auth";
-import { useForm } from "@mantine/form";
-import { Notifications, notifications } from "@mantine/notifications";
-import {
-  TextInput,
-  PasswordInput,
-  Checkbox,
-  Anchor,
-  Paper,
-  Title,
-  Text,
-  Container,
-  Group,
-  Button,
-  Divider,
-  Stack,
-  Image,
-  Center,
-  rem,
-} from "@mantine/core";
 import { GoogleButton } from "./GoogleButton";
+import GoBackArrow from "./Sub-Components/GoBackArrow";
 
 const errorMessages = {
   "auth/email-already-in-use": {
@@ -184,6 +186,7 @@ const SlidingForm = () => {
             transition: "transform 0.4s ease",
           }}
         >
+          <GoBackArrow login={isSignUp} />
           <Title ta="center">Welcome back!</Title>
 
           <Paper withBorder shadow="md" p={30} mt={30} w={500} radius="md">
@@ -280,6 +283,7 @@ const SlidingForm = () => {
           }}
         >
           <Title ta="center">Sign up now!</Title>
+
           <Paper withBorder shadow="md" p={30} mt={30} w={500} radius="md">
             <Group grow mb="md" mt="md">
               <GoogleButton radius="xl" onClick={handleGoogleLogin}>
@@ -408,6 +412,7 @@ const SlidingForm = () => {
               : "linear-gradient(to right, #2FAED7 0%, #0280C7 100%)", // Using hex codes
           }}
         >
+          {isSignUp && <GoBackArrow login={isSignUp} />}
           <Center style={{ height: "100vh" }}>
             <Stack align="center" gap="sm">
               <Image radius="sm" w={300} src="./logo/logo-with-text.png" />
