@@ -1,3 +1,4 @@
+import { Button, Flex, Image, List, Paper, Text } from '@mantine/core';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../App';
@@ -19,34 +20,57 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="sticky w-full flex bg-salmon top-0 justify-between px-4 h-12">
+      <nav className="w-full flex justify-between items-center px-4 h-[80px] bg-gradient-to-r from-navbarDark to-navbarLight">
         <Link to={currentUser ? '/studyspot' : '/'}>
-          <h3>Navbar</h3>
+          <Image
+            radius="sm"
+            w={240}
+            ml={'10px'}
+            mt={'10px'}
+            src="./logo/logo-with-text-nav.png"
+          />
         </Link>
-        <ul className="list-none justify-end">
+
+        <List type="unordered" listStyleType="none" pr={'2.5rem'}>
           {currentUser && (
-            <div className="flex flex-row ml-4">
+            <Flex direction={'row'} ml={'1rem'}>
               <Link to={'/profile'}>
-                <li className="inline">Profile</li>
+                <List.Item display={'inline'}>Profile</List.Item>
               </Link>
               <Link to={'/'}>
-                <div>
-                  <button onClick={handleLogout}>Logout</button>
-                </div>
+                <Button onClick={handleLogout}>Log out</Button>
               </Link>
-            </div>
+            </Flex>
           )}
+
           {!currentUser && (
-            <div>
+            // User not logged in
+            <Flex align={'center'}>
               <Link to={'/login'}>
-                <li className="inline">Login</li>
+                <List.Item display={'inline'} fz={'22px'} fw={'600'} c="white">
+                  Login
+                </List.Item>
               </Link>
               <Link to={'/login'}>
-                <li className="inline ml-4">Signup</li>
+                <List.Item>
+                  <Button
+                    p={0}
+                    ml={'1.8rem'}
+                    variant="gradient"
+                    gradient={{ from: '#FFFFFF', to: '#E0E0E0' }}
+                    radius={10}
+                    w="110px"
+                    h="45px"
+                  >
+                    <Text fz={'22px'} fw={'600'} c={'black'}>
+                      Sign up
+                    </Text>
+                  </Button>
+                </List.Item>
               </Link>
-            </div>
+            </Flex>
           )}
-        </ul>
+        </List>
       </nav>
     </>
   );

@@ -1,6 +1,6 @@
-import '@mantine/core/styles.css';
-
 import { MantineProvider } from '@mantine/core';
+import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { createContext, useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';

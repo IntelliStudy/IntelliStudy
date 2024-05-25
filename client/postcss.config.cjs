@@ -5,7 +5,7 @@
 //   },
 // }
 
-export default {
+module.exports = {
   plugins: {
     'postcss-preset-mantine': {},
     'postcss-simple-vars': {
@@ -17,5 +17,7 @@ export default {
         'mantine-breakpoint-xl': '88em',
       },
     },
+    tailwindcss: {},
+    autoprefixer: {},
   },
 };
