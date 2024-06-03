@@ -1,8 +1,8 @@
-import axios from 'axios';
-import { serverTimestamp } from 'firebase/firestore';
-import { useContext, useEffect, useState } from 'react';
-import { File, FilePond } from 'react-filepond';
-import { UserContext } from '../App';
+import axios from "axios";
+import { serverTimestamp } from "firebase/firestore";
+import { useContext, useEffect, useState } from "react";
+import { File, FilePond } from "react-filepond";
+import { UserContext } from "../App";
 
 import {
   addDoc,
@@ -13,17 +13,17 @@ import {
   orderBy,
   query,
   setDoc,
-} from 'firebase/firestore';
-import { db } from '../firebase/firebase';
+} from "firebase/firestore";
+import { db } from "../firebase/firebase";
 
-import 'filepond/dist/filepond.min.css';
+import "filepond/dist/filepond.min.css";
 
 const CourseDashboard = () => {
   const { currentUser } = useContext(UserContext);
   const [files, setFiles] = useState<File[]>([]);
   const [fileCount, setFileCount] = useState(0);
   const [loading, setLoading] = useState<boolean>(false);
-  const [quiz, setQuiz] = useState<string>('');
+  const [quiz, setQuiz] = useState<string>("");
 
   useEffect(() => {
     setFileCount(files.length);
@@ -31,8 +31,8 @@ const CourseDashboard = () => {
 
   useEffect(() => {
     const requestQuery = query(
-      collection(db, 'users', currentUser!.uid, 'quizzes'),
-      orderBy('createdAt', 'desc'),
+      collection(db, "users", currentUser!.uid, "quizzes"),
+      orderBy("createdAt", "desc"),
       limit(1)
     );
     console.log(requestQuery);
@@ -42,13 +42,13 @@ const CourseDashboard = () => {
       requestQuery,
       (snapshot: { docChanges: () => any[] }) => {
         snapshot.docChanges().forEach((snapshot) => {
-          console.log('data', snapshot.doc.data());
+          console.log("data", snapshot.doc.data());
 
           setLoading(snapshot.doc.data().loading);
 
           if (loading == false) {
             if (snapshot.doc.data().success === false) {
-              alert('Failed to generate quiz.');
+              alert("Failed to generate quiz.");
             } else {
               setQuiz(snapshot.doc.data().quiz);
             }
@@ -63,9 +63,9 @@ const CourseDashboard = () => {
   }, []);
 
   const quizFormat = () => {
-    if (quiz !== '') {
+    if (quiz !== "") {
       // setQuiz(quiz.replace(/^```json\s*|\s*```$/g, ''));
-      const extract = quiz.replace(/^```json\s*|\s*```$/g, '');
+      const extract = quiz.replace(/^```json\s*|\s*```$/g, "");
       const parsedQuiz = JSON.parse(extract);
       console.log(parsedQuiz, typeof parsedQuiz);
 
@@ -78,12 +78,12 @@ const CourseDashboard = () => {
         ));
       };
 
-      return quiz !== '' ? (
-        <div style={{ textAlign: 'center' }}>
+      return quiz !== "" ? (
+        <div style={{ textAlign: "center" }}>
           <h1>Quiz</h1>
           {parsedQuiz.quiz.questions.map((question: any, index: number) => (
             <div key={index}>
-              <p style={{ fontSize: '25px' }}>{question.question}</p>
+              <p style={{ fontSize: "25px" }}>{question.question}</p>
               <ul>{renderOptions(question.options)}</ul>
               <br />
               <b>Answer: {question.options[question.answer]}</b>
@@ -93,13 +93,13 @@ const CourseDashboard = () => {
           ))}
         </div>
       ) : (
-        ''
+        ""
       );
     }
   };
 
   const onGenerate = (uid: string) => {
-    const quizzesRef = collection(db, 'users', `${uid}`, 'quizzes');
+    const quizzesRef = collection(db, "users", `${uid}`, "quizzes");
     addDoc(quizzesRef, {
       loading: true,
       createdAt: serverTimestamp(),
@@ -107,12 +107,12 @@ const CourseDashboard = () => {
   };
 
   const handleSubmit = async () => {
-    alert('File Uploaded Successfully');
+    alert("File Uploaded Successfully");
     // Appends file blob object to formData for subission to BE
     if (fileCount > 0) {
       const formData = new FormData();
       files.forEach((currFile) => {
-        formData.append('files', currFile.file, currFile.filename);
+        formData.append("files", currFile.file, currFile.filename);
       });
 
       formData.forEach((file) => {
@@ -127,7 +127,7 @@ const CourseDashboard = () => {
           formData,
           {
             headers: {
-              'Content-Type': 'multipart/form-data',
+              "Content-Type": "multipart/form-data",
             },
           }
         );
@@ -136,30 +136,30 @@ const CourseDashboard = () => {
         if (response.status === 200) {
           // Update document in Firebase only if the POST request succeeds
           await setDoc(
-            doc(db, 'users', currentUser!.uid),
+            doc(db, "users", currentUser!.uid),
             {
               uploadedFiles: true,
             },
             { merge: true }
           );
-          console.log('Response:', response);
+          console.log("Response:", response);
         } else {
-          console.error('Failed to upload files. Status:', response.status);
+          console.error("Failed to upload files. Status:", response.status);
         }
       } catch (error) {
-        console.error('Error sending files:', error);
+        console.error("Error sending files:", error);
       }
     }
     // Handle no files uploaded
     else {
       setDoc(
-        doc(db, 'users', currentUser!.uid),
+        doc(db, "users", currentUser!.uid),
         {
           uploadedFiles: false,
         },
         { merge: true }
       );
-      console.log('No files to submit');
+      console.log("No files to submit");
     }
   };
 
@@ -182,7 +182,7 @@ const CourseDashboard = () => {
           </button>
         )}
         {loading ? (
-          <div style={{ textAlign: 'center', fontSize: '20px' }}>
+          <div style={{ textAlign: "center", fontSize: "20px" }}>
             Generating quiz...
           </div>
         ) : (
