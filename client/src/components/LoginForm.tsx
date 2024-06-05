@@ -5,7 +5,7 @@ import {
   Checkbox,
   Container,
   Divider,
-  Flex,
+  // Flex,
   Group,
   Image,
   Paper,
@@ -19,11 +19,11 @@ import {
 import { useForm } from "@mantine/form";
 import { Notifications, notifications } from "@mantine/notifications";
 import { IconX } from "@tabler/icons-react";
-import { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { UserContext } from "../App";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+// import { UserContext } from "../App";
 import {
-  getCurrentlySignedInUserHandler,
+  // getCurrentlySignedInUserHandler,
   googleLoginHandler,
   loginHandler,
   signUpHandler,
@@ -56,7 +56,7 @@ function getErrorMessage(errorCode: ErrorCode) {
 }
 
 const SlidingForm = () => {
-  const { currentUser, setCurrentUser } = useContext(UserContext);
+  // const { currentUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [isSignUp, setIsSignUp] = useState(false);
   const xIcon = <IconX style={{ width: rem(20), height: rem(20) }} />;
@@ -99,7 +99,7 @@ const SlidingForm = () => {
       }
     )
       .then(() => {
-        setCurrentUser(getCurrentlySignedInUserHandler);
+        // setCurrentUser(getCurrentlySignedInUserHandler);
       })
       .catch((error) => {
         console.log("error", getErrorMessage(error.code));
@@ -119,7 +119,7 @@ const SlidingForm = () => {
     googleLoginHandler(() => {
       navigate("/studyspot");
     }).then(() => {
-      setCurrentUser(getCurrentlySignedInUserHandler);
+      // setCurrentUser(getCurrentlySignedInUserHandler);
     });
   };
 
@@ -139,7 +139,7 @@ const SlidingForm = () => {
       navigate("/studyspot");
     })
       .then(() => {
-        setCurrentUser(getCurrentlySignedInUserHandler);
+        // setCurrentUser(getCurrentlySignedInUserHandler);
         console.log(
           "Logging in with:",
           loginForm.values.email,

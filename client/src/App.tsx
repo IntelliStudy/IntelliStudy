@@ -1,10 +1,10 @@
-import { MantineProvider } from '@mantine/core';
-import '@mantine/core/styles.css';
-import '@mantine/notifications/styles.css';
-import { User, onAuthStateChanged } from 'firebase/auth';
-import { createContext, useEffect, useState } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
-import './App.css';
+import { MantineProvider } from "@mantine/core";
+import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
+import { User, onAuthStateChanged } from "firebase/auth";
+import { createContext, useEffect, useState } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
+import "./App.css";
 import {
   CourseDashboard,
   Home,
@@ -13,28 +13,31 @@ import {
   Profile,
   Quiz,
   StudySpot,
-} from './components';
-import { getCurrentlySignedInUserHandler } from './firebase/auth';
-import { auth } from './firebase/firebase';
+} from "./components";
+import { getCurrentlySignedInUserHandler } from "./firebase/auth";
+import { auth } from "./firebase/firebase";
 
 // Context for managing user
 export const UserContext = createContext<{
   currentUser: User | undefined;
-  setCurrentUser: (value: React.SetStateAction<User | undefined>) => void;
+  // setCurrentUser: (value: React.SetStateAction<User | undefined>) => void;
+  isAuthLoading: boolean;
 }>({
   currentUser: undefined,
-  setCurrentUser: () => {},
+  isAuthLoading: true,
+  // setCurrentUser: () => {},
 });
 
 function useDisplayNavbar() {
   const location = useLocation();
-  return location.pathname !== '/login';
+  return location.pathname !== "/login";
 }
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User | undefined>(
     getCurrentlySignedInUserHandler
   );
+  const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
   const displayNavbar = useDisplayNavbar();
 
   useEffect(() => {
@@ -44,13 +47,14 @@ function App() {
       } else {
         setCurrentUser(undefined);
       }
+      setIsAuthLoading(false);
     });
   }, []);
 
   return (
     <>
       <MantineProvider>
-        <UserContext.Provider value={{ currentUser, setCurrentUser }}>
+        <UserContext.Provider value={{ currentUser, isAuthLoading }}>
           {displayNavbar && <Navbar />}
 
           <Routes>
