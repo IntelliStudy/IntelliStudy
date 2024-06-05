@@ -5,9 +5,9 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
-} from 'firebase/auth';
-import { deleteDoc, doc, getDoc, setDoc } from 'firebase/firestore';
-import { auth, db } from './firebase';
+} from "firebase/auth";
+import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import { auth, db } from "./firebase";
 
 // Function used to retreive user status (signed in or not)
 export const getCurrentlySignedInUserHandler = () => {
@@ -16,7 +16,7 @@ export const getCurrentlySignedInUserHandler = () => {
   if (user) {
     return user;
   } else {
-    console.log('No user currently signed in');
+    console.log("No user currently signed in");
   }
 };
 
@@ -34,7 +34,7 @@ export const signUpHandler = (
 
       // Calls a DB call to create a record for the user who just signed up
       setDoc(
-        doc(db, 'users', user.uid),
+        doc(db, "users", user.uid),
         {
           uid: user.uid,
           fName: fName,
@@ -72,7 +72,7 @@ export const loginHandler = (
 
       // Calls the DB to update user signedIn status in DB
       setDoc(
-        doc(db, 'users', user.uid),
+        doc(db, "users", user.uid),
         {
           signedIn: true,
         },
@@ -98,7 +98,7 @@ export const googleLoginHandler = (onSuccess: () => void) => {
       const user = userCredential.user;
 
       // Check if the user exists in the database
-      const userRef = doc(db, 'users', user.uid);
+      const userRef = doc(db, "users", user.uid);
       const userDoc = await getDoc(userRef);
 
       // Determine the boolean value of uploadedFiles based on user existence
@@ -109,7 +109,7 @@ export const googleLoginHandler = (onSuccess: () => void) => {
       userDoc.exists()
         ? // Case for handling if user already exists and user is just signing in using google auth
           setDoc(
-            doc(db, 'users', user.uid),
+            doc(db, "users", user.uid),
             {
               signedIn: true,
             },
@@ -117,7 +117,7 @@ export const googleLoginHandler = (onSuccess: () => void) => {
           )
         : // Case for handling if user doesn't exists and user is signing up with google auth
           setDoc(
-            doc(db, 'users', user.uid),
+            doc(db, "users", user.uid),
             {
               uid: user.uid,
               displayName: user.displayName,
@@ -134,9 +134,10 @@ export const googleLoginHandler = (onSuccess: () => void) => {
       onSuccess();
     })
     .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode, errorMessage);
+      // const errorCode = error.code;
+      // const errorMessage = error.message;
+      // console.log(errorCode, errorMessage);
+      throw error;
     });
 };
 
@@ -148,7 +149,7 @@ export const deleteUserHandler = () => {
     return deleteUser(user)
       .then(() => {
         // Delete DB record of user
-        deleteDoc(doc(db, 'users', user.uid));
+        deleteDoc(doc(db, "users", user.uid));
         console.log(`User ${user.uid} deleted`);
       })
       .catch((error) => {
@@ -172,7 +173,7 @@ export const userLogoutHandler = () => {
 
         // Updating DB record to indicate that user is signed out
         setDoc(
-          doc(db, 'users', user.uid),
+          doc(db, "users", user.uid),
           {
             signedIn: false,
           },

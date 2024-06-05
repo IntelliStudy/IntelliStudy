@@ -1,22 +1,11 @@
-import { Button, Flex, Image, List, Paper, Text } from '@mantine/core';
+import { Button, Flex, Image, List, Text } from '@mantine/core';
+import { IconUserCircle } from '@tabler/icons-react';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../App';
-import {
-  getCurrentlySignedInUserHandler,
-  userLogoutHandler,
-} from '../firebase/auth';
 
 const Navbar = () => {
-  const { currentUser, setCurrentUser } = useContext(UserContext);
-
-  const handleLogout = () => {
-    console.log('Logging out user:', currentUser?.displayName);
-
-    userLogoutHandler().then(() => {
-      setCurrentUser(getCurrentlySignedInUserHandler);
-    });
-  };
+  const { currentUser } = useContext(UserContext);
 
   return (
     <>
@@ -27,18 +16,23 @@ const Navbar = () => {
             w={240}
             ml={'10px'}
             mt={'10px'}
-            src="./logo/logo-with-text-nav.png"
+            src="/logo/logo-with-text-nav.png"
           />
         </Link>
 
         <List type="unordered" listStyleType="none" pr={'2.5rem'}>
           {currentUser && (
+            // User logged in
             <Flex direction={'row'} ml={'1rem'}>
               <Link to={'/profile'}>
-                <List.Item display={'inline'}>Profile</List.Item>
-              </Link>
-              <Link to={'/'}>
-                <Button onClick={handleLogout}>Log out</Button>
+                <List.Item display={'inline'}>
+                  <IconUserCircle
+                    color="white"
+                    stroke={1.75}
+                    width={'50px'}
+                    height={'50px'}
+                  />
+                </List.Item>
               </Link>
             </Flex>
           )}

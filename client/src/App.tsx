@@ -20,10 +20,12 @@ import { auth } from './firebase/firebase';
 // Context for managing user
 export const UserContext = createContext<{
   currentUser: User | undefined;
-  setCurrentUser: (value: React.SetStateAction<User | undefined>) => void;
+  // setCurrentUser: (value: React.SetStateAction<User | undefined>) => void;
+  isAuthLoading: boolean;
 }>({
   currentUser: undefined,
-  setCurrentUser: () => {},
+  isAuthLoading: true,
+  // setCurrentUser: () => {},
 });
 
 function useDisplayNavbar() {
@@ -35,6 +37,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState<User | undefined>(
     getCurrentlySignedInUserHandler
   );
+  const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
   const displayNavbar = useDisplayNavbar();
 
   useEffect(() => {
@@ -44,23 +47,21 @@ function App() {
       } else {
         setCurrentUser(undefined);
       }
+      setIsAuthLoading(false);
     });
   }, []);
 
   return (
     <>
       <MantineProvider>
-        <UserContext.Provider value={{ currentUser, setCurrentUser }}>
+        <UserContext.Provider value={{ currentUser, isAuthLoading }}>
           {displayNavbar && <Navbar />}
 
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/studyspot" element={<StudySpot />} />
-            <Route
-              path="/coursedashboard/:course"
-              element={<CourseDashboard />}
-            />
+            <Route path="/course/:courseId" element={<CourseDashboard />} />
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/profile" element={<Profile />} />
           </Routes>
