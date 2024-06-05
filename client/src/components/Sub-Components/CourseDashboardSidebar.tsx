@@ -41,7 +41,7 @@ const CourseDashboardSidebar = ({
         </Group>
 
         {courses.map((course) => (
-          <Link key={course.id} to={`/coursedashboard/${course.id}`}>
+          <Link key={course.id} to={`/course/${course.id}`}>
             <Group
               onClick={() => onSelectCourse(course)}
               className={`course-item ${

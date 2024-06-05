@@ -1,6 +1,11 @@
 import { Button, Flex, Text } from '@mantine/core';
 import { Dropzone, FileWithPath } from '@mantine/dropzone';
-import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
+import {
+  arrayUnion,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from 'firebase/firestore';
 import { ref, uploadBytes } from 'firebase/storage';
 import { useContext, useState } from 'react';
 import { UserContext } from '../../App';
@@ -8,8 +13,6 @@ import { db, storage } from '../../firebase/firebase';
 import { Course } from '../../types';
 
 interface props {
-  //   files: FileWithPath[];
-  //   setFiles: React.Dispatch<React.SetStateAction<FileWithPath[]>>;
   selectedCourse: Course;
 }
 
@@ -46,6 +49,7 @@ const CoursePageFileUpload = ({ selectedCourse }: props) => {
           filesRef: arrayUnion({
             fileName: fileRef.name,
             fileReference: fileRef.fullPath,
+            // uploadedAt: serverTimestamp(),
           }),
         });
       });

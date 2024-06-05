@@ -1,7 +1,9 @@
-import { Paper, Text, Title, Button, Box, Center } from "@mantine/core";
-import classes from "./courseCard.module.css";
+import { Box, Button, Center, Paper, Text, Title } from '@mantine/core';
+import { Link } from 'react-router-dom';
+import classes from './courseCard.module.css';
 
 type courseCardProps = {
+  courseId: string;
   name: string;
   courseCode: string;
 };
@@ -21,9 +23,11 @@ const courseCard = (props: courseCardProps) => {
       </Center>
       <Center>
         <Box pt="sm">
-          <Button variant="white" color="dark">
-            Study
-          </Button>
+          <Link to={`/course/${props.courseId}`}>
+            <Button variant="white" color="dark">
+              Study
+            </Button>
+          </Link>
         </Box>
       </Center>
     </Paper>

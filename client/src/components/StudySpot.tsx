@@ -22,19 +22,13 @@ import { SetStateAction, useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../App';
 import { db } from '../firebase/firebase';
+import { Course } from '../types';
 import AddCourseCard from './courseCard/AddCourseCard';
 import CourseCard from './courseCard/CourseCard';
 
-type CourseData = {
-  id: string;
-  courseName: string;
-  courseCode: string;
-  createdAt: Timestamp;
-};
-
 const StudySpot = () => {
   const { currentUser } = useContext(UserContext);
-  const [courses, setCourses] = useState<CourseData[]>([]);
+  const [courses, setCourses] = useState<Course[]>([]);
   const [courseName, setCourseName] = useState<string>('');
   const [courseCode, setCourseCode] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
@@ -44,6 +38,8 @@ const StudySpot = () => {
     addDoc(collection(db, 'users', currentUser!.uid, 'courses'), {
       courseName: courseName,
       courseCode: courseCode,
+      userId: currentUser!.uid,
+      filesRef: [],
       createdAt: serverTimestamp(),
     });
     fetchData();
@@ -59,15 +55,14 @@ const StudySpot = () => {
         orderBy('createdAt', 'desc')
       );
       const querySnapshot = await getDocs(requestQuery);
-      const courseData = querySnapshot.docs.map(
-        (doc) =>
-          ({
-            id: doc.id,
-            courseName: doc.data().courseName,
-            courseCode: doc.data().courseCode,
-            createdAt: doc.data().createdAt,
-          } as CourseData)
-      );
+      const courseData: Course[] = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        courseName: doc.data().courseName,
+        courseCode: doc.data().courseCode,
+        filesRef: doc.data().filesRef,
+        userId: doc.data().userId,
+        createdAt: doc.data().createdAt,
+      }));
 
       setCourses(courseData);
     } catch (error) {
@@ -145,6 +140,7 @@ const StudySpot = () => {
             {courses.map((course) => (
               <CourseCard
                 key={course.id}
+                courseId={course.id}
                 courseCode={course.courseCode}
                 name={course.courseName}
               />

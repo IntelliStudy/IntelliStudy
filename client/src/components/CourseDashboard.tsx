@@ -1,4 +1,4 @@
-import { Flex } from '@mantine/core';
+import { Flex, LoadingOverlay } from '@mantine/core';
 import { collection, getDocs } from 'firebase/firestore';
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -34,6 +34,7 @@ const CourseDashboard = () => {
             courseName: data.courseName,
             filesRef: data.filesRef,
             userId: data.userId,
+            createdAt: data.createdAt,
           };
         }
       );
@@ -55,7 +56,13 @@ const CourseDashboard = () => {
   }, [allCourses, courseId]);
 
   if (!allCourses || !selectedCourse) {
-    return <div>Loading...</div>;
+    return (
+      <LoadingOverlay
+        visible={true}
+        zIndex={1000}
+        overlayProps={{ radius: 'sm', blur: 2 }}
+      />
+    );
   }
 
   return (

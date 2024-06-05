@@ -1,5 +1,14 @@
 import { Button, Container, Flex, Text, Title } from '@mantine/core';
-import { useEffect, useState } from 'react';
+import {
+  collection,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+} from 'firebase/firestore';
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../../App';
+import { db } from '../../firebase/firebase';
 import { Course, FileRef } from '../../types';
 import CoursePageFileUpload from './CoursePageFileUpload';
 
@@ -8,11 +17,42 @@ interface props {
 }
 
 const CoursePage = ({ selectedCourse }: props) => {
+  const { currentUser } = useContext(UserContext);
   const [files, setFiles] = useState<FileRef[]>(selectedCourse.filesRef);
 
+  // Switches files displayed based on current course
   useEffect(() => {
     setFiles(selectedCourse.filesRef);
   }, [selectedCourse]);
+
+  useEffect(() => {
+    const requestQuery = query(
+      collection(db, `users/${currentUser!.uid}/courses`)
+    );
+    console.log(requestQuery);
+
+    const unsubscribe = onSnapshot(
+      requestQuery,
+      (snapshot: { docChanges: () => any[] }) => {
+        snapshot.docChanges().forEach((snapshot) => {
+          console.log('data', snapshot.doc.data());
+
+          if (snapshot.doc.data().loading === false) {
+            if (snapshot.doc.data().success === false) {
+              alert('Error fetching files');
+            } else {
+              setFiles(snapshot.doc.data().filesRef);
+              console.log(snapshot.doc.data().filesRef);
+            }
+          }
+        });
+      }
+    );
+
+    return () => {
+      unsubscribe();
+    };
+  }, [currentUser]);
 
   return (
     <>
@@ -47,7 +87,7 @@ const CoursePage = ({ selectedCourse }: props) => {
           <Button
             maw={'250px'}
             variant="gradient"
-            gradient={{ from: '#2FAED790', to: '#0280C7', deg: 180 }}
+            gradient={{ from: '#2FAED7', to: '#0280C7', deg: 180 }}
             size="xl"
             radius={10}
           >
@@ -60,7 +100,7 @@ const CoursePage = ({ selectedCourse }: props) => {
             ml={'100px'}
             maw={'340px'}
             variant="gradient"
-            gradient={{ from: '#2FAED790', to: '#0280C7', deg: 180 }}
+            gradient={{ from: '#2FAED7', to: '#0280C7', deg: 180 }}
             size="xl"
             radius={10}
           >
