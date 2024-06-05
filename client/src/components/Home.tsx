@@ -34,8 +34,6 @@ const Home = () => {
                 variant="gradient"
                 gradient={{ from: '#2FAED790', to: '#0280C7', deg: 180 }}
                 radius={15}
-                // w="310px"
-                // h="74px"
                 size="xl"
               >
                 <Text size="28px" fw={'bold'}>

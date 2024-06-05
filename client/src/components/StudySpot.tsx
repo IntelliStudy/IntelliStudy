@@ -6,13 +6,10 @@ const StudySpot = () => {
     <>
       <h1>Study Spot</h1>
       <div className="flex flex-row">
-        <Link to={'/coursedashboard/1'}>
+        <Link to={'/coursedashboard/8zw287CE1w45RWxbGkwz'}>
           <CourseCard />
         </Link>
-        <Link to={'/coursedashboard/2'}>
-          <CourseCard />
-        </Link>
-        <Link to={'/coursedashboard/3'}>
+        <Link to={'/coursedashboard/9wYdeGpCTakQUUoqM9yk'}>
           <CourseCard />
         </Link>
       </div>

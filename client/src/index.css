@@ -3,6 +3,8 @@
 @tailwind utilities; */
 
 @import '@mantine/core/styles.css';
+@import '@mantine/dropzone/styles.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
 @tailwind components;
 @tailwind utilities;
@@ -15,6 +17,19 @@ html,
 body {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
+}
+
+.course-item {
+  transition: background-color 0.3s ease;
+  background-color: transparent;
+}
+
+.course-item:hover {
+  background-color: #e6e6e6;
+}
+
+.course-item.selected {
+  background-color: #26afdca7;
 }
 
 /* :root {

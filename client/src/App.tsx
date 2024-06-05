@@ -58,7 +58,7 @@ function App() {
             <Route path="/login" element={<LoginForm />} />
             <Route path="/studyspot" element={<StudySpot />} />
             <Route
-              path="/coursedashboard/:course"
+              path="/coursedashboard/:courseId"
               element={<CourseDashboard />}
             />
             <Route path="/quiz" element={<Quiz />} />
