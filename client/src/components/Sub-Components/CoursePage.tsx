@@ -14,9 +14,10 @@ import CoursePageFileUpload from './CoursePageFileUpload';
 
 interface props {
   selectedCourse: Course;
+  modalOpen: () => void;
 }
 
-const CoursePage = ({ selectedCourse }: props) => {
+const CoursePage = ({ selectedCourse, modalOpen }: props) => {
   const { currentUser } = useContext(UserContext);
   const [files, setFiles] = useState<FileRef[]>(selectedCourse.filesRef);
 
@@ -90,6 +91,7 @@ const CoursePage = ({ selectedCourse }: props) => {
             gradient={{ from: '#2FAED7', to: '#0280C7', deg: 180 }}
             size="xl"
             radius={10}
+            onClick={modalOpen}
           >
             <Text size="24px" fw={600}>
               Create Quiz

@@ -1,4 +1,5 @@
-import { Flex, LoadingOverlay } from '@mantine/core';
+import { Divider, Flex, LoadingOverlay, Modal, Title } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { collection, getDocs } from 'firebase/firestore';
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -7,13 +8,18 @@ import { db } from '../firebase/firebase';
 import { Course } from '../types';
 import CourseDashboardSidebar from './Sub-Components/CourseDashboardSidebar';
 import CoursePage from './Sub-Components/CoursePage';
+import CreateQuizModal from './Sub-Components/CreateQuizModal';
 
 const CourseDashboard = () => {
   const { currentUser } = useContext(UserContext);
   const { courseId } = useParams();
 
+  // Courses state variables
   const [allCourses, setAllCourse] = useState<Course[]>();
   const [selectedCourse, setSelectedCourse] = useState<Course>();
+
+  // Modal State
+  const [opened, { open, close }] = useDisclosure(false);
 
   useEffect(() => {
     const fetchAllCourses = async () => {
@@ -67,6 +73,23 @@ const CourseDashboard = () => {
 
   return (
     <>
+      <Modal
+        opened={opened}
+        onClose={close}
+        size={'xl'}
+        centered
+        withCloseButton={false}
+      >
+        <Modal.Header pb={'5px'}>
+          <Modal.Title>
+            <Title order={2} fw={700}>
+              Create Quiz
+            </Title>
+          </Modal.Title>
+          <Modal.CloseButton />
+        </Modal.Header>
+        <CreateQuizModal />
+      </Modal>
       <Flex direction={'row'}>
         <CourseDashboardSidebar
           courses={allCourses}
@@ -74,7 +97,7 @@ const CourseDashboard = () => {
           onSelectCourse={(course) => setSelectedCourse(course)}
         />
 
-        <CoursePage selectedCourse={selectedCourse} />
+        <CoursePage selectedCourse={selectedCourse} modalOpen={open} />
       </Flex>
     </>
   );
