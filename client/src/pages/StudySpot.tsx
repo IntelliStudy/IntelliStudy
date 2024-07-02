@@ -10,7 +10,6 @@ import {
   Title,
 } from '@mantine/core';
 import {
-  Timestamp,
   addDoc,
   collection,
   getDocs,
@@ -19,12 +18,10 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 import { SetStateAction, useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { UserContext } from '../App';
+import { AddCourseCard, CourseCard } from '../components';
 import { db } from '../firebase/firebase';
 import { Course } from '../types';
-import AddCourseCard from './courseCard/AddCourseCard';
-import CourseCard from './courseCard/CourseCard';
 
 const StudySpot = () => {
   const { currentUser } = useContext(UserContext);

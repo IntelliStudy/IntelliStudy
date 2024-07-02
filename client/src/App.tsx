@@ -5,17 +5,10 @@ import { User, onAuthStateChanged } from 'firebase/auth';
 import { createContext, useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
-import {
-  CourseDashboard,
-  Home,
-  LoginForm,
-  Navbar,
-  Profile,
-  Quiz,
-  StudySpot,
-} from './components';
+import { Navbar, Quiz } from './components';
 import { getCurrentlySignedInUserHandler } from './firebase/auth';
 import { auth } from './firebase/firebase';
+import { AuthPage, CourseDashboard, Home, Profile, StudySpot } from './pages';
 
 // Context for managing user
 export const UserContext = createContext<{
@@ -59,7 +52,7 @@ function App() {
 
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/login" element={<LoginForm />} />
+            <Route path="/login" element={<AuthPage />} />
             <Route path="/studyspot" element={<StudySpot />} />
             <Route path="/course/:courseId" element={<CourseDashboard />} />
             <Route path="/quiz" element={<Quiz />} />

@@ -4,11 +4,11 @@ import { collection, getDocs } from 'firebase/firestore';
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { UserContext } from '../App';
+import { CourseContent } from '../components';
+import CourseDashboardSidebar from '../components/courseDashboard/CourseDashboardSidebar';
+import CreateQuizModal from '../components/courseDashboard/CreateQuizModal';
 import { db } from '../firebase/firebase';
 import { Course } from '../types';
-import CourseDashboardSidebar from './Sub-Components/CourseDashboardSidebar';
-import CoursePage from './Sub-Components/CoursePage';
-import CreateQuizModal from './Sub-Components/CreateQuizModal';
 
 const CourseDashboard = () => {
   const { currentUser } = useContext(UserContext);
@@ -97,7 +97,7 @@ const CourseDashboard = () => {
           onSelectCourse={(course) => setSelectedCourse(course)}
         />
 
-        <CoursePage selectedCourse={selectedCourse} modalOpen={open} />
+        <CourseContent selectedCourse={selectedCourse} modalOpen={open} />
       </Flex>
     </>
   );

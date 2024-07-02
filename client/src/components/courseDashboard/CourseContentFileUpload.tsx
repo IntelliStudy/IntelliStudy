@@ -16,7 +16,7 @@ interface props {
   selectedCourse: Course;
 }
 
-const CoursePageFileUpload = ({ selectedCourse }: props) => {
+const CourseContentFileUpload = ({ selectedCourse }: props) => {
   // This state is only used to keep track of files that the user is uplaoding, not all the files they have uploaded in total
   const [filesToUpload, setFilesToUpload] = useState<FileWithPath[]>([]);
   const { currentUser } = useContext(UserContext);
@@ -89,4 +89,4 @@ const CoursePageFileUpload = ({ selectedCourse }: props) => {
   );
 };
 
-export default CoursePageFileUpload;
+export default CourseContentFileUpload;

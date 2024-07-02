@@ -10,14 +10,14 @@ import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../App';
 import { db } from '../../firebase/firebase';
 import { Course, FileRef } from '../../types';
-import CoursePageFileUpload from './CoursePageFileUpload';
+import CourseContentFileUpload from './CourseContentFileUpload';
 
 interface props {
   selectedCourse: Course;
   modalOpen: () => void;
 }
 
-const CoursePage = ({ selectedCourse, modalOpen }: props) => {
+const CourseContent = ({ selectedCourse, modalOpen }: props) => {
   const { currentUser } = useContext(UserContext);
   const [files, setFiles] = useState<FileRef[]>(selectedCourse.filesRef);
 
@@ -70,7 +70,7 @@ const CoursePage = ({ selectedCourse, modalOpen }: props) => {
               Upload
             </Title>
 
-            <CoursePageFileUpload selectedCourse={selectedCourse} />
+            <CourseContentFileUpload selectedCourse={selectedCourse} />
           </Flex>
 
           <Flex direction={'column'} mt={'180px'}>
@@ -116,4 +116,4 @@ const CoursePage = ({ selectedCourse, modalOpen }: props) => {
   );
 };
 
-export default CoursePage;
+export default CourseContent;
