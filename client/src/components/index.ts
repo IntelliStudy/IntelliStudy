@@ -1,19 +1,25 @@
-import CourseCard from "./courseCard/CourseCard";
-import CourseDashboard from "./CourseDashboard";
-import Home from "./Home";
-import LoginForm from "./LoginForm";
-import Navbar from "./Navbar";
-import Quiz from "./Quiz";
-import StudySpot from "./StudySpot";
-import Profile from "./profile";
+import GoBackArrow from './Auth/GoBackArrow';
+import GoogleButton from './Auth/GoogleButton';
+import AddCourseCard from './courseCard/AddCourseCard';
+import CourseCard from './courseCard/CourseCard';
+import CourseContent from './courseDashboard/CourseContent';
+import CourseContentFileUpload from './courseDashboard/CourseContentFileUpload';
+import CourseDashboardSidebar from './courseDashboard/CourseDashboardSidebar';
+import CreateQuizModal from './courseDashboard/CreateQuizModal';
+import HomePageFeature from './HomePageFeature';
+import Navbar from './Navbar';
+import Quiz from './Quiz';
 
 export {
+  AddCourseCard,
   CourseCard,
-  CourseDashboard,
-  Home,
-  LoginForm,
+  CourseContent,
+  CourseContentFileUpload,
+  CourseDashboardSidebar,
+  CreateQuizModal,
+  GoBackArrow,
+  GoogleButton,
+  HomePageFeature,
   Navbar,
-  Profile,
   Quiz,
-  StudySpot,
 };
