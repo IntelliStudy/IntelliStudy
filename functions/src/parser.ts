@@ -3,7 +3,7 @@ import { onDocumentUpdated } from "firebase-functions/v2/firestore";
 // import { db } from "../../client/src/firebase/firebase";
 import pdf from "pdf-parse";
 import { Storage } from "@google-cloud/storage";
-import OpenAI from "openai";
+// import OpenAI from "openai";
 
 const storage = new Storage();
 
