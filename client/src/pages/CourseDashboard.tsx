@@ -1,14 +1,14 @@
-import { Divider, Flex, LoadingOverlay, Modal, Title } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import { collection, getDocs } from 'firebase/firestore';
-import { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { UserContext } from '../App';
-import { CourseContent } from '../components';
-import CourseDashboardSidebar from '../components/courseDashboard/CourseDashboardSidebar';
-import CreateQuizModal from '../components/courseDashboard/CreateQuizModal';
-import { db } from '../firebase/firebase';
-import { Course } from '../types';
+import { Flex, LoadingOverlay, Modal, Title } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { collection, getDocs } from "firebase/firestore";
+import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { UserContext } from "../App";
+import { CourseContent } from "../components";
+import CourseDashboardSidebar from "../components/courseDashboard/CourseDashboardSidebar";
+import CreateQuizModal from "../components/courseDashboard/CreateQuizModal";
+import { db } from "../firebase/firebase";
+import { Course } from "../types";
 
 const CourseDashboard = () => {
   const { currentUser } = useContext(UserContext);
@@ -66,7 +66,7 @@ const CourseDashboard = () => {
       <LoadingOverlay
         visible={true}
         zIndex={1000}
-        overlayProps={{ radius: 'sm', blur: 2 }}
+        overlayProps={{ radius: "sm", blur: 2 }}
       />
     );
   }
@@ -76,11 +76,11 @@ const CourseDashboard = () => {
       <Modal
         opened={opened}
         onClose={close}
-        size={'xl'}
+        size={"xl"}
         centered
         withCloseButton={false}
       >
-        <Modal.Header pb={'5px'}>
+        <Modal.Header pb={"5px"}>
           <Modal.Title>
             <Title order={2} fw={700}>
               Create Quiz
@@ -90,7 +90,7 @@ const CourseDashboard = () => {
         </Modal.Header>
         <CreateQuizModal />
       </Modal>
-      <Flex direction={'row'}>
+      <Flex direction={"row"}>
         <CourseDashboardSidebar
           courses={allCourses}
           selectedCourseId={selectedCourse.id}

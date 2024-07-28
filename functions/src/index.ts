@@ -13,10 +13,10 @@
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
 
-export { userDeleted, userSignup } from './addUser';
-export { fileUpload } from './fileUpload';
-export { openAI } from './openAI';
-export { testTrigger } from './testTrigger';
+export { userDeleted, userSignup } from "./addUser";
+export { openAI } from "./openAI";
+export { testTrigger } from "./testTrigger";
+export { parser } from "./parser";
 
 // export FIREBASE_AUTH_EMULATOR_HOST="127.0.0.1:9099"
 // export FIRESTORE_EMULATOR_HOST="127.0.0.1:8080"
