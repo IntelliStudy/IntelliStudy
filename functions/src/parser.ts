@@ -16,8 +16,6 @@ export const parser = onDocumentWritten(
     const data = event.data?.after.data();
     const pdfPath = data?.fileReference;
 
-    console.log("TIRGGEREDEDD");
-
     if (!pdfPath) {
       console.error("No PDF path found in document.");
       return;
@@ -43,10 +41,12 @@ export const parser = onDocumentWritten(
     const pageContents: { pageNumber: number; text: string }[] = pdfData.text
       .split("\n\n")
       .map((pageText: any, index: number) => ({
-        pageNumber: index + 1,
+        pageNumber: index,
         text: pageText,
+        fileName: data?.fileName,
       }));
 
+    //question generation
     const openai = new OpenAI();
     const multipleChoiceQuestions = await openai.chat.completions.create({
       messages: [
@@ -66,7 +66,6 @@ export const parser = onDocumentWritten(
     });
 
     async function saveQuestions(questions: any) {
-      console.log("questions", questions);
       try {
         for (const question of questions) {
           // Generate a unique document reference
@@ -88,6 +87,7 @@ export const parser = onDocumentWritten(
             options: question.options,
             answer: question.answer,
             type: question.type,
+            answerReference: question.answerReference,
           });
         }
       } catch (error) {
