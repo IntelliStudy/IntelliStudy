@@ -4,13 +4,13 @@ export type Course = {
   id: string;
   courseCode: string;
   courseName?: string;
-  filesRef: FileRef[];
   userId: string;
   createdAt: Timestamp;
 };
 
-export type FileRef = {
+export type courseFile = {
   fileName: string;
   fileReference: string;
   uploadedAt: Timestamp;
+  processed: boolean;
 };
