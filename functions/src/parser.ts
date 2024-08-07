@@ -5,8 +5,8 @@ import { Storage } from "@google-cloud/storage";
 import pdf from "pdf-parse";
 import { systemInstructions } from "./instructions";
 import OpenAI from "openai";
-import { addDoc, collection } from "firebase/firestore";
-import { db } from "../../client/src/firebase/firebase";
+// import { addDoc, collection } from "firebase/firestore";
+// import { db } from "../../client/src/firebase/firebase";
 
 const storage = new Storage();
 
@@ -57,7 +57,7 @@ export const parser = onDocumentWritten(
         {
           role: "user",
           content:
-            `Generate 5 multiple-choice questions from these notes: ` +
+            `Generate 5 fill in the blank questions from these notes: ` +
             JSON.stringify(pageContents),
         },
       ],
@@ -65,40 +65,41 @@ export const parser = onDocumentWritten(
       response_format: { type: "json_object" },
     });
 
-    async function saveQuestions(questions: any) {
-      try {
-        for (const question of questions) {
-          // Generate a unique document reference
-          console.log("single", question);
-          const questionCollection = collection(
-            db,
-            "users",
-            event.params.userId,
-            "courses",
-            event.params.courseId,
-            "files",
-            event.params.fileId,
-            "questions"
-          );
+    // async function saveQuestions(questions: any) {
+    //   try {
+    //     for (const question of questions) {
+    //       // Generate a unique document reference
+    //       console.log("single", question);
+    //       const questionCollection = collection(
+    //         db,
+    //         "users",
+    //         event.params.userId,
+    //         "courses",
+    //         event.params.courseId,
+    //         "files",
+    //         event.params.fileId,
+    //         "questions"
+    //       );
 
-          // Set the document with the question data
-          await addDoc(questionCollection, {
-            question: question.question,
-            options: question.options,
-            answer: question.answer,
-            type: question.type,
-            answerReference: question.answerReference,
-          });
-        }
-      } catch (error) {
-        console.error("Error writing questions to Firebase:", error);
-      }
-    }
+    //       // Set the document with the question data
+    //       await addDoc(questionCollection, {
+    //         question: question.question,
+    //         options: question.options,
+    //         answer: question.answer,
+    //         type: question.type,
+    //         answerReference: question.answerReference,
+    //       });
+    //     }
+    //   } catch (error) {
+    //     console.error("Error writing questions to Firebase:", error);
+    //   }
+    // }
 
     const generatedMcq = multipleChoiceQuestions.choices[0].message.content;
+    console.log(generatedMcq);
 
-    generatedMcq
-      ? saveQuestions(JSON.parse(generatedMcq).questions)
-      : undefined;
+    // generatedMcq
+    //   ? saveQuestions(JSON.parse(generatedMcq).questions)
+    //   : undefined;
   }
 );

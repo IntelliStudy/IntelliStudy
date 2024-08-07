@@ -69,7 +69,7 @@ Do not create any questions about course logistics (e.g. professor name, lecture
     {
     "question": "Question text here?",
       "options": [
-       {"Option A here"}
+       "Option A here"
         //more options here
      ],
     "answer": "Option A here"
