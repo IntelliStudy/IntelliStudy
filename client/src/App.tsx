@@ -1,4 +1,4 @@
-import { MantineProvider } from '@mantine/core';
+import { LoadingOverlay, MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import { User, onAuthStateChanged } from 'firebase/auth';
@@ -50,12 +50,25 @@ function App() {
         <UserContext.Provider value={{ currentUser, isAuthLoading }}>
           {displayNavbar && <Navbar />}
 
+          {!currentUser && isAuthLoading && (
+            <LoadingOverlay
+              visible={true}
+              zIndex={1000}
+              overlayProps={{ radius: 'sm', blur: 2 }}
+            />
+          )}
+          <LoadingOverlay
+            visible={isAuthLoading}
+            zIndex={1000}
+            overlayProps={{ radius: 'sm', blur: 2 }}
+          />
+
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<AuthPage />} />
             <Route path="/studyspot" element={<StudySpot />} />
             <Route path="/course/:courseId" element={<CourseDashboard />} />
-            <Route path="/quiz" element={<Quiz />} />
+            <Route path="/course/:courseId/quiz" element={<Quiz />} />
             <Route path="/profile" element={<Profile />} />
           </Routes>
         </UserContext.Provider>

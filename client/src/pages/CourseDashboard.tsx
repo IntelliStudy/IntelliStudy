@@ -87,7 +87,7 @@ const CourseDashboard = () => {
           </Modal.Title>
           <Modal.CloseButton />
         </Modal.Header>
-        <CreateQuizModal />
+        <CreateQuizModal courseId={selectedCourse.id} />
       </Modal>
       <Flex direction={'row'}>
         <CourseDashboardSidebar

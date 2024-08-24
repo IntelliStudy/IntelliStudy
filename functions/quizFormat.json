@@ -5,7 +5,7 @@
       "mcq": [
         {
           "question": "Question mcq 1 here?",
-          "options": [{ "A": "Option A here" }],
+          "options": [{ "key": "A", "value": "Option A here" }],
           "answer": { "A": "Option A here" },
           "type": "mcq",
           "answerReference": {

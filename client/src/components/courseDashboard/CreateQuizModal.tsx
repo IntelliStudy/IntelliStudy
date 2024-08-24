@@ -13,6 +13,7 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const theme = createTheme({
   cursorType: 'pointer',
@@ -36,30 +37,52 @@ const theme = createTheme({
   },
 });
 
-const CreateQuizModal = () => {
+interface props {
+  courseId: string;
+}
+
+const CreateQuizModal = ({ courseId }: props) => {
   const quizCountOptions = Array.from({ length: 10 }, (_, i) =>
     (i + 1).toString()
   );
+
+  const navigate = useNavigate();
 
   const quizForm = useForm({
     initialValues: {
       questionTypes: [
         {
-          id: '1',
+          type: 'mcq',
           label: 'Multiple Choice Questions',
           checked: false,
           count: 0,
         },
-        { id: '2', label: 'Short Answer Questions', checked: false, count: 0 },
         {
-          id: '3',
+          type: 's_ans',
+          label: 'Short Answer Questions',
+          checked: false,
+          count: 0,
+        },
+        {
+          type: 'tf',
           label: 'True and False Questions',
           checked: false,
           count: 0,
         },
-        { id: '4', label: 'Long Answer Questions', checked: false, count: 0 },
+        {
+          type: 'l_ans',
+          label: 'Long Answer Questions',
+          checked: false,
+          count: 0,
+        },
+        {
+          type: 'fill_in_blank',
+          label: 'Fill in the Blank Questions',
+          checked: false,
+          count: 0,
+        },
       ],
-      duration: [{ label: 'Timed', checked: false, duration: 0 }],
+      // duration: [{ label: 'Timed', checked: false, duration: 0 }],
     },
   });
 
@@ -94,34 +117,41 @@ const CreateQuizModal = () => {
     )
   );
 
-  const durationCheckBoxes = quizForm.values.duration.map((value, index) => (
-    <Flex key={index} direction={'column'}>
-      <Checkbox
-        key={index}
-        label={value.label}
-        checked={value.checked}
-        onChange={(event) =>
-          quizForm.setFieldValue(
-            `duration.${index}.checked`,
-            event.currentTarget.checked
-          )
-        }
-      />
-      {value.checked && (
-        <Select
-          placeholder="Duration"
-          data={quizCountOptions}
-          value={value.duration.toString()}
-          onChange={(selectedValue) =>
-            quizForm.setFieldValue(
-              `duration.${index}.duration`,
-              parseInt(selectedValue ?? '0', 10)
-            )
-          }
-        />
-      )}
-    </Flex>
-  ));
+  // const durationCheckBoxes = quizForm.values.duration.map((value, index) => (
+  //   <Flex key={index} direction={'column'}>
+  //     <Checkbox
+  //       key={index}
+  //       label={value.label}
+  //       checked={value.checked}
+  //       onChange={(event) =>
+  //         quizForm.setFieldValue(
+  //           `duration.${index}.checked`,
+  //           event.currentTarget.checked
+  //         )
+  //       }
+  //     />
+  //     {value.checked && (
+  //       <Select
+  //         placeholder="Duration"
+  //         data={quizCountOptions}
+  //         value={value.duration.toString()}
+  //         onChange={(selectedValue) =>
+  //           quizForm.setFieldValue(
+  //             `duration.${index}.duration`,
+  //             parseInt(selectedValue ?? '0', 10)
+  //           )
+  //         }
+  //       />
+  //     )}
+  //   </Flex>
+  // ));
+
+  const handleSubmit = (values: (typeof quizForm)['values']) => {
+    console.log(values);
+
+    // Redirect to quiz page after submission
+    navigate(`quiz`);
+  };
 
   return (
     <>
@@ -134,15 +164,15 @@ const CreateQuizModal = () => {
               Question Format
             </Title>
 
-            <form onSubmit={quizForm.onSubmit((values) => console.log(values))}>
+            <form onSubmit={quizForm.onSubmit(handleSubmit)}>
               <Stack gap={'md'}>
                 {questionTypeCheckBoxes}
 
-                <Title order={3} fw={500}>
+                {/* <Title order={3} fw={500}>
                   Duration
-                </Title>
+                </Title> */}
 
-                {durationCheckBoxes}
+                {/* {durationCheckBoxes} */}
 
                 <Flex justify={'right'} mt={'20px'} mb={'20px'} mr={'15px'}>
                   <Button

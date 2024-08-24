@@ -1,14 +1,17 @@
-import GoBackArrow from './Auth/GoBackArrow';
-import GoogleButton from './Auth/GoogleButton';
+import Quiz from '../pages/Quiz';
+import HomePageFeature from './HomePageFeature';
+import Navbar from './Navbar';
+import GoBackArrow from './auth/GoBackArrow';
+import GoogleButton from './auth/GoogleButton';
 import AddCourseCard from './courseCard/AddCourseCard';
 import CourseCard from './courseCard/CourseCard';
 import CourseContent from './courseDashboard/CourseContent';
 import CourseContentFileUpload from './courseDashboard/CourseContentFileUpload';
 import CourseDashboardSidebar from './courseDashboard/CourseDashboardSidebar';
 import CreateQuizModal from './courseDashboard/CreateQuizModal';
-import HomePageFeature from './HomePageFeature';
-import Navbar from './Navbar';
-import Quiz from './Quiz';
+import MultipleChoiceOption from './quiz/MultipleChoiceOption';
+import MultipleChoiceQuestion from './quiz/MultipleChoiceQuestion';
+import SectionWrapper from './quiz/SectionWrapper';
 
 export {
   AddCourseCard,
@@ -20,6 +23,9 @@ export {
   GoBackArrow,
   GoogleButton,
   HomePageFeature,
+  MultipleChoiceOption,
+  MultipleChoiceQuestion,
   Navbar,
   Quiz,
+  SectionWrapper,
 };
