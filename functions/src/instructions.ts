@@ -16,9 +16,10 @@ Output the questions in strict JSON format. Each entry should include the follow
 - \`options\`: The options for the questions, in an array. For mcqs, the key should be the letter, and value should be the answer in an object.
 - \`answer\`: The answer for the question. 
 - \`answerReference\`: The file name and page number where the answer for this question can be found. This should be an object with 2 properties.
-For mcqs and fill in the blanks, provide the letter corresponding to the right answer along with the answer in an object. 
+For mcqs, provide the letter corresponding to the right answer along with the answer in an object. 
 For true or false questions, provide a boolean value of the answer,
 For short and long answer questions, provide a sample answer in a string.
+For fill in the blank questions, denote the blank by '***'. Also for fill in the blank provide an 'options' array the same way you do for mcqs.
 
 
 Do not include any additional text or explanations outside of the JSON structure.
@@ -30,7 +31,7 @@ Do not create any questions about course logistics (e.g. professor name, lecture
 \`\`\`json
 {
   "questions": [
-  //mcq and fill in the blank question format
+  //mcq question format
     {
       "question": "Question text here?",
       "options": [
@@ -38,12 +39,26 @@ Do not create any questions about course logistics (e.g. professor name, lecture
         //more options here
      ],
     "answer": { key: 'A', value: 'Option A here' },
-      "type": mcq or fill_in_blank,
+      "type": mcq,
     },
     "answerReference": {
       "fileName": "File name here",
       "pageNumber": "Page number where answer can be found"
-    }
+    },
+    //fill in the blank question format
+    {
+      "question": "2 plus *** equals 4",
+      "options": [
+       { key: 'A', value: 'Option A here' }
+        //more options here
+     ],
+    "answer": { key: 'D', value: 'Option D here' },
+      "type": fill_in_blank,
+    },
+    "answerReference": {
+      "fileName": "File name here",
+      "pageNumber": "Page number where answer can be found"
+    },
   // true or false question format
       {
       "question": "Question text here?",
