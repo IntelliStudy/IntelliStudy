@@ -18,4 +18,5 @@ export enum QuestionType {
   s_ans = 'Short Answer Questions',
   l_ans = 'Long Answer Questions',
   tf = 'True or False Questions',
+  fill_in_blank = 'Fill in the Blank Questions',
 }

@@ -7,6 +7,7 @@ import {
   ShortAnswerQuestionType,
   TrueFalseQuestionType,
 } from '../../types/quiz';
+import FillInBlank from './FillInBlankQuestion';
 import MultipleChoiceQuestion from './MultipleChoiceQuestion';
 import TypedAnswerQuestion from './TypedAnswerQuestion';
 
@@ -72,6 +73,17 @@ const SectionWrapper = ({ sectionType, sectionLabel, questions }: props) => {
             answer={q.answer as string}
             answerReference={q.answerReference}
             ansBoxSize={6}
+          />
+        ));
+
+      case 'fill_in_blank':
+        return questions.map((q, index) => (
+          <FillInBlank
+            key={index}
+            question={q.question}
+            options={q.options}
+            answer={q.answer as string}
+            answerReference={q.answerReference}
           />
         ));
     }

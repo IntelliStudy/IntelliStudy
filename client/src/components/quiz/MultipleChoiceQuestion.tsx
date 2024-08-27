@@ -26,9 +26,8 @@ props) => {
 
       {options.map((option, index) => {
         return (
-          <Radio.Group>
+          <Radio.Group key={index}>
             <MultipleChoiceOption
-              key={index}
               option={option}
               checked={selectedOption === option.key}
               setChecked={() => setSelectedOption(option.key)}

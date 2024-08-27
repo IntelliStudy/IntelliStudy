@@ -1,6 +1,4 @@
-import { Container } from '@mantine/core';
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
 import { UserContext } from '../App';
 import { SectionWrapper } from '../components';
 import { QuestionType } from '../constants';
@@ -79,9 +77,9 @@ const Quiz = () => {
         ],
         fill_in_blank: [
           {
-            question: 'Question text here?',
-            options: ['Option A here', 'Option B here'],
-            answer: 'Option A here',
+            question: 'Question text *** here?',
+            options: ['Option A', 'Option B', 'Option C', 'Option D'],
+            answer: 'Option C',
             type: 'fill_in_blank',
             answerReference: {
               fileName: 'File name here',
@@ -121,6 +119,13 @@ const Quiz = () => {
         sectionType={'l_ans'}
         sectionLabel={QuestionType.l_ans}
         questions={temp.quiz.questions.l_ans}
+      />
+
+      {/* FILL IN BLANK */}
+      <SectionWrapper
+        sectionType={'fill_in_blank'}
+        sectionLabel={QuestionType.fill_in_blank}
+        questions={temp.quiz.questions.fill_in_blank}
       />
     </>
   );
