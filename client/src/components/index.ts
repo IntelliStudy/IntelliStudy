@@ -1,5 +1,5 @@
-import GoBackArrow from './Auth/GoBackArrow';
-import GoogleButton from './Auth/GoogleButton';
+import GoBackArrow from './auth/GoBackArrow';
+import GoogleButton from './auth/GoogleButton';
 import AddCourseCard from './courseCard/AddCourseCard';
 import CourseCard from './courseCard/CourseCard';
 import CourseContent from './courseDashboard/CourseContent';
