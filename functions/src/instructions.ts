@@ -19,7 +19,7 @@ Output the questions in strict JSON format. Each entry should include the follow
 For mcqs, provide the letter corresponding to the right answer along with the answer in an object. 
 For true or false questions, provide a boolean value of the answer,
 For short and long answer questions, provide a sample answer in a string.
-For fill in the blank questions, denote the blank by '***'. Also for fill in the blank provide an 'options' array the same way you do for mcqs.
+For fill in the blank questions, denote the blank by '***'. Also for fill in the blank the 'options' array should be an array of strings. The answer field should be a single string.
 
 
 Do not include any additional text or explanations outside of the JSON structure.
@@ -49,10 +49,12 @@ Do not create any questions about course logistics (e.g. professor name, lecture
     {
       "question": "2 plus *** equals 4",
       "options": [
-       { key: 'A', value: 'Option A here' }
-        //more options here
+       'Option A',
+       'Option B',
+       'Option C',
+       'Option D',
      ],
-    "answer": { key: 'D', value: 'Option D here' },
+    "answer": 'Option D,
       "type": fill_in_blank,
     },
     "answerReference": {
