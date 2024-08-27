@@ -23,7 +23,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // import { UserContext } from "../App";
 import { GoogleButton } from '../components';
-import GoBackArrow from '../components/Auth/GoBackArrow';
+import GoBackArrow from '../components/auth/GoBackArrow';
 import {
   // getCurrentlySignedInUserHandler,
   googleLoginHandler,
