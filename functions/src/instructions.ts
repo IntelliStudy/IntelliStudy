@@ -13,13 +13,13 @@ Gnerate a set number of questions of the type as specified in the prompt. The nu
 Output the questions in strict JSON format. Each entry should include the following fields:
 - \`question\`: The text of the question.
 - \`type\`: The enum value of the type of the question.
-- \`options\`: The options for the questions, in an array. For mcqs, the index should be the letter, and value should be the answer in an object. For fill in the blank questions, the options should be an array of strings of the options. This property should be ONLY there for mcqs and fill in the blank questions.
+- \`options\`: The options for the questions, in an array. For mcqs, the key should be the letter, and value should be the answer in an object.
 - \`answer\`: The answer for the question. 
 - \`answerReference\`: The file name and page number where the answer for this question can be found. This should be an object with 2 properties.
-For mcqs, provide the letter corresponding to the right answer along with the answer in an object.
+For mcqs, provide the letter corresponding to the right answer along with the answer in an object. 
 For true or false questions, provide a boolean value of the answer,
 For short and long answer questions, provide a sample answer in a string.
-For fill-in-the-blank questions, provide the answer in a string. 
+For fill in the blank questions, denote the blank by '***'. Also for fill in the blank the 'options' array should be an array of strings. The answer field should be a single string.
 
 
 Do not include any additional text or explanations outside of the JSON structure.
@@ -35,20 +35,40 @@ Do not create any questions about course logistics (e.g. professor name, lecture
     {
       "question": "Question text here?",
       "options": [
-       {"A": "Option A here"}
+       { key: 'A', value: 'Option A here' }
         //more options here
      ],
-"answer": { "A": "Option A here" }
-      "type": "mcq",
+    "answer": { key: 'A', value: 'Option A here' },
+      "type": mcq,
     },
     "answerReference": {
       "fileName": "File name here",
       "pageNumber": "Page number where answer can be found"
-    }
+    },
+    //fill in the blank question format
+    {
+      "question": "2 plus *** equals 4",
+      "options": [
+       'Option A',
+       'Option B',
+       'Option C',
+       'Option D',
+     ],
+    "answer": 'Option D,
+      "type": fill_in_blank,
+    },
+    "answerReference": {
+      "fileName": "File name here",
+      "pageNumber": "Page number where answer can be found"
+    },
   // true or false question format
       {
       "question": "Question text here?",
-      "answer": true or false
+      "answer": { key: 'A', value: 'true' },
+      "options": [
+        { key: 'A', value: 'true' },
+        { key: 'B', value: 'false' }
+      ],
       "type": "tf",
       "answerReference": {
       "fileName": "File name here",
@@ -65,20 +85,6 @@ Do not create any questions about course logistics (e.g. professor name, lecture
       "pageNumber": "Page number where answer can be found"
     }
   },
-  //fill in the blank question format
-    {
-    "question": "Question text here?",
-      "options": [
-       "Option A here"
-        //more options here
-     ],
-    "answer": "Option A here"
-    "type": "fill_in_blank",
-    "answerReference": {
-      "fileName": "File name here",
-      "pageNumber": "Page number where answer can be found"
-    }
-  }
     // more questions
   ]
 }
