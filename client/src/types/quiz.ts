@@ -9,6 +9,7 @@ export type McqOption = {
 };
 
 export type MultChoiceQuestionType = {
+  id: string;
   question: string;
   options: McqOption[];
   answer: McqOption;
@@ -17,6 +18,7 @@ export type MultChoiceQuestionType = {
 };
 
 export type ShortAnswerQuestionType = {
+  id: string;
   question: string;
   answer: string;
   type: string;
@@ -24,6 +26,7 @@ export type ShortAnswerQuestionType = {
 };
 
 export type LongAnswerQuestionType = {
+  id: string;
   question: string;
   answer: string;
   type: string;
@@ -31,6 +34,7 @@ export type LongAnswerQuestionType = {
 };
 
 export type TrueFalseQuestionType = {
+  id: string;
   question: string;
   answer: McqOption;
   type: string;
@@ -38,6 +42,7 @@ export type TrueFalseQuestionType = {
 };
 
 export type FillInBlankQuestionType = {
+  id: string;
   question: string;
   options: string[];
   answer: McqOption;

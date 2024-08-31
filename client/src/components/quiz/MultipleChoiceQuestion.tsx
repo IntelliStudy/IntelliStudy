@@ -5,18 +5,32 @@ import MultipleChoiceOption from './MultipleChoiceOption';
 
 interface props {
   question: string;
+  questionId: string;
   options: McqOption[];
-  answer: McqOption | string;
+  correctAnswer: string | McqOption;
+  sectionType: string;
   answerReference: AnswerReference;
+  onAnswerChange: (
+    sectionType: string,
+    questionId: string,
+    answer: string
+  ) => void;
 }
 
 const MultipleChoiceQuestion = ({
   question,
+  questionId,
   options,
-}: // answer,
-// answerReference,
-props) => {
+  correctAnswer,
+  sectionType,
+  onAnswerChange,
+}: props) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
+  const handleOptionChange = (optionKey: string) => {
+    setSelectedOption(optionKey);
+    onAnswerChange(sectionType, questionId, optionKey);
+  };
 
   return (
     <Flex direction="column" mb="30px">
@@ -30,7 +44,7 @@ props) => {
             <MultipleChoiceOption
               option={option}
               checked={selectedOption === option.key}
-              setChecked={() => setSelectedOption(option.key)}
+              setChecked={() => handleOptionChange(option.key)}
             />
           </Radio.Group>
         );

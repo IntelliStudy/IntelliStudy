@@ -7,7 +7,7 @@ import {
   ShortAnswerQuestionType,
   TrueFalseQuestionType,
 } from '../../types/quiz';
-import FillInBlank from './FillInBlankQuestion';
+import FillInBlankQuestion from './FillInBlankQuestion';
 import MultipleChoiceQuestion from './MultipleChoiceQuestion';
 import TypedAnswerQuestion from './TypedAnswerQuestion';
 
@@ -20,9 +20,20 @@ interface props {
     | LongAnswerQuestionType[]
     | TrueFalseQuestionType[]
     | FillInBlankQuestionType[];
+  onAnswerChange: (
+    sectionType: string,
+    questionId: string,
+    answer: string
+  ) => void;
 }
 
-const SectionWrapper = ({ sectionType, sectionLabel, questions }: props) => {
+const SectionWrapper = ({
+  sectionType,
+  sectionLabel,
+  questions,
+  onAnswerChange,
+}: props) => {
+  // True or false options
   const trueFalseOptions = {
     options: [
       { key: 'A', value: 'True' },
@@ -37,9 +48,12 @@ const SectionWrapper = ({ sectionType, sectionLabel, questions }: props) => {
           <MultipleChoiceQuestion
             key={index}
             question={q.question}
+            questionId={q.id}
             options={q.options}
-            answer={q.answer}
+            correctAnswer={q.answer}
             answerReference={q.answerReference}
+            sectionType={sectionType}
+            onAnswerChange={onAnswerChange}
           />
         ));
 
@@ -48,9 +62,12 @@ const SectionWrapper = ({ sectionType, sectionLabel, questions }: props) => {
           <MultipleChoiceQuestion
             key={index}
             question={q.question}
+            questionId={q.id}
             options={trueFalseOptions.options}
-            answer={q.answer}
+            correctAnswer={q.answer}
             answerReference={q.answerReference}
+            sectionType={sectionType}
+            onAnswerChange={onAnswerChange}
           />
         ));
 
@@ -59,9 +76,12 @@ const SectionWrapper = ({ sectionType, sectionLabel, questions }: props) => {
           <TypedAnswerQuestion
             key={index}
             question={q.question}
-            answer={q.answer as string}
+            questionId={q.id}
+            correctAnswer={q.answer as string}
             answerReference={q.answerReference}
+            sectionType={sectionType}
             ansBoxSize={2}
+            onAnswerChange={onAnswerChange}
           />
         ));
 
@@ -70,20 +90,26 @@ const SectionWrapper = ({ sectionType, sectionLabel, questions }: props) => {
           <TypedAnswerQuestion
             key={index}
             question={q.question}
-            answer={q.answer as string}
+            questionId={q.id}
+            correctAnswer={q.answer as string}
             answerReference={q.answerReference}
+            sectionType={sectionType}
             ansBoxSize={6}
+            onAnswerChange={onAnswerChange}
           />
         ));
 
       case 'fill_in_blank':
         return questions.map((q, index) => (
-          <FillInBlank
+          <FillInBlankQuestion
             key={index}
             question={q.question}
+            questionId={q.id}
             options={q.options}
-            answer={q.answer as string}
+            correctAnswer={q.answer as string}
             answerReference={q.answerReference}
+            sectionType={sectionType}
+            onAnswerChange={onAnswerChange}
           />
         ));
     }

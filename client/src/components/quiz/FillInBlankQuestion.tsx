@@ -4,13 +4,32 @@ import { AnswerReference } from '../../types/quiz';
 
 interface props {
   question: string;
+  questionId: string;
   options: string[];
-  answer: string;
+  correctAnswer: string;
   answerReference: AnswerReference;
+  sectionType: string;
+  onAnswerChange: (
+    sectionType: string,
+    questionId: string,
+    answer: string
+  ) => void;
 }
 
-const FillInBlank = ({ question, options, answer, answerReference }: props) => {
-  const [value, setValue] = useState<string | null>('');
+const FillInBlankQuestion = ({
+  question,
+  questionId,
+  options,
+  correctAnswer,
+  sectionType,
+  onAnswerChange,
+}: props) => {
+  const [selectedOption, setSelectedOption] = useState<string | null>('');
+
+  const handleOptionChange = (optionKey: string) => {
+    setSelectedOption(optionKey);
+    onAnswerChange(sectionType, questionId, optionKey);
+  };
 
   const questionParts = question.split('***');
 
@@ -23,8 +42,8 @@ const FillInBlank = ({ question, options, answer, answerReference }: props) => {
             placeholder="Pick value"
             mx="10px"
             data={options}
-            value={value}
-            onChange={setValue}
+            value={selectedOption}
+            onChange={(option) => handleOptionChange(option as string)}
           />
           {questionParts[1]}
         </Flex>
@@ -33,4 +52,4 @@ const FillInBlank = ({ question, options, answer, answerReference }: props) => {
   );
 };
 
-export default FillInBlank;
+export default FillInBlankQuestion;
