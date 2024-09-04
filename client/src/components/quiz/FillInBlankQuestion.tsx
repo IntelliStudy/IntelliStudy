@@ -6,7 +6,6 @@ interface props {
   question: string;
   questionId: string;
   options: string[];
-  correctAnswer: string;
   answerReference: AnswerReference;
   sectionType: string;
   onAnswerChange: (
@@ -14,15 +13,18 @@ interface props {
     questionId: string,
     answer: string
   ) => void;
+  isCorrect: boolean;
+  disabled: boolean;
 }
 
 const FillInBlankQuestion = ({
   question,
   questionId,
   options,
-  correctAnswer,
   sectionType,
   onAnswerChange,
+  isCorrect,
+  disabled,
 }: props) => {
   const [selectedOption, setSelectedOption] = useState<string | null>('');
 
@@ -33,17 +35,34 @@ const FillInBlankQuestion = ({
 
   const questionParts = question.split('***');
 
+  const optionColour =
+    isCorrect === undefined
+      ? ''
+      : selectedOption && isCorrect
+      ? 'limeGreen'
+      : selectedOption && !isCorrect
+      ? 'red'
+      : '';
+
+  const borderWidth = optionColour !== '' ? '2px' : '';
+
   return (
     <Flex direction="column" mb="30px">
       <Title order={2} fw={500} fz={'22px'} pb={'10px'}>
         <Flex direction="row" align="center">
           {questionParts[0]}
           <Select
-            placeholder="Pick value"
+            placeholder="Pick a value"
             mx="10px"
             data={options}
             value={selectedOption}
             onChange={(option) => handleOptionChange(option as string)}
+            disabled={disabled}
+            style={{
+              borderColor: optionColour,
+              borderWidth: borderWidth,
+              borderRadius: '6px',
+            }}
           />
           {questionParts[1]}
         </Flex>

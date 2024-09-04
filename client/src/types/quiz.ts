@@ -49,3 +49,7 @@ export type FillInBlankQuestionType = {
   type: string;
   answerReference: AnswerReference;
 };
+
+export interface ValidationResults {
+  [key: string]: boolean;
+}

@@ -1,7 +1,17 @@
 import { Button } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { useEffect, useState } from 'react';
 import { SectionWrapper } from '../components';
 import { QuestionType } from '../constants';
+import { ValidationResults } from '../types/quiz';
+
+interface QuizFormValues {
+  mcqAnswers: { [key: string]: string };
+  tfAnswers: { [key: string]: string };
+  s_ansAnswers: { [key: string]: string };
+  l_ansAnswers: { [key: string]: string };
+  fill_in_blankAnswers: { [key: string]: string };
+}
 
 const Quiz = () => {
   const temp = {
@@ -95,7 +105,7 @@ const Quiz = () => {
     },
   };
 
-  const quizForm = useForm({
+  const quizForm = useForm<QuizFormValues>({
     initialValues: {
       mcqAnswers: {},
       tfAnswers: {},
@@ -104,6 +114,13 @@ const Quiz = () => {
       fill_in_blankAnswers: {},
     },
   });
+
+  // Used to store answer validation results
+  const [validationResults, setValidationResults] = useState<ValidationResults>(
+    {}
+  );
+  // Used to disable selections after submitting
+  const [disabled, setDisabled] = useState(false);
 
   // Handle answer change
   const handleAnswerChange = (
@@ -116,8 +133,38 @@ const Quiz = () => {
 
   const handleQuizSubmit = (event) => {
     event.preventDefault();
-    console.log(quizForm.values);
+
+    const results: ValidationResults = {};
+
+    // Validate MCQ answers
+    temp.quiz.questions.mcq.forEach((question) => {
+      const userAnswer = quizForm.values.mcqAnswers[question.id];
+      results[question.id] = userAnswer === question.answer.key;
+    });
+
+    // Validate TF answers
+    temp.quiz.questions.tf.forEach((question) => {
+      const userAnswer = quizForm.values.tfAnswers[question.id];
+      results[question.id] = userAnswer === question.answer.key;
+    });
+
+    // Validate Fill in the Blank
+    temp.quiz.questions.fill_in_blank.forEach((question) => {
+      const userAnswer = quizForm.values.fill_in_blankAnswers[question.id];
+      results[question.id] = userAnswer === question.answer;
+    });
+
+    // Disbale selection
+    setDisabled(true);
+
+    setValidationResults(results);
   };
+
+  // REMOVE
+  useEffect(() => {
+    console.log(quizForm.values);
+    console.log(validationResults);
+  }, [validationResults]);
 
   return (
     <>
@@ -128,6 +175,8 @@ const Quiz = () => {
           sectionLabel={QuestionType.mcq}
           questions={temp.quiz.questions.mcq}
           onAnswerChange={handleAnswerChange}
+          validationResults={validationResults}
+          disabled={disabled}
         />
 
         {/* TF */}
@@ -136,6 +185,8 @@ const Quiz = () => {
           sectionLabel={QuestionType.tf}
           questions={temp.quiz.questions.tf}
           onAnswerChange={handleAnswerChange}
+          validationResults={validationResults}
+          disabled={disabled}
         />
 
         {/* SHORT ANS */}
@@ -144,6 +195,8 @@ const Quiz = () => {
           sectionLabel={QuestionType.s_ans}
           questions={temp.quiz.questions.s_ans}
           onAnswerChange={handleAnswerChange}
+          validationResults={validationResults}
+          disabled={disabled}
         />
 
         {/* LONG ANS */}
@@ -152,6 +205,8 @@ const Quiz = () => {
           sectionLabel={QuestionType.l_ans}
           questions={temp.quiz.questions.l_ans}
           onAnswerChange={handleAnswerChange}
+          validationResults={validationResults}
+          disabled={disabled}
         />
 
         {/* FILL IN BLANK */}
@@ -160,6 +215,8 @@ const Quiz = () => {
           sectionLabel={QuestionType.fill_in_blank}
           questions={temp.quiz.questions.fill_in_blank}
           onAnswerChange={handleAnswerChange}
+          validationResults={validationResults}
+          disabled={disabled}
         />
 
         <Button type="submit" w={'90px'} ml="115px" mb="70px">

@@ -2,10 +2,10 @@ import { Container, Title } from '@mantine/core';
 import {
   FillInBlankQuestionType,
   LongAnswerQuestionType,
-  McqOption,
   MultChoiceQuestionType,
   ShortAnswerQuestionType,
   TrueFalseQuestionType,
+  ValidationResults,
 } from '../../types/quiz';
 import FillInBlankQuestion from './FillInBlankQuestion';
 import MultipleChoiceQuestion from './MultipleChoiceQuestion';
@@ -25,6 +25,8 @@ interface props {
     questionId: string,
     answer: string
   ) => void;
+  validationResults: ValidationResults;
+  disabled: boolean;
 }
 
 const SectionWrapper = ({
@@ -32,6 +34,8 @@ const SectionWrapper = ({
   sectionLabel,
   questions,
   onAnswerChange,
+  validationResults,
+  disabled,
 }: props) => {
   // True or false options
   const trueFalseOptions = {
@@ -50,10 +54,11 @@ const SectionWrapper = ({
             question={q.question}
             questionId={q.id}
             options={q.options}
-            correctAnswer={q.answer}
             answerReference={q.answerReference}
             sectionType={sectionType}
             onAnswerChange={onAnswerChange}
+            isCorrect={validationResults[q.id]}
+            disabled={disabled}
           />
         ));
 
@@ -64,10 +69,11 @@ const SectionWrapper = ({
             question={q.question}
             questionId={q.id}
             options={trueFalseOptions.options}
-            correctAnswer={q.answer}
             answerReference={q.answerReference}
             sectionType={sectionType}
             onAnswerChange={onAnswerChange}
+            isCorrect={validationResults[q.id]}
+            disabled={disabled}
           />
         ));
 
@@ -77,11 +83,11 @@ const SectionWrapper = ({
             key={index}
             question={q.question}
             questionId={q.id}
-            correctAnswer={q.answer as string}
             answerReference={q.answerReference}
             sectionType={sectionType}
             ansBoxSize={2}
             onAnswerChange={onAnswerChange}
+            disabled={disabled}
           />
         ));
 
@@ -91,11 +97,11 @@ const SectionWrapper = ({
             key={index}
             question={q.question}
             questionId={q.id}
-            correctAnswer={q.answer as string}
             answerReference={q.answerReference}
             sectionType={sectionType}
             ansBoxSize={6}
             onAnswerChange={onAnswerChange}
+            disabled={disabled}
           />
         ));
 
@@ -106,10 +112,11 @@ const SectionWrapper = ({
             question={q.question}
             questionId={q.id}
             options={q.options}
-            correctAnswer={q.answer as string}
             answerReference={q.answerReference}
             sectionType={sectionType}
             onAnswerChange={onAnswerChange}
+            isCorrect={validationResults[q.id]}
+            disabled={disabled}
           />
         ));
     }

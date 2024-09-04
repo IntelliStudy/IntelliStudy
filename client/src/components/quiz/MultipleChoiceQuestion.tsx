@@ -7,7 +7,6 @@ interface props {
   question: string;
   questionId: string;
   options: McqOption[];
-  correctAnswer: string | McqOption;
   sectionType: string;
   answerReference: AnswerReference;
   onAnswerChange: (
@@ -15,15 +14,18 @@ interface props {
     questionId: string,
     answer: string
   ) => void;
+  isCorrect: boolean | undefined;
+  disabled: boolean;
 }
 
 const MultipleChoiceQuestion = ({
   question,
   questionId,
   options,
-  correctAnswer,
   sectionType,
   onAnswerChange,
+  isCorrect,
+  disabled,
 }: props) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
@@ -39,12 +41,23 @@ const MultipleChoiceQuestion = ({
       </Title>
 
       {options.map((option, index) => {
+        const optionColour =
+          isCorrect === undefined
+            ? ''
+            : selectedOption === option.key && isCorrect
+            ? 'limeGreen'
+            : selectedOption === option.key && !isCorrect
+            ? 'red'
+            : '';
+
         return (
           <Radio.Group key={index}>
             <MultipleChoiceOption
               option={option}
               checked={selectedOption === option.key}
               setChecked={() => handleOptionChange(option.key)}
+              optionColour={optionColour}
+              disabled={disabled}
             />
           </Radio.Group>
         );

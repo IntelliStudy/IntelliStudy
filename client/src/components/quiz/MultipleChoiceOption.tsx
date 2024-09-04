@@ -5,9 +5,19 @@ interface props {
   option: McqOption;
   checked: boolean;
   setChecked: () => void;
+  optionColour: string;
+  disabled: boolean;
 }
 
-const MultipleChoiceOption = ({ option, checked, setChecked }: props) => {
+const MultipleChoiceOption = ({
+  option,
+  checked,
+  setChecked,
+  optionColour,
+  disabled,
+}: props) => {
+  const borderWidth = optionColour !== '' ? '2px' : '';
+
   return (
     <Radio.Card
       radius={6}
@@ -17,8 +27,11 @@ const MultipleChoiceOption = ({ option, checked, setChecked }: props) => {
       px="20px"
       my="7px"
       bg="white"
+      disabled={disabled}
       style={{
         boxShadow: 'rgba(0, 0, 0, 0.15) 0px 1px 3px 0px',
+        borderColor: optionColour,
+        borderWidth: borderWidth,
       }}
     >
       <Group wrap="nowrap" align="flex-start">

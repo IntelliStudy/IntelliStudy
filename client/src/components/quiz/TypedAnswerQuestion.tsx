@@ -5,7 +5,6 @@ import { AnswerReference } from '../../types/quiz';
 interface props {
   question: string;
   questionId: string;
-  correctAnswer: string;
   answerReference: AnswerReference;
   sectionType: string;
   ansBoxSize: number;
@@ -14,15 +13,16 @@ interface props {
     questionId: string,
     answer: string
   ) => void;
+  disabled: boolean;
 }
 
 const TypedAnswerQuestion = ({
   question,
   questionId,
-  correctAnswer,
   sectionType,
   ansBoxSize,
   onAnswerChange,
+  disabled,
 }: props) => {
   const [userAnswer, setUserAnswer] = useState<string>('');
 
@@ -41,6 +41,7 @@ const TypedAnswerQuestion = ({
         value={userAnswer}
         placeholder="Enter your answer"
         minRows={ansBoxSize}
+        disabled={disabled}
         onChange={(event) => handleAnswerChange(event.currentTarget.value)}
       />
     </Flex>
