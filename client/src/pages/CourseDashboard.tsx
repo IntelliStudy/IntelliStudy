@@ -1,4 +1,4 @@
-import { Divider, Flex, LoadingOverlay, Modal, Title } from '@mantine/core';
+import { Flex, LoadingOverlay, Modal, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { collection, getDocs } from 'firebase/firestore';
 import { useContext, useEffect, useState } from 'react';
@@ -38,7 +38,6 @@ const CourseDashboard = () => {
             id: docSnapshot.id,
             courseCode: data.courseCode,
             courseName: data.courseName,
-            filesRef: data.filesRef,
             userId: data.userId,
             createdAt: data.createdAt,
           };

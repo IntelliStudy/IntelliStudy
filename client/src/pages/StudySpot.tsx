@@ -36,7 +36,6 @@ const StudySpot = () => {
       courseName: courseName,
       courseCode: courseCode,
       userId: currentUser!.uid,
-      filesRef: [],
       createdAt: serverTimestamp(),
     });
     fetchData();
@@ -56,7 +55,6 @@ const StudySpot = () => {
         id: doc.id,
         courseName: doc.data().courseName,
         courseCode: doc.data().courseCode,
-        filesRef: doc.data().filesRef,
         userId: doc.data().userId,
         createdAt: doc.data().createdAt,
       }));

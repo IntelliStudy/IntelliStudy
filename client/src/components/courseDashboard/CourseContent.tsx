@@ -1,15 +1,9 @@
 import { Button, Container, Flex, Text, Title } from '@mantine/core';
-import {
-  collection,
-  doc,
-  onSnapshot,
-  orderBy,
-  query,
-} from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../App';
 import { db } from '../../firebase/firebase';
-import { Course, FileRef } from '../../types';
+import { Course, courseFile } from '../../types';
 import CourseContentFileUpload from './CourseContentFileUpload';
 
 interface props {
@@ -19,41 +13,63 @@ interface props {
 
 const CourseContent = ({ selectedCourse, modalOpen }: props) => {
   const { currentUser } = useContext(UserContext);
-  const [files, setFiles] = useState<FileRef[]>(selectedCourse.filesRef);
+  const [files, setFiles] = useState<courseFile[]>();
 
   // Switches files displayed based on current course
   useEffect(() => {
-    setFiles(selectedCourse.filesRef);
-  }, [selectedCourse]);
+    const fetchCourseFiles = async () => {
+      const fileCollectionRef = collection(
+        db,
+        `users/${currentUser?.uid}/courses/${selectedCourse.id}/files`
+      );
 
-  useEffect(() => {
-    const requestQuery = query(
-      collection(db, `users/${currentUser!.uid}/courses`)
-    );
-    console.log(requestQuery);
+      const filesSnapshot = await getDocs(fileCollectionRef);
 
-    const unsubscribe = onSnapshot(
-      requestQuery,
-      (snapshot: { docChanges: () => any[] }) => {
-        snapshot.docChanges().forEach((snapshot) => {
-          console.log('data', snapshot.doc.data());
+      // Map Firestore data to `Course` type
+      const files: courseFile[] = filesSnapshot.docs.map((docSnapshot) => {
+        const data = docSnapshot.data();
+        return {
+          fileName: data.fileName,
+          fileReference: data.fileReference,
+          processed: data.processed,
+          uploadedAt: data.uploadedAt,
+        };
+      });
 
-          if (snapshot.doc.data().loading === false) {
-            if (snapshot.doc.data().success === false) {
-              alert('Error fetching files');
-            } else {
-              setFiles(snapshot.doc.data().filesRef);
-              console.log(snapshot.doc.data().filesRef);
-            }
-          }
-        });
-      }
-    );
-
-    return () => {
-      unsubscribe();
+      setFiles(files);
     };
-  }, [currentUser]);
+
+    fetchCourseFiles();
+  }, [currentUser?.uid, selectedCourse]);
+
+  // useEffect(() => {
+  //   const requestQuery = query(
+  //     collection(db, `users/${currentUser!.uid}/courses`)
+  //   );
+  //   console.log(requestQuery);
+
+  //   const unsubscribe = onSnapshot(
+  //     requestQuery,
+  //     (snapshot: { docChanges: () => any[] }) => {
+  //       snapshot.docChanges().forEach((snapshot) => {
+  //         console.log('data', snapshot.doc.data());
+
+  //         if (snapshot.doc.data().loading === false) {
+  //           if (snapshot.doc.data().success === false) {
+  //             alert('Error fetching files');
+  //           } else {
+  //             setFiles(snapshot.doc.data().filesRef);
+  //             console.log(snapshot.doc.data().filesRef);
+  //           }
+  //         }
+  //       });
+  //     }
+  //   );
+
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, [currentUser]);
 
   return (
     <>

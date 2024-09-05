@@ -1,11 +1,6 @@
 import { Button, Flex, Text } from '@mantine/core';
 import { Dropzone, FileWithPath } from '@mantine/dropzone';
-import {
-  arrayUnion,
-  doc,
-  serverTimestamp,
-  updateDoc,
-} from 'firebase/firestore';
+import { addDoc, collection } from 'firebase/firestore';
 import { ref, uploadBytes } from 'firebase/storage';
 import { useContext, useState } from 'react';
 import { UserContext } from '../../App';
@@ -33,6 +28,7 @@ const CourseContentFileUpload = ({ selectedCourse }: props) => {
     try {
       // Map through the files array and create upload promises
       const uploadPromises = filesToUpload?.map(async (file) => {
+        // fIles ref from cloud storage
         const fileRef = ref(storage, `users/${currentUser?.uid}/${file.name}`);
 
         // Upload the file to Firebase Storage
@@ -40,17 +36,16 @@ const CourseContentFileUpload = ({ selectedCourse }: props) => {
         console.log('Uploaded a file:', file.name);
 
         // Update the Firestore document to append the file reference
-        const fileUploadRef = doc(
+        const fileUploadRef = collection(
           db,
-          `users/${currentUser?.uid}/courses/${selectedCourse.id}`
-          //   `users/${currentUser?.uid}/courses/${selectedCourse.id}`
+          `users/${currentUser?.uid}/courses/${selectedCourse.id}/files`
         );
-        await updateDoc(fileUploadRef, {
-          filesRef: arrayUnion({
-            fileName: fileRef.name,
-            fileReference: fileRef.fullPath,
-            // uploadedAt: serverTimestamp(),
-          }),
+
+        await addDoc(fileUploadRef, {
+          fileName: fileRef.name,
+          fileReference: fileRef.fullPath,
+          uploadedAt: new Date(),
+          processed: false,
         });
       });
 
