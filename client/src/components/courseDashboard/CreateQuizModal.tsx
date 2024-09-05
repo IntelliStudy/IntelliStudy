@@ -12,8 +12,9 @@ import {
   createTheme,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { QuestionType } from '../../constants';
 
 const theme = createTheme({
   cursorType: 'pointer',
@@ -52,31 +53,31 @@ const CreateQuizModal = ({ courseId }: props) => {
     initialValues: {
       questionTypes: [
         {
-          type: 'mcq',
+          type: QuestionType.mcq,
           label: 'Multiple Choice Questions',
           checked: false,
           count: 0,
         },
         {
-          type: 's_ans',
+          type: QuestionType.s_ans,
           label: 'Short Answer Questions',
           checked: false,
           count: 0,
         },
         {
-          type: 'tf',
+          type: QuestionType.tf,
           label: 'True and False Questions',
           checked: false,
           count: 0,
         },
         {
-          type: 'l_ans',
+          type: QuestionType.l_ans,
           label: 'Long Answer Questions',
           checked: false,
           count: 0,
         },
         {
-          type: 'fill_in_blank',
+          type: QuestionType.fill_in_blank,
           label: 'Fill in the Blank Questions',
           checked: false,
           count: 0,
@@ -86,6 +87,20 @@ const CreateQuizModal = ({ courseId }: props) => {
     },
   });
 
+  // State to track if the submit button should be disabled
+  const [isCreateDisabled, setIsCreateDisabled] = useState<boolean>(true);
+
+  // useEffect to track changes in questionTypes and update the state
+  useEffect(() => {
+    const isAnyChecked = quizForm.values.questionTypes.some(
+      (questionType) => questionType.checked
+    );
+
+    // Disable the submit button if no checkbox is selected
+    setIsCreateDisabled(!isAnyChecked);
+  }, [quizForm.values.questionTypes]);
+
+  // Function to render check boxes
   const questionTypeCheckBoxes = quizForm.values.questionTypes.map(
     (value, index) => (
       <Flex key={index} direction={'column'} mb={'10px'}>
@@ -105,12 +120,13 @@ const CreateQuizModal = ({ courseId }: props) => {
             placeholder="Number of questions"
             data={quizCountOptions}
             value={value.count.toString()}
-            onChange={(selectedValue) =>
+            onChange={(selectedValue) => {
               quizForm.setFieldValue(
                 `questionTypes.${index}.count`,
                 parseInt(selectedValue ?? '0', 10)
-              )
-            }
+              );
+            }}
+            error={quizForm.errors[`questionTypes.${index}.count`]}
           />
         )}
       </Flex>
@@ -147,10 +163,24 @@ const CreateQuizModal = ({ courseId }: props) => {
   // ));
 
   const handleSubmit = (values: (typeof quizForm)['values']) => {
-    console.log(values);
+    const errors: { [key: string]: string } = {}; // This allows dynamic string keys
 
-    // Redirect to quiz page after submission
-    navigate(`quiz`);
+    values.questionTypes.forEach((questionType, index) => {
+      if (questionType.checked && questionType.count <= 0) {
+        // Use a dynamic key for the error
+        errors[`questionTypes.${index}.count`] = 'Please select a value';
+      }
+    });
+
+    if (Object.keys(errors).length > 0) {
+      quizForm.setErrors(errors);
+    } else {
+      // Handle form submission
+      console.log('Form submitted successfully!', values);
+
+      // Redirect to quiz page after submission
+      navigate(`quiz`);
+    }
   };
 
   return (
@@ -181,6 +211,7 @@ const CreateQuizModal = ({ courseId }: props) => {
                     gradient={{ from: '#2FAED7', to: '#0280C7', deg: 180 }}
                     size="md"
                     radius={10}
+                    disabled={isCreateDisabled}
                   >
                     <Text size="20px" fw={600}>
                       Create

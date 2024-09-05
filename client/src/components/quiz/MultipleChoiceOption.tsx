@@ -5,7 +5,7 @@ interface props {
   option: McqOption;
   checked: boolean;
   setChecked: () => void;
-  optionColour: string;
+  optionColour: string | undefined;
   disabled: boolean;
 }
 
@@ -16,7 +16,7 @@ const MultipleChoiceOption = ({
   optionColour,
   disabled,
 }: props) => {
-  const borderWidth = optionColour !== '' ? '2px' : '';
+  const borderWidth = optionColour !== undefined ? '2px' : '';
 
   return (
     <Radio.Card

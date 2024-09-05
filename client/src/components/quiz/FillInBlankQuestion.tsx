@@ -1,6 +1,7 @@
 import { Flex, Select, Title } from '@mantine/core';
 import { useState } from 'react';
 import { AnswerReference } from '../../types/quiz';
+import AnswerReferenceBox from './AnswerReferenceBox';
 
 interface props {
   question: string;
@@ -25,6 +26,7 @@ const FillInBlankQuestion = ({
   onAnswerChange,
   isCorrect,
   disabled,
+  answerReference,
 }: props) => {
   const [selectedOption, setSelectedOption] = useState<string | null>('');
 
@@ -67,6 +69,13 @@ const FillInBlankQuestion = ({
           {questionParts[1]}
         </Flex>
       </Title>
+
+      {isCorrect === false && (
+        <AnswerReferenceBox
+          file={answerReference.fileName}
+          page={answerReference.pageNumber}
+        />
+      )}
     </Flex>
   );
 };

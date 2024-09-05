@@ -1,6 +1,6 @@
 export type AnswerReference = {
   fileName: string;
-  pageNumber: number;
+  pageNumber: string;
 };
 
 export type McqOption = {

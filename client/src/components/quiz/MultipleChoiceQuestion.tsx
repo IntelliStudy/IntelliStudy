@@ -1,6 +1,7 @@
 import { Flex, Radio, Title } from '@mantine/core';
 import { useState } from 'react';
 import { AnswerReference, McqOption } from '../../types/quiz';
+import AnswerReferenceBox from './AnswerReferenceBox';
 import MultipleChoiceOption from './MultipleChoiceOption';
 
 interface props {
@@ -14,6 +15,7 @@ interface props {
     questionId: string,
     answer: string
   ) => void;
+  correctAnswer: McqOption;
   isCorrect: boolean | undefined;
   disabled: boolean;
 }
@@ -23,7 +25,9 @@ const MultipleChoiceQuestion = ({
   questionId,
   options,
   sectionType,
+  answerReference,
   onAnswerChange,
+  correctAnswer,
   isCorrect,
   disabled,
 }: props) => {
@@ -43,12 +47,14 @@ const MultipleChoiceQuestion = ({
       {options.map((option, index) => {
         const optionColour =
           isCorrect === undefined
-            ? ''
-            : selectedOption === option.key && isCorrect
+            ? undefined
+            : selectedOption === option.key
+            ? isCorrect
+              ? 'limeGreen'
+              : 'red'
+            : option.key === correctAnswer.key
             ? 'limeGreen'
-            : selectedOption === option.key && !isCorrect
-            ? 'red'
-            : '';
+            : undefined;
 
         return (
           <Radio.Group key={index}>
@@ -62,6 +68,13 @@ const MultipleChoiceQuestion = ({
           </Radio.Group>
         );
       })}
+
+      {isCorrect === false && (
+        <AnswerReferenceBox
+          file={answerReference.fileName}
+          page={answerReference.pageNumber}
+        />
+      )}
     </Flex>
   );
 };

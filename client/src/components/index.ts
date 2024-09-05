@@ -9,17 +9,22 @@ import CourseContent from './courseDashboard/CourseContent';
 import CourseContentFileUpload from './courseDashboard/CourseContentFileUpload';
 import CourseDashboardSidebar from './courseDashboard/CourseDashboardSidebar';
 import CreateQuizModal from './courseDashboard/CreateQuizModal';
+import AnswerReferenceBox from './quiz/AnswerReferenceBox';
+import FillInBlankQuestion from './quiz/FillInBlankQuestion';
 import MultipleChoiceOption from './quiz/MultipleChoiceOption';
 import MultipleChoiceQuestion from './quiz/MultipleChoiceQuestion';
 import SectionWrapper from './quiz/SectionWrapper';
+import TypedAnswerQuestion from './quiz/TypedAnswerQuestion';
 
 export {
   AddCourseCard,
+  AnswerReferenceBox,
   CourseCard,
   CourseContent,
   CourseContentFileUpload,
   CourseDashboardSidebar,
   CreateQuizModal,
+  FillInBlankQuestion,
   GoBackArrow,
   GoogleButton,
   HomePageFeature,
@@ -28,4 +33,5 @@ export {
   Navbar,
   Quiz,
   SectionWrapper,
+  TypedAnswerQuestion,
 };
