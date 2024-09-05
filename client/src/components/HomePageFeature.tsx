@@ -1,4 +1,4 @@
-import { Flex, Text, Title } from '@mantine/core';
+import { Flex, Text, Title } from "@mantine/core";
 
 interface HomePageFeatureProps {
   title: string;
@@ -8,11 +8,11 @@ interface HomePageFeatureProps {
 const HomePageFeature = ({ title, text }: HomePageFeatureProps) => {
   return (
     <>
-      <Flex direction={'column'} align={'center'} maw={'50%'}>
-        <Title order={3} size={'28px'}>
+      <Flex direction={"column"} align={"center"} maw={"50%"}>
+        <Title order={3} size={"28px"}>
           {title}
         </Title>
-        <Text size="24px" ta={'center'}>
+        <Text size="24px" ta={"center"}>
           {text}
         </Text>
       </Flex>

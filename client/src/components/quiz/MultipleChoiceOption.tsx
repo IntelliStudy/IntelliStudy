@@ -1,5 +1,5 @@
-import { Group, Radio, Text } from '@mantine/core';
-import { McqOption } from '../../types/quiz';
+import { Group, Radio, Text } from "@mantine/core";
+import { McqOption } from "../../types/quiz";
 
 interface props {
   option: McqOption;
@@ -16,7 +16,7 @@ const MultipleChoiceOption = ({
   optionColour,
   disabled,
 }: props) => {
-  const borderWidth = optionColour !== undefined ? '2px' : '';
+  const borderWidth = optionColour !== undefined ? "2px" : "";
 
   return (
     <Radio.Card
@@ -29,7 +29,7 @@ const MultipleChoiceOption = ({
       bg="white"
       disabled={disabled}
       style={{
-        boxShadow: 'rgba(0, 0, 0, 0.15) 0px 1px 3px 0px',
+        boxShadow: "rgba(0, 0, 0, 0.15) 0px 1px 3px 0px",
         borderColor: optionColour,
         borderWidth: borderWidth,
       }}

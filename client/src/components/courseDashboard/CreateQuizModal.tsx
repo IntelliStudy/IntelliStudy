@@ -10,28 +10,28 @@ import {
   Text,
   Title,
   createTheme,
-} from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { QuestionType } from '../../constants';
+} from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { QuestionType } from "../../constants";
 
 const theme = createTheme({
-  cursorType: 'pointer',
+  cursorType: "pointer",
   components: {
     Checkbox: {
       styles: () => ({
         label: {
-          fontSize: '16px',
-          fontWeight: '500',
+          fontSize: "16px",
+          fontWeight: "500",
         },
       }),
     },
     Select: {
       styles: () => ({
         root: {
-          width: '28%',
-          paddingTop: '7px',
+          width: "28%",
+          paddingTop: "7px",
         },
       }),
     },
@@ -54,31 +54,31 @@ const CreateQuizModal = ({ courseId }: props) => {
       questionTypes: [
         {
           type: QuestionType.mcq,
-          label: 'Multiple Choice Questions',
+          label: "Multiple Choice Questions",
           checked: false,
           count: 0,
         },
         {
           type: QuestionType.s_ans,
-          label: 'Short Answer Questions',
+          label: "Short Answer Questions",
           checked: false,
           count: 0,
         },
         {
           type: QuestionType.tf,
-          label: 'True and False Questions',
+          label: "True and False Questions",
           checked: false,
           count: 0,
         },
         {
           type: QuestionType.l_ans,
-          label: 'Long Answer Questions',
+          label: "Long Answer Questions",
           checked: false,
           count: 0,
         },
         {
           type: QuestionType.fill_in_blank,
-          label: 'Fill in the Blank Questions',
+          label: "Fill in the Blank Questions",
           checked: false,
           count: 0,
         },
@@ -103,7 +103,7 @@ const CreateQuizModal = ({ courseId }: props) => {
   // Function to render check boxes
   const questionTypeCheckBoxes = quizForm.values.questionTypes.map(
     (value, index) => (
-      <Flex key={index} direction={'column'} mb={'10px'}>
+      <Flex key={index} direction={"column"} mb={"10px"}>
         <Checkbox
           key={index}
           label={value.label}
@@ -123,7 +123,7 @@ const CreateQuizModal = ({ courseId }: props) => {
             onChange={(selectedValue) => {
               quizForm.setFieldValue(
                 `questionTypes.${index}.count`,
-                parseInt(selectedValue ?? '0', 10)
+                parseInt(selectedValue ?? "0", 10)
               );
             }}
             error={quizForm.errors[`questionTypes.${index}.count`]}
@@ -162,13 +162,13 @@ const CreateQuizModal = ({ courseId }: props) => {
   //   </Flex>
   // ));
 
-  const handleSubmit = (values: (typeof quizForm)['values']) => {
+  const handleSubmit = (values: (typeof quizForm)["values"]) => {
     const errors: { [key: string]: string } = {}; // This allows dynamic string keys
 
     values.questionTypes.forEach((questionType, index) => {
       if (questionType.checked && questionType.count <= 0) {
         // Use a dynamic key for the error
-        errors[`questionTypes.${index}.count`] = 'Please select a value';
+        errors[`questionTypes.${index}.count`] = "Please select a value";
       }
     });
 
@@ -176,7 +176,7 @@ const CreateQuizModal = ({ courseId }: props) => {
       quizForm.setErrors(errors);
     } else {
       // Handle form submission
-      console.log('Form submitted successfully!', values);
+      console.log("Form submitted successfully!", values);
 
       // Redirect to quiz page after submission
       navigate(`quiz`);
@@ -187,15 +187,15 @@ const CreateQuizModal = ({ courseId }: props) => {
     <>
       <MantineProvider theme={theme}>
         <Container>
-          <Divider size={'sm'} w={'96%'} mt={0} />
+          <Divider size={"sm"} w={"96%"} mt={0} />
 
-          <Flex direction={'column'} pt={'25px'}>
-            <Title order={3} fw={500} mb={'20px'}>
+          <Flex direction={"column"} pt={"25px"}>
+            <Title order={3} fw={500} mb={"20px"}>
               Question Format
             </Title>
 
             <form onSubmit={quizForm.onSubmit(handleSubmit)}>
-              <Stack gap={'md'}>
+              <Stack gap={"md"}>
                 {questionTypeCheckBoxes}
 
                 {/* <Title order={3} fw={500}>
@@ -204,11 +204,11 @@ const CreateQuizModal = ({ courseId }: props) => {
 
                 {/* {durationCheckBoxes} */}
 
-                <Flex justify={'right'} mt={'20px'} mb={'20px'} mr={'15px'}>
+                <Flex justify={"right"} mt={"20px"} mb={"20px"} mr={"15px"}>
                   <Button
                     type="submit"
                     variant="gradient"
-                    gradient={{ from: '#2FAED7', to: '#0280C7', deg: 180 }}
+                    gradient={{ from: "#2FAED7", to: "#0280C7", deg: 180 }}
                     size="md"
                     radius={10}
                     disabled={isCreateDisabled}

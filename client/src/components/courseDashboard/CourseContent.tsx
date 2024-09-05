@@ -1,10 +1,10 @@
-import { Button, Container, Flex, Text, Title } from '@mantine/core';
-import { collection, getDocs } from 'firebase/firestore';
-import { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../../App';
-import { db } from '../../firebase/firebase';
-import { Course, courseFile } from '../../types';
-import CourseContentFileUpload from './CourseContentFileUpload';
+import { Button, Container, Flex, Text, Title } from "@mantine/core";
+import { collection, getDocs } from "firebase/firestore";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../App";
+import { db } from "../../firebase/firebase";
+import { Course, courseFile } from "../../types";
+import CourseContentFileUpload from "./CourseContentFileUpload";
 
 interface props {
   selectedCourse: Course;
@@ -73,24 +73,24 @@ const CourseContent = ({ selectedCourse, modalOpen }: props) => {
 
   return (
     <>
-      <Container fluid ml={'70px'} mt={'60px'}>
-        <Flex direction={'row'} gap={'400px'}>
-          <Flex direction={'column'} w={'500px'}>
-            <Title order={1} fw={800} fz={'44px'}>
+      <Container fluid ml={"70px"} mt={"60px"}>
+        <Flex direction={"row"} gap={"400px"}>
+          <Flex direction={"column"} w={"500px"}>
+            <Title order={1} fw={800} fz={"44px"}>
               {selectedCourse.courseCode}
             </Title>
-            <Title order={3} fw={500} fz={'30px'}>
+            <Title order={3} fw={500} fz={"30px"}>
               {selectedCourse.courseName}
             </Title>
-            <Title order={2} fz={'28px'} fw={500} mt={'75px'} mb={'15px'}>
+            <Title order={2} fz={"28px"} fw={500} mt={"75px"} mb={"15px"}>
               Upload
             </Title>
 
             <CourseContentFileUpload selectedCourse={selectedCourse} />
           </Flex>
 
-          <Flex direction={'column'} mt={'180px'}>
-            <Title order={2} fz={'28px'} fw={500}>
+          <Flex direction={"column"} mt={"180px"}>
+            <Title order={2} fz={"28px"} fw={500}>
               Files Uploaded
             </Title>
             {files &&
@@ -100,11 +100,11 @@ const CourseContent = ({ selectedCourse, modalOpen }: props) => {
           </Flex>
         </Flex>
 
-        <Flex direction={'row'} mt={'250px'}>
+        <Flex direction={"row"} mt={"250px"}>
           <Button
-            maw={'250px'}
+            maw={"250px"}
             variant="gradient"
-            gradient={{ from: '#2FAED7', to: '#0280C7', deg: 180 }}
+            gradient={{ from: "#2FAED7", to: "#0280C7", deg: 180 }}
             size="xl"
             radius={10}
             onClick={modalOpen}
@@ -115,10 +115,10 @@ const CourseContent = ({ selectedCourse, modalOpen }: props) => {
           </Button>
 
           <Button
-            ml={'100px'}
-            maw={'340px'}
+            ml={"100px"}
+            maw={"340px"}
             variant="gradient"
-            gradient={{ from: '#2FAED7', to: '#0280C7', deg: 180 }}
+            gradient={{ from: "#2FAED7", to: "#0280C7", deg: 180 }}
             size="xl"
             radius={10}
           >

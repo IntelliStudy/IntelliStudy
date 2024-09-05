@@ -20,7 +20,8 @@
     "firebase-functions": "^4.3.1",
     "firestore": "^1.1.6",
     "openai": "^4.28.4",
-    "pdf-parse": "^1.1.1"
+    "pdf-parse": "^1.1.1",
+    "prettier": "^3.3.3"
   },
   "devDependencies": {
     "@types/busboy": "^1.5.3",

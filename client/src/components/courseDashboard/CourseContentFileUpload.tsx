@@ -1,11 +1,11 @@
-import { Button, Flex, Text } from '@mantine/core';
-import { Dropzone, FileWithPath } from '@mantine/dropzone';
-import { addDoc, collection } from 'firebase/firestore';
-import { ref, uploadBytes } from 'firebase/storage';
-import { useContext, useState } from 'react';
-import { UserContext } from '../../App';
-import { db, storage } from '../../firebase/firebase';
-import { Course } from '../../types';
+import { Button, Flex, Text } from "@mantine/core";
+import { Dropzone, FileWithPath } from "@mantine/dropzone";
+import { addDoc, collection } from "firebase/firestore";
+import { ref, uploadBytes } from "firebase/storage";
+import { useContext, useState } from "react";
+import { UserContext } from "../../App";
+import { db, storage } from "../../firebase/firebase";
+import { Course } from "../../types";
 
 interface props {
   selectedCourse: Course;
@@ -33,7 +33,7 @@ const CourseContentFileUpload = ({ selectedCourse }: props) => {
 
         // Upload the file to Firebase Storage
         await uploadBytes(fileRef, file);
-        console.log('Uploaded a file:', file.name);
+        console.log("Uploaded a file:", file.name);
 
         // Update the Firestore document to append the file reference
         const fileUploadRef = collection(
@@ -54,25 +54,25 @@ const CourseContentFileUpload = ({ selectedCourse }: props) => {
 
       // Clear the file state after all uploads and updates are complete
       setFilesToUpload([]);
-      console.log('All files uploaded and state cleared');
+      console.log("All files uploaded and state cleared");
     } catch (error) {
-      console.error('Error during file upload or Firestore update:', error);
+      console.error("Error during file upload or Firestore update:", error);
     }
   };
 
   return (
     <>
-      <Flex direction={'column'}>
-        <Dropzone onDrop={handleDrop} w={'350px'}>
+      <Flex direction={"column"}>
+        <Dropzone onDrop={handleDrop} w={"350px"}>
           <Text ta="center">Drop your files here</Text>
         </Dropzone>
         {previews}
         <Button
-          mt={'30px'}
-          px={'10px'}
+          mt={"30px"}
+          px={"10px"}
           color="#26B0DC"
           radius={5}
-          maw={'80px'}
+          maw={"80px"}
           onClick={handleUpload}
         >
           <Text size="17px" fw={600}>

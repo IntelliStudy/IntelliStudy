@@ -1,6 +1,6 @@
-import { Flex, Textarea, Title } from '@mantine/core';
-import { useState } from 'react';
-import { AnswerReference } from '../../types/quiz';
+import { Flex, Textarea, Title } from "@mantine/core";
+import { useState } from "react";
+import { AnswerReference } from "../../types/quiz";
 
 interface props {
   question: string;
@@ -24,7 +24,7 @@ const TypedAnswerQuestion = ({
   onAnswerChange,
   disabled,
 }: props) => {
-  const [userAnswer, setUserAnswer] = useState<string>('');
+  const [userAnswer, setUserAnswer] = useState<string>("");
 
   const handleAnswerChange = (answer: string) => {
     setUserAnswer(answer);
@@ -32,7 +32,7 @@ const TypedAnswerQuestion = ({
   };
   return (
     <Flex direction="column" mb="30px">
-      <Title order={2} fw={500} fz={'22px'} pb={'10px'}>
+      <Title order={2} fw={500} fz={"22px"} pb={"10px"}>
         {question}
       </Title>
 

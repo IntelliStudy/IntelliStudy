@@ -1,8 +1,8 @@
-import { Flex, Radio, Title } from '@mantine/core';
-import { useState } from 'react';
-import { AnswerReference, McqOption } from '../../types/quiz';
-import AnswerReferenceBox from './AnswerReferenceBox';
-import MultipleChoiceOption from './MultipleChoiceOption';
+import { Flex, Radio, Title } from "@mantine/core";
+import { useState } from "react";
+import { AnswerReference, McqOption } from "../../types/quiz";
+import AnswerReferenceBox from "./AnswerReferenceBox";
+import MultipleChoiceOption from "./MultipleChoiceOption";
 
 interface props {
   question: string;
@@ -40,7 +40,7 @@ const MultipleChoiceQuestion = ({
 
   return (
     <Flex direction="column" mb="30px">
-      <Title order={2} fw={500} fz={'22px'} pb={'10px'}>
+      <Title order={2} fw={500} fz={"22px"} pb={"10px"}>
         {question}
       </Title>
 
@@ -49,12 +49,12 @@ const MultipleChoiceQuestion = ({
           isCorrect === undefined
             ? undefined
             : selectedOption === option.key
-            ? isCorrect
-              ? 'limeGreen'
-              : 'red'
-            : option.key === correctAnswer.key
-            ? 'limeGreen'
-            : undefined;
+              ? isCorrect
+                ? "limeGreen"
+                : "red"
+              : option.key === correctAnswer.key
+                ? "limeGreen"
+                : undefined;
 
         return (
           <Radio.Group key={index}>

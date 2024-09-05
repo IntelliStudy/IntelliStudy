@@ -1,4 +1,4 @@
-import { Container, Title } from '@mantine/core';
+import { Container, Title } from "@mantine/core";
 import {
   FillInBlankQuestionType,
   LongAnswerQuestionType,
@@ -6,10 +6,10 @@ import {
   ShortAnswerQuestionType,
   TrueFalseQuestionType,
   ValidationResults,
-} from '../../types/quiz';
-import FillInBlankQuestion from './FillInBlankQuestion';
-import MultipleChoiceQuestion from './MultipleChoiceQuestion';
-import TypedAnswerQuestion from './TypedAnswerQuestion';
+} from "../../types/quiz";
+import FillInBlankQuestion from "./FillInBlankQuestion";
+import MultipleChoiceQuestion from "./MultipleChoiceQuestion";
+import TypedAnswerQuestion from "./TypedAnswerQuestion";
 
 interface props {
   sectionType: string;
@@ -40,14 +40,14 @@ const SectionWrapper = ({
   // True or false options
   const trueFalseOptions = {
     options: [
-      { key: 'A', value: 'True' },
-      { key: 'B', value: 'False' },
+      { key: "A", value: "True" },
+      { key: "B", value: "False" },
     ],
   };
 
   const renderQuestions = () => {
     switch (sectionType) {
-      case 'mcq':
+      case "mcq":
         return questions.map((q, index) => (
           <MultipleChoiceQuestion
             key={index}
@@ -63,7 +63,7 @@ const SectionWrapper = ({
           />
         ));
 
-      case 'tf':
+      case "tf":
         return questions.map((q, index) => (
           <MultipleChoiceQuestion
             key={index}
@@ -79,7 +79,7 @@ const SectionWrapper = ({
           />
         ));
 
-      case 's_ans':
+      case "s_ans":
         return questions.map((q, index) => (
           <TypedAnswerQuestion
             key={index}
@@ -93,7 +93,7 @@ const SectionWrapper = ({
           />
         ));
 
-      case 'l_ans':
+      case "l_ans":
         return questions.map((q, index) => (
           <TypedAnswerQuestion
             key={index}
@@ -107,7 +107,7 @@ const SectionWrapper = ({
           />
         ));
 
-      case 'fill_in_blank':
+      case "fill_in_blank":
         return questions.map((q, index) => (
           <FillInBlankQuestion
             key={index}
@@ -127,7 +127,7 @@ const SectionWrapper = ({
   return (
     <>
       <Container fluid w="57%" py="45px" ml="5%">
-        <Title order={2} fw={700} fz={'30px'} pb="35px">
+        <Title order={2} fw={700} fz={"30px"} pb="35px">
           {questions.length > 0 && sectionLabel}
         </Title>
         {renderQuestions()}

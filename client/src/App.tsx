@@ -1,14 +1,14 @@
-import { LoadingOverlay, MantineProvider } from '@mantine/core';
-import '@mantine/core/styles.css';
-import '@mantine/notifications/styles.css';
-import { User, onAuthStateChanged } from 'firebase/auth';
-import { createContext, useEffect, useState } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
-import './App.css';
-import { Navbar, Quiz } from './components';
-import { getCurrentlySignedInUserHandler } from './firebase/auth';
-import { auth } from './firebase/firebase';
-import { AuthPage, CourseDashboard, Home, Profile, StudySpot } from './pages';
+import { LoadingOverlay, MantineProvider } from "@mantine/core";
+import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
+import { User, onAuthStateChanged } from "firebase/auth";
+import { createContext, useEffect, useState } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
+import "./App.css";
+import { Navbar, Quiz } from "./components";
+import { getCurrentlySignedInUserHandler } from "./firebase/auth";
+import { auth } from "./firebase/firebase";
+import { AuthPage, CourseDashboard, Home, Profile, StudySpot } from "./pages";
 
 // Context for managing user
 export const UserContext = createContext<{
@@ -23,7 +23,7 @@ export const UserContext = createContext<{
 
 function useDisplayNavbar() {
   const location = useLocation();
-  return location.pathname !== '/login';
+  return location.pathname !== "/login";
 }
 
 function App() {
@@ -54,13 +54,13 @@ function App() {
             <LoadingOverlay
               visible={true}
               zIndex={1000}
-              overlayProps={{ radius: 'sm', blur: 2 }}
+              overlayProps={{ radius: "sm", blur: 2 }}
             />
           )}
           <LoadingOverlay
             visible={isAuthLoading}
             zIndex={1000}
-            overlayProps={{ radius: 'sm', blur: 2 }}
+            overlayProps={{ radius: "sm", blur: 2 }}
           />
 
           <Routes>

@@ -1,6 +1,6 @@
-import { Box, Button, Center, Paper, Text, Title } from '@mantine/core';
-import { Link } from 'react-router-dom';
-import classes from './courseCard.module.css';
+import { Box, Button, Center, Paper, Text, Title } from "@mantine/core";
+import { Link } from "react-router-dom";
+import classes from "./courseCard.module.css";
 
 type courseCardProps = {
   courseId: string;

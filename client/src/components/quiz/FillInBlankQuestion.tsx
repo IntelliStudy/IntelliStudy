@@ -1,7 +1,7 @@
-import { Flex, Select, Title } from '@mantine/core';
-import { useState } from 'react';
-import { AnswerReference } from '../../types/quiz';
-import AnswerReferenceBox from './AnswerReferenceBox';
+import { Flex, Select, Title } from "@mantine/core";
+import { useState } from "react";
+import { AnswerReference } from "../../types/quiz";
+import AnswerReferenceBox from "./AnswerReferenceBox";
 
 interface props {
   question: string;
@@ -28,29 +28,29 @@ const FillInBlankQuestion = ({
   disabled,
   answerReference,
 }: props) => {
-  const [selectedOption, setSelectedOption] = useState<string | null>('');
+  const [selectedOption, setSelectedOption] = useState<string | null>("");
 
   const handleOptionChange = (optionKey: string) => {
     setSelectedOption(optionKey);
     onAnswerChange(sectionType, questionId, optionKey);
   };
 
-  const questionParts = question.split('***');
+  const questionParts = question.split("***");
 
   const optionColour =
     isCorrect === undefined
-      ? ''
+      ? ""
       : selectedOption && isCorrect
-      ? 'limeGreen'
-      : selectedOption && !isCorrect
-      ? 'red'
-      : '';
+        ? "limeGreen"
+        : selectedOption && !isCorrect
+          ? "red"
+          : "";
 
-  const borderWidth = optionColour !== '' ? '2px' : '';
+  const borderWidth = optionColour !== "" ? "2px" : "";
 
   return (
     <Flex direction="column" mb="30px">
-      <Title order={2} fw={500} fz={'22px'} pb={'10px'}>
+      <Title order={2} fw={500} fz={"22px"} pb={"10px"}>
         <Flex direction="row" align="center">
           {questionParts[0]}
           <Select
@@ -63,7 +63,7 @@ const FillInBlankQuestion = ({
             style={{
               borderColor: optionColour,
               borderWidth: borderWidth,
-              borderRadius: '6px',
+              borderRadius: "6px",
             }}
           />
           {questionParts[1]}
