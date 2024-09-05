@@ -26,9 +26,9 @@ import { Course } from '../types';
 const StudySpot = () => {
   const { currentUser } = useContext(UserContext);
   const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(true);
   const [courseName, setCourseName] = useState<string>('');
   const [courseCode, setCourseCode] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(true);
   const [modalOpened, setModalOpened] = useState<boolean>(false);
 
   const handleAddCourseSubmit = () => {
@@ -72,25 +72,21 @@ const StudySpot = () => {
     fetchData();
   }, [currentUser]);
 
-  console.log('course data', courses);
   return (
     <>
-      {!currentUser && (
-        <LoadingOverlay
-          visible={true}
-          zIndex={1000}
-          overlayProps={{ radius: 'sm', blur: 2 }}
-        />
-      )}
       <LoadingOverlay
         visible={loading}
         zIndex={1000}
-        overlayProps={{ radius: 'sm', blur: 2 }}
+        overlayProps={{ radius: 'sm', blur: 20 }}
       />
       <Modal
         opened={modalOpened}
         onClose={() => setModalOpened(false)}
-        title="Add Course"
+        title={
+          <Title order={4} fw={600}>
+            Add Course
+          </Title>
+        }
         radius="md"
         centered
       >

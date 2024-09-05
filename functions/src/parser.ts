@@ -1,6 +1,6 @@
 import { Storage } from '@google-cloud/storage';
 import { onDocumentWritten } from 'firebase-functions/v2/firestore';
-import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import OpenAI from 'openai';
 import pdf from 'pdf-parse';
 import { db } from '../../client/src/firebase/firebase';
