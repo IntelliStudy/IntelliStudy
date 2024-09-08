@@ -68,7 +68,7 @@ function App() {
             <Route path="/login" element={<AuthPage />} />
             <Route path="/studyspot" element={<StudySpot />} />
             <Route path="/course/:courseId" element={<CourseDashboard />} />
-            <Route path="/course/:courseId/quiz" element={<Quiz />} />
+            <Route path="/course/:courseId/quiz/:quizId" element={<Quiz />} />
             <Route path="/profile" element={<Profile />} />
           </Routes>
         </UserContext.Provider>

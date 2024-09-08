@@ -12,9 +12,12 @@ import {
   createTheme,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { addDoc, collection } from "firebase/firestore";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../App";
 import { QuestionType } from "../../constants";
+import { db } from "../../firebase/firebase";
 
 const theme = createTheme({
   cursorType: "pointer",
@@ -43,7 +46,10 @@ interface props {
 }
 
 const CreateQuizModal = ({ courseId }: props) => {
-  const quizCountOptions = Array.from({ length: 10 }, (_, i) =>
+  // Current user context
+  const { currentUser } = useContext(UserContext);
+
+  const quizCountOptions = Array.from({ length: 5 }, (_, i) =>
     (i + 1).toString()
   );
 
@@ -162,7 +168,7 @@ const CreateQuizModal = ({ courseId }: props) => {
   //   </Flex>
   // ));
 
-  const handleSubmit = (values: (typeof quizForm)["values"]) => {
+  const handleSubmit = async (values: (typeof quizForm)["values"]) => {
     const errors: { [key: string]: string } = {}; // This allows dynamic string keys
 
     values.questionTypes.forEach((questionType, index) => {
@@ -178,8 +184,16 @@ const CreateQuizModal = ({ courseId }: props) => {
       // Handle form submission
       console.log("Form submitted successfully!", values);
 
+      // Create quizzes collection and create document for quiz
+      const quizzesCollection = collection(
+        db,
+        `users/${currentUser?.uid}/courses/${courseId}/quizzes`
+      );
+
+      const quizzesDoc = await addDoc(quizzesCollection, {});
+
       // Redirect to quiz page after submission
-      navigate(`quiz`);
+      navigate(`quiz/${quizzesDoc.id}`);
     }
   };
 
