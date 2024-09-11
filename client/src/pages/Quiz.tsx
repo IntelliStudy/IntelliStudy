@@ -156,54 +156,66 @@ const Quiz = () => {
     <>
       <form onSubmit={handleQuizSubmit}>
         {/* MCQ */}
-        <SectionWrapper
-          sectionType={"mcq"}
-          sectionLabel={QuestionType.mcq}
-          questions={quiz.quiz.questions.mcq}
-          onAnswerChange={handleAnswerChange}
-          validationResults={validationResults}
-          disabled={disabled}
-        />
+        {quiz.quiz.questions.mcq.length > 0 && (
+          <SectionWrapper
+            sectionType={"mcq"}
+            sectionLabel={QuestionType.mcq}
+            questions={quiz.quiz.questions.mcq}
+            onAnswerChange={handleAnswerChange}
+            validationResults={validationResults}
+            disabled={disabled}
+          />
+        )}
 
         {/* TF */}
-        <SectionWrapper
-          sectionType={"tf"}
-          sectionLabel={QuestionType.tf}
-          questions={quiz.quiz.questions.tf}
-          onAnswerChange={handleAnswerChange}
-          validationResults={validationResults}
-          disabled={disabled}
-        />
+        {quiz.quiz.questions.tf.length > 0 && (
+          <SectionWrapper
+            sectionType={"tf"}
+            sectionLabel={QuestionType.tf}
+            questions={quiz.quiz.questions.tf}
+            onAnswerChange={handleAnswerChange}
+            validationResults={validationResults}
+            disabled={disabled}
+          />
+        )}
 
         {/* SHORT ANS */}
-        <SectionWrapper
-          sectionType={"s_ans"}
-          sectionLabel={QuestionType.s_ans}
-          questions={quiz.quiz.questions.s_ans}
-          onAnswerChange={handleAnswerChange}
-          validationResults={validationResults}
-          disabled={disabled}
-        />
+
+        {quiz.quiz.questions.s_ans.length > 0 && (
+          <SectionWrapper
+            sectionType={"s_ans"}
+            sectionLabel={QuestionType.s_ans}
+            questions={quiz.quiz.questions.s_ans}
+            onAnswerChange={handleAnswerChange}
+            validationResults={validationResults}
+            disabled={disabled}
+          />
+        )}
 
         {/* LONG ANS */}
-        <SectionWrapper
-          sectionType={"l_ans"}
-          sectionLabel={QuestionType.l_ans}
-          questions={quiz.quiz.questions.l_ans}
-          onAnswerChange={handleAnswerChange}
-          validationResults={validationResults}
-          disabled={disabled}
-        />
+        {quiz.quiz.questions.l_ans.length > 0 && (
+          <SectionWrapper
+            sectionType={"l_ans"}
+            sectionLabel={QuestionType.l_ans}
+            questions={quiz.quiz.questions.l_ans}
+            onAnswerChange={handleAnswerChange}
+            validationResults={validationResults}
+            disabled={disabled}
+          />
+        )}
 
         {/* FILL IN BLANK */}
-        <SectionWrapper
-          sectionType={"fill_in_blank"}
-          sectionLabel={QuestionType.fill_in_blank}
-          questions={quiz.quiz.questions.fill_in_blank}
-          onAnswerChange={handleAnswerChange}
-          validationResults={validationResults}
-          disabled={disabled}
-        />
+
+        {quiz.quiz.questions.fill_in_blank.length > 0 && (
+          <SectionWrapper
+            sectionType={"fill_in_blank"}
+            sectionLabel={QuestionType.fill_in_blank}
+            questions={quiz.quiz.questions.fill_in_blank}
+            onAnswerChange={handleAnswerChange}
+            validationResults={validationResults}
+            disabled={disabled}
+          />
+        )}
 
         <Button type="submit" w={"90px"} ml="115px" mb="70px">
           Submit
