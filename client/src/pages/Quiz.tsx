@@ -1,6 +1,6 @@
-import { Button } from "@mantine/core";
+import { Button, Center } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { UserContext } from "../App";
@@ -156,9 +156,10 @@ const Quiz = () => {
     <>
       <form onSubmit={handleQuizSubmit}>
         {/* MCQ */}
+
         <SectionWrapper
           sectionType={"mcq"}
-          sectionLabel={QuestionType.mcq}
+          sectionLabel={"Multiple Choice Questions"}
           questions={quiz.quiz.questions.mcq}
           onAnswerChange={handleAnswerChange}
           validationResults={validationResults}
@@ -168,7 +169,7 @@ const Quiz = () => {
         {/* TF */}
         <SectionWrapper
           sectionType={"tf"}
-          sectionLabel={QuestionType.tf}
+          sectionLabel={"True or False Questions"}
           questions={quiz.quiz.questions.tf}
           onAnswerChange={handleAnswerChange}
           validationResults={validationResults}
@@ -178,7 +179,7 @@ const Quiz = () => {
         {/* SHORT ANS */}
         <SectionWrapper
           sectionType={"s_ans"}
-          sectionLabel={QuestionType.s_ans}
+          sectionLabel={"Short Answer Questions"}
           questions={quiz.quiz.questions.s_ans}
           onAnswerChange={handleAnswerChange}
           validationResults={validationResults}
@@ -188,7 +189,7 @@ const Quiz = () => {
         {/* LONG ANS */}
         <SectionWrapper
           sectionType={"l_ans"}
-          sectionLabel={QuestionType.l_ans}
+          sectionLabel={"Long Answer Questions"}
           questions={quiz.quiz.questions.l_ans}
           onAnswerChange={handleAnswerChange}
           validationResults={validationResults}
@@ -198,7 +199,7 @@ const Quiz = () => {
         {/* FILL IN BLANK */}
         <SectionWrapper
           sectionType={"fill_in_blank"}
-          sectionLabel={QuestionType.fill_in_blank}
+          sectionLabel={"Fill in the Blank Questions"}
           questions={quiz.quiz.questions.fill_in_blank}
           onAnswerChange={handleAnswerChange}
           validationResults={validationResults}
