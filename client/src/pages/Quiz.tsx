@@ -1,11 +1,11 @@
-import { Button } from "@mantine/core";
+import { Button, Center } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { UserContext } from "../App";
 import { SectionWrapper } from "../components";
-import { QuestionType } from "../constants";
+import { QuestionLabel, QuestionType } from "../constants";
 import { db } from "../firebase/firebase";
 import { QuizFormValues, QuizValidationAnswers } from "../types/quiz";
 import { createAttemptDocument } from "../Utilities/quizUtilities";
@@ -158,8 +158,8 @@ const Quiz = () => {
         {/* MCQ */}
         {quiz.quiz.questions.mcq.length > 0 && (
           <SectionWrapper
-            sectionType={"mcq"}
-            sectionLabel={QuestionType.mcq}
+            sectionType={QuestionType.mcq}
+            sectionLabel={QuestionLabel.mcq}
             questions={quiz.quiz.questions.mcq}
             onAnswerChange={handleAnswerChange}
             validationResults={validationResults}
@@ -170,8 +170,8 @@ const Quiz = () => {
         {/* TF */}
         {quiz.quiz.questions.tf.length > 0 && (
           <SectionWrapper
-            sectionType={"tf"}
-            sectionLabel={QuestionType.tf}
+            sectionType={QuestionType.tf}
+            sectionLabel={QuestionLabel.tf}
             questions={quiz.quiz.questions.tf}
             onAnswerChange={handleAnswerChange}
             validationResults={validationResults}
@@ -183,8 +183,8 @@ const Quiz = () => {
 
         {quiz.quiz.questions.s_ans.length > 0 && (
           <SectionWrapper
-            sectionType={"s_ans"}
-            sectionLabel={QuestionType.s_ans}
+            sectionType={QuestionType.s_ans}
+            sectionLabel={QuestionLabel.s_ans}
             questions={quiz.quiz.questions.s_ans}
             onAnswerChange={handleAnswerChange}
             validationResults={validationResults}
@@ -195,8 +195,8 @@ const Quiz = () => {
         {/* LONG ANS */}
         {quiz.quiz.questions.l_ans.length > 0 && (
           <SectionWrapper
-            sectionType={"l_ans"}
-            sectionLabel={QuestionType.l_ans}
+            sectionType={QuestionType.l_ans}
+            sectionLabel={QuestionLabel.l_ans}
             questions={quiz.quiz.questions.l_ans}
             onAnswerChange={handleAnswerChange}
             validationResults={validationResults}
@@ -208,8 +208,8 @@ const Quiz = () => {
 
         {quiz.quiz.questions.fill_in_blank.length > 0 && (
           <SectionWrapper
-            sectionType={"fill_in_blank"}
-            sectionLabel={QuestionType.fill_in_blank}
+            sectionType={QuestionType.fill_in_blank}
+            sectionLabel={QuestionLabel.fill_in_blank}
             questions={quiz.quiz.questions.fill_in_blank}
             onAnswerChange={handleAnswerChange}
             validationResults={validationResults}

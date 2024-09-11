@@ -20,3 +20,11 @@ export enum QuestionType {
   tf = "tf",
   fill_in_blank = "fill_in_blank",
 }
+
+export enum QuestionLabel {
+  mcq = "Multiiple Choice Questions",
+  s_ans = "Short Answer Questions",
+  l_ans = "Long Answer Questions",
+  tf = "True or False Questions",
+  fill_in_blank = "Fill in the Blank Questions",
+}
