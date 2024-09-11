@@ -12,7 +12,7 @@ import {
   createTheme,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
@@ -168,9 +168,59 @@ const CreateQuizModal = ({ courseId }: props) => {
   //   </Flex>
   // ));
 
+  function getRandomValues(array: any[], n: number): any[] {
+    // Check if n is greater than the array length
+    if (n > array.length) {
+      throw new Error("n cannot be greater than the length of the array");
+    }
+
+    // Shuffle the array using Fisher-Yates algorithm
+    const shuffledArray = [...array];
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledArray[i], shuffledArray[j]] = [
+        shuffledArray[j],
+        shuffledArray[i],
+      ]; // Swap elements
+    }
+
+    // Return the first n elements from the shuffled array
+    return shuffledArray.slice(0, n);
+  }
+
+  const fetchQuestions = async (values: any) => {
+    const files = await getDocs(
+      collection(db, `users/${currentUser?.uid}/courses/${courseId}/files/`)
+    );
+    const fileIds = files.docs.map((doc) => doc.id);
+    const questions: any[] = [];
+
+    const fetchFileQuestions = fileIds.map(async (fileId: string) => {
+      const questionsCollectionRef = collection(
+        db,
+        `users/${currentUser?.uid}/courses/${courseId}/files/${fileId}/questions`
+      );
+      const allQuestionsQuery = await getDocs(questionsCollectionRef);
+      const allQuestions = allQuestionsQuery.docs.map((doc) => doc.data());
+      values.questionTypes.forEach((questionType: any) => {
+        if (questionType.checked) {
+          const typeFilteredQuestions = allQuestions.filter(
+            (question) => question.type === questionType.type
+          );
+          questions.push(
+            ...getRandomValues(typeFilteredQuestions, questionType.count)
+          );
+        }
+      });
+    });
+
+    await Promise.all(fetchFileQuestions);
+    return questions;
+  };
+
   const handleSubmit = async (values: (typeof quizForm)["values"]) => {
     const errors: { [key: string]: string } = {}; // This allows dynamic string keys
-
+    console.log("form values", values);
     values.questionTypes.forEach((questionType, index) => {
       if (questionType.checked && questionType.count <= 0) {
         // Use a dynamic key for the error
@@ -190,8 +240,18 @@ const CreateQuizModal = ({ courseId }: props) => {
         `users/${currentUser?.uid}/courses/${courseId}/quizzes`
       );
 
+      const quiz = await fetchQuestions(values);
+      console.log("quiz", quiz);
       const quizzesDoc = await addDoc(quizzesCollection, {});
-
+      console.log("new quiz id", quizzesDoc.id);
+      const quizItemsCollection = collection(
+        db,
+        `users/${currentUser!.uid}/courses/${courseId}/quizzes/${quizzesDoc.id}/questions`
+      );
+      for (const question of quiz) {
+        console.log("adding question", question);
+        await addDoc(quizItemsCollection, question);
+      }
       // Redirect to quiz page after submission
       navigate(`quiz/${quizzesDoc.id}`);
     }

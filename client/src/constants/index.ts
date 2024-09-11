@@ -14,9 +14,9 @@ export const features = [
 ];
 
 export enum QuestionType {
-  mcq = "Multiple Choice Questions",
-  s_ans = "Short Answer Questions",
-  l_ans = "Long Answer Questions",
-  tf = "True or False Questions",
-  fill_in_blank = "Fill in the Blank Questions",
+  mcq = "mcq",
+  s_ans = "s_ans",
+  l_ans = "l_ans",
+  tf = "tf",
+  fill_in_blank = "fill_in_blank",
 }

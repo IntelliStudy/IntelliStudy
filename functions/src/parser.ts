@@ -1,5 +1,5 @@
 import { Storage } from "@google-cloud/storage";
-import { onDocumentWritten } from "firebase-functions/v2/firestore";
+import { onDocumentCreated } from "firebase-functions/v2/firestore";
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import OpenAI from "openai";
 import pdf from "pdf-parse";
@@ -7,14 +7,13 @@ import { db } from "../../client/src/firebase/firebase";
 import { systemInstructions } from "./instructions";
 const storage = new Storage();
 
-export const parser = onDocumentWritten(
+export const parser = onDocumentCreated(
   "users/{userId}/courses/{courseId}/files/{fileId}",
   async (event) => {
     async function saveQuestions(questions: any) {
       try {
         for (const question of questions) {
           // Generate a unique document reference
-          console.log("single", question);
           const questionCollection = collection(
             db,
             "users",
@@ -59,7 +58,7 @@ export const parser = onDocumentWritten(
       }
     }
 
-    const data = event.data?.after.data();
+    const data = event.data?.data();
     const pdfPath = data?.fileReference;
 
     if (!pdfPath) {

@@ -8,7 +8,7 @@ import {
   Text,
   TextInput,
   Title,
-} from '@mantine/core';
+} from "@mantine/core";
 import {
   addDoc,
   collection,
@@ -16,39 +16,39 @@ import {
   orderBy,
   query,
   serverTimestamp,
-} from 'firebase/firestore';
-import { SetStateAction, useContext, useEffect, useState } from 'react';
-import { UserContext } from '../App';
-import { AddCourseCard, CourseCard } from '../components';
-import { db } from '../firebase/firebase';
-import { Course } from '../types';
+} from "firebase/firestore";
+import { SetStateAction, useContext, useEffect, useState } from "react";
+import { UserContext } from "../App";
+import { AddCourseCard, CourseCard } from "../components";
+import { db } from "../firebase/firebase";
+import { Course } from "../types";
 
 const StudySpot = () => {
   const { currentUser } = useContext(UserContext);
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
-  const [courseName, setCourseName] = useState<string>('');
-  const [courseCode, setCourseCode] = useState<string>('');
+  const [courseName, setCourseName] = useState<string>("");
+  const [courseCode, setCourseCode] = useState<string>("");
   const [modalOpened, setModalOpened] = useState<boolean>(false);
 
   const handleAddCourseSubmit = () => {
-    addDoc(collection(db, 'users', currentUser!.uid, 'courses'), {
+    addDoc(collection(db, "users", currentUser!.uid, "courses"), {
       courseName: courseName,
       courseCode: courseCode,
       userId: currentUser!.uid,
       createdAt: serverTimestamp(),
     });
     fetchData();
-    setCourseName('');
-    setCourseCode('');
+    setCourseName("");
+    setCourseCode("");
     setModalOpened(false);
   };
 
   const fetchData = async () => {
     try {
       const requestQuery = query(
-        collection(db, 'users', currentUser!.uid, 'courses'),
-        orderBy('createdAt', 'desc')
+        collection(db, "users", currentUser!.uid, "courses"),
+        orderBy("createdAt", "desc")
       );
       const querySnapshot = await getDocs(requestQuery);
       const courseData: Course[] = querySnapshot.docs.map((doc) => ({
@@ -61,7 +61,7 @@ const StudySpot = () => {
 
       setCourses(courseData);
     } catch (error) {
-      console.error('Error fetching data: ', error);
+      console.error("Error fetching data: ", error);
     } finally {
       setLoading(false);
     }
@@ -77,7 +77,7 @@ const StudySpot = () => {
       <LoadingOverlay
         visible={loading}
         zIndex={1000}
-        overlayProps={{ radius: 'sm', blur: 20 }}
+        overlayProps={{ radius: "sm", blur: 20 }}
       />
       <Modal
         opened={modalOpened}
@@ -93,7 +93,7 @@ const StudySpot = () => {
         <Stack>
           <TextInput
             label="Name"
-            placeholder="Enter your name"
+            placeholder="Enter course name"
             value={courseName}
             onChange={(event: {
               currentTarget: { value: SetStateAction<string> };
@@ -112,7 +112,7 @@ const StudySpot = () => {
           <Center>
             <Button
               variant="gradient"
-              gradient={{ from: '#2FAED7', to: '#0280C7', deg: 180 }}
+              gradient={{ from: "#2FAED7", to: "#0280C7", deg: 180 }}
               radius={15}
               onClick={handleAddCourseSubmit}
             >
@@ -133,7 +133,7 @@ const StudySpot = () => {
                 key={course.id}
                 courseId={course.id}
                 courseCode={course.courseCode}
-                name={course.courseName}
+                name={course.courseName!}
               />
             ))}
             <AddCourseCard onClick={() => setModalOpened(true)} />

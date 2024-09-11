@@ -1,6 +1,6 @@
 import { Button } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { UserContext } from "../App";
@@ -15,93 +15,45 @@ const Quiz = () => {
   const { courseId } = useParams();
   const { quizId } = useParams();
 
-  const temp = {
+  const [quizQuestions, setQuizQuestions] = useState<any>();
+
+  useEffect(() => {
+    const fetchQuiz = async () => {
+      const questionsCollectionRef = collection(
+        db,
+        `users/${currentUser?.uid}/courses/${courseId}/quizzes/${quizId}/questions`
+      );
+      const allQuestionsQuery = await getDocs(questionsCollectionRef);
+      const allQuestions = allQuestionsQuery.docs.map((doc) => doc.data());
+      console.log("all questions", allQuestions);
+      setQuizQuestions(allQuestions);
+    };
+    fetchQuiz();
+  }, []);
+
+  console.log(quizQuestions, "questions");
+
+  const quiz = {
     quiz: {
       files: ["file1.pdf", "file2.pdf"],
       questions: {
-        mcq: [
-          {
-            id: "mcq1",
-            question: "Question mcq 1 here?",
-            options: [
-              { key: "A", value: "Option A here" },
-              { key: "B", value: "Option B here" },
-              { key: "C", value: "Option C here" },
-              { key: "D", value: "Option D here" },
-            ],
-            answer: { key: "A", value: "Option A here" },
-            type: "mcq",
-            answerReference: {
-              fileName: "File name here",
-              pageNumber: "2",
-            },
-          },
-          {
-            id: "mcq2",
-            question: "Question mcq 2 here?",
-            options: [
-              { key: "A", value: "Option A here" },
-              { key: "B", value: "Option B here" },
-              { key: "C", value: "Option C here" },
-              { key: "D", value: "Option D here" },
-            ],
-            answer: { key: "A", value: "Option A here" },
-            type: "mcq",
-            answerReference: {
-              fileName: "File name here",
-              pageNumber: "2",
-            },
-          },
-        ],
-        s_ans: [
-          {
-            id: "s_ans1",
-            question: "Question text here?",
-            answer: "Sample answer here",
-            type: "s_ans",
-            answerReference: {
-              fileName: "File name here",
-              pageNumber: "5",
-            },
-          },
-        ],
-        l_ans: [
-          {
-            id: "l_ans1",
-            question: "Question text here?",
-            answer: "Sample answer here",
-            type: "l_ans",
-            answerReference: {
-              fileName: "File name here",
-              pageNumber: "10",
-            },
-          },
-        ],
-        tf: [
-          {
-            id: "tf1",
-            question: "True or false here?",
-            answer: { key: "A", value: "True" },
-            type: "tf",
-            answerReference: {
-              fileName: "File name here",
-              pageNumber: "3",
-            },
-          },
-        ],
-        fill_in_blank: [
-          {
-            id: "f_in_b1",
-            question: "Question text *** here?",
-            options: ["Option A", "Option B", "Option C", "Option D"],
-            answer: "Option C",
-            type: "fill_in_blank",
-            answerReference: {
-              fileName: "File name here",
-              pageNumber: "1",
-            },
-          },
-        ],
+        mcq: quizQuestions
+          ? quizQuestions.filter((question: any) => question.type === "mcq")
+          : [],
+        s_ans: quizQuestions
+          ? quizQuestions.filter((question: any) => question.type === "s_ans")
+          : [],
+        l_ans: quizQuestions
+          ? quizQuestions.filter((question: any) => question.type === "l_ans")
+          : [],
+        tf: quizQuestions
+          ? quizQuestions.filter((question: any) => question.type === "tf")
+          : [],
+        fill_in_blank: quizQuestions
+          ? quizQuestions.filter(
+              (question: any) => question.type === "fill_in_blank"
+            )
+          : [],
       },
     },
   };
@@ -138,7 +90,7 @@ const Quiz = () => {
     quizForm.setFieldValue(`${sectionType}.${questionId}`, answer);
   };
 
-  const handleQuizSubmit = async (event) => {
+  const handleQuizSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
     // VALIDATION
@@ -151,19 +103,19 @@ const Quiz = () => {
     };
 
     // Validate MCQ answers
-    temp.quiz.questions.mcq.forEach((question) => {
+    quiz.quiz.questions.mcq.forEach((question: any) => {
       const userAnswer = quizForm.values.mcq[question.id];
       results.mcq[question.id] = userAnswer === question.answer.key;
     });
 
     // Validate TF answers
-    temp.quiz.questions.tf.forEach((question) => {
+    quiz.quiz.questions.tf.forEach((question: any) => {
       const userAnswer = quizForm.values.tf[question.id];
       results.tf[question.id] = userAnswer === question.answer.key;
     });
 
     // Validate Fill in the Blank
-    temp.quiz.questions.fill_in_blank.forEach((question) => {
+    quiz.quiz.questions.fill_in_blank.forEach((question: any) => {
       const userAnswer = quizForm.values.fill_in_blank[question.id];
       results.fill_in_blank[question.id] = userAnswer === question.answer;
     });
@@ -185,7 +137,7 @@ const Quiz = () => {
         currentUser!.uid,
         courseId!,
         quizId!,
-        temp.quiz,
+        quiz.quiz,
         quizForm.values,
         validationResults
       );
@@ -195,10 +147,10 @@ const Quiz = () => {
   }, [shouldCreateAttempt, validationResults, disabled]);
 
   // REMOVE
-  useEffect(() => {
-    console.log(quizForm.values);
-    console.log(validationResults);
-  }, [validationResults]);
+  // useEffect(() => {
+  //   console.log(quizForm.values);
+  //   console.log(validationResults);
+  // }, [validationResults]);
 
   return (
     <>
@@ -207,7 +159,7 @@ const Quiz = () => {
         <SectionWrapper
           sectionType={"mcq"}
           sectionLabel={QuestionType.mcq}
-          questions={temp.quiz.questions.mcq}
+          questions={quiz.quiz.questions.mcq}
           onAnswerChange={handleAnswerChange}
           validationResults={validationResults}
           disabled={disabled}
@@ -217,7 +169,7 @@ const Quiz = () => {
         <SectionWrapper
           sectionType={"tf"}
           sectionLabel={QuestionType.tf}
-          questions={temp.quiz.questions.tf}
+          questions={quiz.quiz.questions.tf}
           onAnswerChange={handleAnswerChange}
           validationResults={validationResults}
           disabled={disabled}
@@ -227,7 +179,7 @@ const Quiz = () => {
         <SectionWrapper
           sectionType={"s_ans"}
           sectionLabel={QuestionType.s_ans}
-          questions={temp.quiz.questions.s_ans}
+          questions={quiz.quiz.questions.s_ans}
           onAnswerChange={handleAnswerChange}
           validationResults={validationResults}
           disabled={disabled}
@@ -237,7 +189,7 @@ const Quiz = () => {
         <SectionWrapper
           sectionType={"l_ans"}
           sectionLabel={QuestionType.l_ans}
-          questions={temp.quiz.questions.l_ans}
+          questions={quiz.quiz.questions.l_ans}
           onAnswerChange={handleAnswerChange}
           validationResults={validationResults}
           disabled={disabled}
@@ -247,7 +199,7 @@ const Quiz = () => {
         <SectionWrapper
           sectionType={"fill_in_blank"}
           sectionLabel={QuestionType.fill_in_blank}
-          questions={temp.quiz.questions.fill_in_blank}
+          questions={quiz.quiz.questions.fill_in_blank}
           onAnswerChange={handleAnswerChange}
           validationResults={validationResults}
           disabled={disabled}
