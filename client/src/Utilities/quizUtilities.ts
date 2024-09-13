@@ -20,7 +20,7 @@ export const createAttemptDocument = async (
     // Create attempt under users/{userId}/courses/{courseId}/quizzes/{quizId}/attempts
     const quizAttempsCollection = collection(
       db,
-      `users/${userId}/courses/${courseId}/quizzes/${quizId}/attempts`
+      `users/${userId}/courses/${courseId}/quizzes/${quizId}/attempt`
     );
 
     const questions: QuizQuestions = quiz.questions;
