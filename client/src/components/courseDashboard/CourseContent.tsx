@@ -1,5 +1,5 @@
-import { Button, Container, Flex, Text, Title } from "@mantine/core";
-import { collection, getDocs } from "firebase/firestore";
+import { Button, Container, Flex, Loader, Text, Title } from "@mantine/core";
+import { collection, getDocs, onSnapshot } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../App";
 import { db } from "../../firebase/firebase";
@@ -23,59 +23,49 @@ const CourseContent = ({ selectedCourse, modalOpen }: props) => {
         `users/${currentUser?.uid}/courses/${selectedCourse.id}/files`
       );
 
-      const filesSnapshot = await getDocs(fileCollectionRef);
+      // const filesSnapshot = await getDocs(fileCollectionRef);
 
-      // Map Firestore data to `Course` type
-      const files: courseFile[] = filesSnapshot.docs.map((docSnapshot) => {
-        const data = docSnapshot.data();
-        return {
-          fileName: data.fileName,
-          fileReference: data.fileReference,
-          processed: data.processed,
-          uploadedAt: data.uploadedAt,
-        };
+      // // Map Firestore data to `Course` type
+      // const files: courseFile[] = filesSnapshot.docs.map((docSnapshot) => {
+      //   const data = docSnapshot.data();
+      //   return {
+      //     fileName: data.fileName,
+      //     fileReference: data.fileReference,
+      //     processed: data.processed,
+      //     uploadedAt: data.uploadedAt,
+      //   };
+      // });
+
+      // setFiles(files);
+
+      // Real-time listener for file changes (onSnapshot)
+      const unsubscribe = onSnapshot(fileCollectionRef, (snapshot) => {
+        const updatedFiles: courseFile[] = snapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            fileName: data.fileName,
+            fileReference: data.fileReference,
+            processed: data.processed,
+            uploadedAt: data.uploadedAt,
+          };
+        });
+
+        // Update state with the new files list
+        setFiles(updatedFiles);
       });
 
-      setFiles(files);
+      // Clean up the listener on component unmount or when dependencies change
+      return () => unsubscribe();
     };
 
     fetchCourseFiles();
   }, [currentUser?.uid, selectedCourse]);
 
-  // useEffect(() => {
-  //   const requestQuery = query(
-  //     collection(db, `users/${currentUser!.uid}/courses`)
-  //   );
-  //   console.log(requestQuery);
-
-  //   const unsubscribe = onSnapshot(
-  //     requestQuery,
-  //     (snapshot: { docChanges: () => any[] }) => {
-  //       snapshot.docChanges().forEach((snapshot) => {
-  //         console.log('data', snapshot.doc.data());
-
-  //         if (snapshot.doc.data().loading === false) {
-  //           if (snapshot.doc.data().success === false) {
-  //             alert('Error fetching files');
-  //           } else {
-  //             setFiles(snapshot.doc.data().filesRef);
-  //             console.log(snapshot.doc.data().filesRef);
-  //           }
-  //         }
-  //       });
-  //     }
-  //   );
-
-  //   return () => {
-  //     unsubscribe();
-  //   };
-  // }, [currentUser]);
-
   return (
     <>
       <Container fluid ml={"70px"} mt={"60px"}>
         <Flex direction={"row"} gap={"400px"}>
-          <Flex direction={"column"} w={"500px"}>
+          <Flex direction={"column"} w={"450px"}>
             <Title order={1} fw={800} fz={"44px"}>
               {selectedCourse.courseCode}
             </Title>
@@ -89,13 +79,20 @@ const CourseContent = ({ selectedCourse, modalOpen }: props) => {
             <CourseContentFileUpload selectedCourse={selectedCourse} />
           </Flex>
 
-          <Flex direction={"column"} mt={"180px"}>
+          <Flex direction={"column"} mt={"180px"} justify="start">
             <Title order={2} fz={"28px"} fw={500}>
               Files Uploaded
             </Title>
             {files &&
               files.map((file, index) => {
-                return <Text key={index}>{file.fileName}</Text>;
+                return (
+                  <Flex direction="row" align="center">
+                    {!file.processed && <Loader size={17} mr="8px" />}
+                    <Text key={index} lineClamp={1}>
+                      {file.fileName}
+                    </Text>
+                  </Flex>
+                );
               })}
           </Flex>
         </Flex>
