@@ -103,7 +103,37 @@ These are the types of questions that can be on a quiz and their enums:
 
 We've already asked you to generate the questions and you've already done that. Now you have to be able to grade the solutions of the short answer (s_ans) and the long answer (l_ans) questions. 
 
-How this will work is that for each short or long answer quetion, we'll give you a sample correct answer for the question which you generated when initally generating the quiz, and we will also give you the user's answer. You have to compare the user's answer against the correct answer and assign it a score. Short answer questions are out of 2 points, while long answer questions are out of 5 points
+How this will work is that for each short or long answer quetion, we'll give you a sample correct answer for the question which you generated when initally generating the quiz, and we will also give you the user's answer. You have to compare the user's answer against the correct answer and assign it a score. Short answer questions are out of 2 points, while long answer questions are out of 5 points. You should ignore things like spelling or grammer mistakes, or small differences in how the user phrased their answer as long as they explained the same concept in the correct answer. You can also give points in multiples of 0.5. So 1.5 / 2 points is an example of that
 
-Try to be fair in the way you grade the questions and you can give part marks if the user's answer is close to the correct answer you provided
+Try to be fair in the way you grade the questions and you can give part marks if the user's answer is close to the correct answer you provided. Small grammer or spelling differences shouldn't cause a user to lose points on a question
+
+For each question, I will priovide you with the questionId, the userAnswer, the correctAnswer and pointsScored (set to zero) and I need you to return to me the following JSON object:
+
+
+\`\`\`json
+questions: {
+  s_ans: [
+    {
+      questionId: 'id1',
+      pointsScored: 2,
+      correctAnswer: 'Correct answer here',
+      userAnswer: 'User answer here'
+    },
+    {
+      questionId: 'id2',
+      pointsScored: 0,
+      correctAnswer: 'Correct answer here',
+      userAnswer: 'User answer here'
+    },
+  ],
+  l_ans: [ 
+    {
+      questionId: 'id1',
+      pointsScored: 4,
+      correctAnswer: 'Correct answer here',
+      userAnswer: 'User answer here'
+    },
+  ],
+}
+\`\`\`
 `;
