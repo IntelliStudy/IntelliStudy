@@ -8,7 +8,7 @@ import { SectionWrapper } from "../components";
 import { QuestionLabel, QuestionType } from "../constants";
 import { db } from "../firebase/firebase";
 import { QuizFormValues, QuizValidationAnswers } from "../types/quiz";
-import { createAttemptDocument } from "../utilities/QuizUtilities";
+import { createAttemptDocument } from "../utilities/quizUtilities";
 
 const Quiz = () => {
   const { currentUser } = useContext(UserContext);

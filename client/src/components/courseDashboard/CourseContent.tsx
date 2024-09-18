@@ -1,10 +1,20 @@
-import { Button, Container, Flex, Loader, Text, Title } from "@mantine/core";
-import { collection, getDocs, onSnapshot } from "firebase/firestore";
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Loader,
+  Text,
+  Title,
+} from "@mantine/core";
+import { IconCheck } from "@tabler/icons-react";
+import { collection, onSnapshot } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../App";
 import { db } from "../../firebase/firebase";
 import { Course, courseFile } from "../../types";
 import CourseContentFileUpload from "./CourseContentFileUpload";
+import { motion } from "framer-motion"; // Import motion for animation
 
 interface props {
   selectedCourse: Course;
@@ -87,7 +97,20 @@ const CourseContent = ({ selectedCourse, modalOpen }: props) => {
               files.map((file, index) => {
                 return (
                   <Flex direction="row" align="center">
-                    {!file.processed && <Loader size={17} mr="8px" />}
+                    <Box mr={15}>
+                      {!file.processed ? (
+                        <Loader size={17} />
+                      ) : (
+                        <motion.div
+                          initial={{ scale: 0, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          transition={{ duration: 0.5, ease: "easeInOut" }}
+                          style={{ fontSize: 50, color: "green" }}
+                        >
+                          <IconCheck color={"#40bf56"} />
+                        </motion.div>
+                      )}
+                    </Box>
                     <Text key={index} lineClamp={1}>
                       {file.fileName}
                     </Text>
