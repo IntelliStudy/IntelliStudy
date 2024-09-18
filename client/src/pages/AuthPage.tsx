@@ -20,7 +20,7 @@ import { useForm } from "@mantine/form";
 import { Notifications, notifications } from "@mantine/notifications";
 import { IconX } from "@tabler/icons-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 // import { UserContext } from "../App";
 import { GoogleButton } from "../components";
 import GoBackArrow from "../components/firebaseAuth/GoBackArrow";
@@ -58,7 +58,11 @@ function getErrorMessage(errorCode: ErrorCode) {
 const AuthPage = () => {
   // const { currentUser } = useContext(UserContext);
   const navigate = useNavigate();
-  const [isSignUp, setIsSignUp] = useState(false);
+  const location = useLocation();
+
+  const isSignupFromState = location.state?.isSignup || false; // Default to false if not provided
+  const [isSignUp, setIsSignUp] = useState(isSignupFromState);
+
   const xIcon = <IconX style={{ width: rem(20), height: rem(20) }} />;
 
   const signupForm = useForm({
