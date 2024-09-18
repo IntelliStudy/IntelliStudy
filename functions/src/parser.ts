@@ -93,90 +93,69 @@ export const parser = onDocumentCreated(
 
     //question generation
     const openai = new OpenAI();
-    const multipleChoiceQuestions = await openai.chat.completions.create({
-      messages: [
-        {
-          role: "system",
-          content: systemInstructions,
-        },
-        {
-          role: "user",
-          content:
-            `Generate 5 multiple choice questions from these notes: ` +
-            JSON.stringify(pageContents),
-        },
-      ],
-      model: "gpt-4o-mini",
-      response_format: { type: "json_object" },
-    });
-
-    const shortAnswerQuestions = await openai.chat.completions.create({
-      messages: [
-        {
-          role: "system",
-          content: systemInstructions,
-        },
-        {
-          role: "user",
-          content:
-            `Generate 5 short answer questions from these notes: ` +
-            JSON.stringify(pageContents),
-        },
-      ],
-      model: "gpt-4o-mini",
-      response_format: { type: "json_object" },
-    });
-
-    const longAnswerQuestions = await openai.chat.completions.create({
-      messages: [
-        {
-          role: "system",
-          content: systemInstructions,
-        },
-        {
-          role: "user",
-          content:
-            `Generate 5 long answer questions from these notes: ` +
-            JSON.stringify(pageContents),
-        },
-      ],
-      model: "gpt-4o-mini",
-      response_format: { type: "json_object" },
-    });
-
-    const tfQuestions = await openai.chat.completions.create({
-      messages: [
-        {
-          role: "system",
-          content: systemInstructions,
-        },
-        {
-          role: "user",
-          content:
-            `Generate 5 true or false questions from these notes: ` +
-            JSON.stringify(pageContents),
-        },
-      ],
-      model: "gpt-4o-mini",
-      response_format: { type: "json_object" },
-    });
-
-    const fillInBlankQuestions = await openai.chat.completions.create({
-      messages: [
-        {
-          role: "system",
-          content: systemInstructions,
-        },
-        {
-          role: "user",
-          content:
-            `Generate 5 fill in the blank questions from these notes: ` +
-            JSON.stringify(pageContents),
-        },
-      ],
-      model: "gpt-4o-mini",
-      response_format: { type: "json_object" },
-    });
+    const [
+      multipleChoiceQuestions,
+      shortAnswerQuestions,
+      longAnswerQuestions,
+      tfQuestions,
+      fillInBlankQuestions,
+    ] = await Promise.all([
+      openai.chat.completions.create({
+        messages: [
+          { role: "system", content: systemInstructions },
+          {
+            role: "user",
+            content: `Generate 5 multiple choice questions from these notes: ${JSON.stringify(pageContents)}`,
+          },
+        ],
+        model: "gpt-4o-mini",
+        response_format: { type: "json_object" },
+      }),
+      openai.chat.completions.create({
+        messages: [
+          { role: "system", content: systemInstructions },
+          {
+            role: "user",
+            content: `Generate 5 short answer questions from these notes: ${JSON.stringify(pageContents)}`,
+          },
+        ],
+        model: "gpt-4o-mini",
+        response_format: { type: "json_object" },
+      }),
+      openai.chat.completions.create({
+        messages: [
+          { role: "system", content: systemInstructions },
+          {
+            role: "user",
+            content: `Generate 5 long answer questions from these notes: ${JSON.stringify(pageContents)}`,
+          },
+        ],
+        model: "gpt-4o-mini",
+        response_format: { type: "json_object" },
+      }),
+      openai.chat.completions.create({
+        messages: [
+          { role: "system", content: systemInstructions },
+          {
+            role: "user",
+            content: `Generate 5 true or false questions from these notes: ${JSON.stringify(pageContents)}`,
+          },
+        ],
+        model: "gpt-4o-mini",
+        response_format: { type: "json_object" },
+      }),
+      openai.chat.completions.create({
+        messages: [
+          { role: "system", content: systemInstructions },
+          {
+            role: "user",
+            content: `Generate 5 fill in the blank questions from these notes: ${JSON.stringify(pageContents)}`,
+          },
+        ],
+        model: "gpt-4o-mini",
+        response_format: { type: "json_object" },
+      }),
+    ]);
 
     //split questions into collections based on type
 
