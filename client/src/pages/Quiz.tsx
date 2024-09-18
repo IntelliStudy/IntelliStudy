@@ -1,126 +1,85 @@
-import { Button } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { useEffect, useState } from 'react';
-import { SectionWrapper } from '../components';
-import { QuestionType } from '../constants';
-import { ValidationResults } from '../types/quiz';
-
-interface QuizFormValues {
-  mcqAnswers: { [key: string]: string };
-  tfAnswers: { [key: string]: string };
-  s_ansAnswers: { [key: string]: string };
-  l_ansAnswers: { [key: string]: string };
-  fill_in_blankAnswers: { [key: string]: string };
-}
+import { Button, Center } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { collection, getDocs } from "firebase/firestore";
+import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { UserContext } from "../App";
+import { SectionWrapper } from "../components";
+import { QuestionLabel, QuestionType } from "../constants";
+import { db } from "../firebase/firebase";
+import { QuizFormValues, QuizValidationAnswers } from "../types/quiz";
+import { createAttemptDocument } from "../Utilities/quizUtilities";
 
 const Quiz = () => {
-  const temp = {
+  const { currentUser } = useContext(UserContext);
+  const { courseId } = useParams();
+  const { quizId } = useParams();
+
+  const [quizQuestions, setQuizQuestions] = useState<any>();
+
+  useEffect(() => {
+    const fetchQuiz = async () => {
+      const questionsCollectionRef = collection(
+        db,
+        `users/${currentUser?.uid}/courses/${courseId}/quizzes/${quizId}/questions`
+      );
+      const allQuestionsQuery = await getDocs(questionsCollectionRef);
+      const allQuestions = allQuestionsQuery.docs.map((doc) => doc.data());
+      console.log("all questions", allQuestions);
+      setQuizQuestions(allQuestions);
+    };
+    fetchQuiz();
+  }, []);
+
+  console.log(quizQuestions, "questions");
+
+  const quiz = {
     quiz: {
-      files: ['file1.pdf', 'file2.pdf'],
+      files: ["file1.pdf", "file2.pdf"],
       questions: {
-        mcq: [
-          {
-            id: 'mcq1',
-            question: 'Question mcq 1 here?',
-            options: [
-              { key: 'A', value: 'Option A here' },
-              { key: 'B', value: 'Option B here' },
-              { key: 'C', value: 'Option C here' },
-              { key: 'D', value: 'Option D here' },
-            ],
-            answer: { key: 'A', value: 'Option A here' },
-            type: 'mcq',
-            answerReference: {
-              fileName: 'File name here',
-              pageNumber: 2,
-            },
-          },
-          {
-            id: 'mcq2',
-            question: 'Question mcq 2 here?',
-            options: [
-              { key: 'A', value: 'Option A here' },
-              { key: 'B', value: 'Option B here' },
-              { key: 'C', value: 'Option C here' },
-              { key: 'D', value: 'Option D here' },
-            ],
-            answer: { key: 'A', value: 'Option A here' },
-            type: 'mcq',
-            answerReference: {
-              fileName: 'File name here',
-              pageNumber: 2,
-            },
-          },
-        ],
-        s_ans: [
-          {
-            id: 's_ans1',
-            question: 'Question text here?',
-            answer: 'Sample answer here',
-            type: 's_ans',
-            answerReference: {
-              fileName: 'File name here',
-              pageNumber: 5,
-            },
-          },
-        ],
-        l_ans: [
-          {
-            id: 'l_ans1',
-            question: 'Question text here?',
-            answer: 'Sample answer here',
-            type: 'l_ans',
-            answerReference: {
-              fileName: 'File name here',
-              pageNumber: 10,
-            },
-          },
-        ],
-        tf: [
-          {
-            id: 'tf1',
-            question: 'True or false here?',
-            answer: { key: 'A', value: 'True' },
-            type: 'tf',
-            answerReference: {
-              fileName: 'File name here',
-              pageNumber: 3,
-            },
-          },
-        ],
-        fill_in_blank: [
-          {
-            id: 'f_in_b1',
-            question: 'Question text *** here?',
-            options: ['Option A', 'Option B', 'Option C', 'Option D'],
-            answer: 'Option C',
-            type: 'fill_in_blank',
-            answerReference: {
-              fileName: 'File name here',
-              pageNumber: 1,
-            },
-          },
-        ],
+        mcq: quizQuestions
+          ? quizQuestions.filter((question: any) => question.type === "mcq")
+          : [],
+        s_ans: quizQuestions
+          ? quizQuestions.filter((question: any) => question.type === "s_ans")
+          : [],
+        l_ans: quizQuestions
+          ? quizQuestions.filter((question: any) => question.type === "l_ans")
+          : [],
+        tf: quizQuestions
+          ? quizQuestions.filter((question: any) => question.type === "tf")
+          : [],
+        fill_in_blank: quizQuestions
+          ? quizQuestions.filter(
+              (question: any) => question.type === "fill_in_blank"
+            )
+          : [],
       },
     },
   };
 
   const quizForm = useForm<QuizFormValues>({
     initialValues: {
-      mcqAnswers: {},
-      tfAnswers: {},
-      s_ansAnswers: {},
-      l_ansAnswers: {},
-      fill_in_blankAnswers: {},
+      mcq: {},
+      tf: {},
+      s_ans: {},
+      l_ans: {},
+      fill_in_blank: {},
     },
   });
 
   // Used to store answer validation results
-  const [validationResults, setValidationResults] = useState<ValidationResults>(
-    {}
-  );
+  const [validationResults, setValidationResults] =
+    useState<QuizValidationAnswers>({
+      mcq: {},
+      tf: {},
+      s_ans: {},
+      l_ans: {},
+      fill_in_blank: {},
+    });
   // Used to disable selections after submitting
   const [disabled, setDisabled] = useState(false);
+  const [shouldCreateAttempt, setShouldCreateAttempt] = useState(false);
 
   // Handle answer change
   const handleAnswerChange = (
@@ -128,98 +87,137 @@ const Quiz = () => {
     questionId: string,
     answer: string
   ) => {
-    quizForm.setFieldValue(`${sectionType}Answers.${questionId}`, answer);
+    quizForm.setFieldValue(`${sectionType}.${questionId}`, answer);
   };
 
-  const handleQuizSubmit = (event) => {
+  const handleQuizSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
-    const results: ValidationResults = {};
+    // VALIDATION
+    const results: QuizValidationAnswers = {
+      mcq: {},
+      tf: {},
+      s_ans: {},
+      l_ans: {},
+      fill_in_blank: {},
+    };
 
     // Validate MCQ answers
-    temp.quiz.questions.mcq.forEach((question) => {
-      const userAnswer = quizForm.values.mcqAnswers[question.id];
-      results[question.id] = userAnswer === question.answer.key;
+    quiz.quiz.questions.mcq.forEach((question: any) => {
+      const userAnswer = quizForm.values.mcq[question.id];
+      results.mcq[question.id] = userAnswer === question.answer.key;
     });
 
     // Validate TF answers
-    temp.quiz.questions.tf.forEach((question) => {
-      const userAnswer = quizForm.values.tfAnswers[question.id];
-      results[question.id] = userAnswer === question.answer.key;
+    quiz.quiz.questions.tf.forEach((question: any) => {
+      const userAnswer = quizForm.values.tf[question.id];
+      results.tf[question.id] = userAnswer === question.answer.key;
     });
 
     // Validate Fill in the Blank
-    temp.quiz.questions.fill_in_blank.forEach((question) => {
-      const userAnswer = quizForm.values.fill_in_blankAnswers[question.id];
-      results[question.id] = userAnswer === question.answer;
+    quiz.quiz.questions.fill_in_blank.forEach((question: any) => {
+      const userAnswer = quizForm.values.fill_in_blank[question.id];
+      results.fill_in_blank[question.id] = userAnswer === question.answer;
     });
 
     // Disbale selection
     setDisabled(true);
 
+    // Set Validation results to state
     setValidationResults(results);
+
+    // Setting flag to indicate that an attempt should be created
+    setShouldCreateAttempt(true);
   };
 
-  // REMOVE
   useEffect(() => {
-    console.log(quizForm.values);
-    console.log(validationResults);
-  }, [validationResults]);
+    if (shouldCreateAttempt) {
+      // Create attempt under users/{userId}/courses/{courseId}/quizzes/{quizId}/attempts
+      createAttemptDocument(
+        currentUser!.uid,
+        courseId!,
+        quizId!,
+        quiz.quiz,
+        quizForm.values,
+        validationResults
+      );
+      // Reset the trigger after the attempt has been created
+      setShouldCreateAttempt(false);
+    }
+  }, [shouldCreateAttempt, validationResults, disabled]);
+
+  // REMOVE
+  // useEffect(() => {
+  //   console.log(quizForm.values);
+  //   console.log(validationResults);
+  // }, [validationResults]);
 
   return (
     <>
       <form onSubmit={handleQuizSubmit}>
         {/* MCQ */}
-        <SectionWrapper
-          sectionType={'mcq'}
-          sectionLabel={QuestionType.mcq}
-          questions={temp.quiz.questions.mcq}
-          onAnswerChange={handleAnswerChange}
-          validationResults={validationResults}
-          disabled={disabled}
-        />
+        {quiz.quiz.questions.mcq.length > 0 && (
+          <SectionWrapper
+            sectionType={QuestionType.mcq}
+            sectionLabel={QuestionLabel.mcq}
+            questions={quiz.quiz.questions.mcq}
+            onAnswerChange={handleAnswerChange}
+            validationResults={validationResults}
+            disabled={disabled}
+          />
+        )}
 
         {/* TF */}
-        <SectionWrapper
-          sectionType={'tf'}
-          sectionLabel={QuestionType.tf}
-          questions={temp.quiz.questions.tf}
-          onAnswerChange={handleAnswerChange}
-          validationResults={validationResults}
-          disabled={disabled}
-        />
+        {quiz.quiz.questions.tf.length > 0 && (
+          <SectionWrapper
+            sectionType={QuestionType.tf}
+            sectionLabel={QuestionLabel.tf}
+            questions={quiz.quiz.questions.tf}
+            onAnswerChange={handleAnswerChange}
+            validationResults={validationResults}
+            disabled={disabled}
+          />
+        )}
 
         {/* SHORT ANS */}
-        <SectionWrapper
-          sectionType={'s_ans'}
-          sectionLabel={QuestionType.s_ans}
-          questions={temp.quiz.questions.s_ans}
-          onAnswerChange={handleAnswerChange}
-          validationResults={validationResults}
-          disabled={disabled}
-        />
+
+        {quiz.quiz.questions.s_ans.length > 0 && (
+          <SectionWrapper
+            sectionType={QuestionType.s_ans}
+            sectionLabel={QuestionLabel.s_ans}
+            questions={quiz.quiz.questions.s_ans}
+            onAnswerChange={handleAnswerChange}
+            validationResults={validationResults}
+            disabled={disabled}
+          />
+        )}
 
         {/* LONG ANS */}
-        <SectionWrapper
-          sectionType={'l_ans'}
-          sectionLabel={QuestionType.l_ans}
-          questions={temp.quiz.questions.l_ans}
-          onAnswerChange={handleAnswerChange}
-          validationResults={validationResults}
-          disabled={disabled}
-        />
+        {quiz.quiz.questions.l_ans.length > 0 && (
+          <SectionWrapper
+            sectionType={QuestionType.l_ans}
+            sectionLabel={QuestionLabel.l_ans}
+            questions={quiz.quiz.questions.l_ans}
+            onAnswerChange={handleAnswerChange}
+            validationResults={validationResults}
+            disabled={disabled}
+          />
+        )}
 
         {/* FILL IN BLANK */}
-        <SectionWrapper
-          sectionType={'fill_in_blank'}
-          sectionLabel={QuestionType.fill_in_blank}
-          questions={temp.quiz.questions.fill_in_blank}
-          onAnswerChange={handleAnswerChange}
-          validationResults={validationResults}
-          disabled={disabled}
-        />
 
-        <Button type="submit" w={'90px'} ml="115px" mb="70px">
+        {quiz.quiz.questions.fill_in_blank.length > 0 && (
+          <SectionWrapper
+            sectionType={QuestionType.fill_in_blank}
+            sectionLabel={QuestionLabel.fill_in_blank}
+            questions={quiz.quiz.questions.fill_in_blank}
+            onAnswerChange={handleAnswerChange}
+            validationResults={validationResults}
+            disabled={disabled}
+          />
+        )}
+
+        <Button type="submit" w={"90px"} ml="115px" mb="70px">
           Submit
         </Button>
       </form>

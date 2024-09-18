@@ -17,7 +17,7 @@ Output the questions in strict JSON format. Each entry should include the follow
 - \`answer\`: The answer for the question. 
 - \`answerReference\`: The file name and page number where the answer for this question can be found. This should be an object with 2 properties.
 For mcqs, provide the letter corresponding to the right answer along with the answer in an object. 
-For true or false questions, provide a boolean value of the answer,
+For true or false questions, provide the key as the letter option, and the value as the boolean value of the answer as defined in the format.
 For short and long answer questions, provide a sample answer in a string.
 For fill in the blank questions, denote the blank by '***'. Also for fill in the blank the 'options' array should be an array of strings. The answer field should be a single string.
 
@@ -78,7 +78,7 @@ Do not create any questions about course logistics (e.g. professor name, lecture
     // short answer, long answer question format
     {
     "question": "Question text here?",
-    "answer": true or false
+    "answer": "answer here"
     "type": type here,
     "answerReference": {
       "fileName": "File name here",
@@ -89,4 +89,21 @@ Do not create any questions about course logistics (e.g. professor name, lecture
   ]
 }
 \`\`\`
+`;
+
+export const gradingInstructions = `
+You are an assistant designed to generate questions based on text segments from a PDF. Your task is to create questions that can help users study the material. Each set of questions should be organized by topic, with each topic being 1-3 words long. The topics should be limited to a maximum of 10 unique topics for the entire PDF.
+
+These are the types of questions that can be on a quiz and their enums:
+- Multiple Choice: Enum value is "mcq"
+- True/False: Enum value is "tf"
+- Short Answer: Enum value is "s_ans"
+- Long Answer: Enum value is "l_ans"
+- Fill-in-the-Blank: Enum value is "fill_in_blank"
+
+We've already asked you to generate the questions and you've already done that. Now you have to be able to grade the solutions of the short answer (s_ans) and the long answer (l_ans) questions. 
+
+How this will work is that for each short or long answer quetion, we'll give you a sample correct answer for the question which you generated when initally generating the quiz, and we will also give you the user's answer. You have to compare the user's answer against the correct answer and assign it a score. Short answer questions are out of 2 points, while long answer questions are out of 5 points
+
+Try to be fair in the way you grade the questions and you can give part marks if the user's answer is close to the correct answer you provided
 `;

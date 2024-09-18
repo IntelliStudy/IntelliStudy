@@ -1,11 +1,11 @@
-import { Container, Title } from "@mantine/core";
+import { Center, Container, Title } from "@mantine/core";
 import {
   FillInBlankQuestionType,
   LongAnswerQuestionType,
   MultChoiceQuestionType,
+  QuizValidationAnswers,
   ShortAnswerQuestionType,
   TrueFalseQuestionType,
-  ValidationResults,
 } from "../../types/quiz";
 import FillInBlankQuestion from "./FillInBlankQuestion";
 import MultipleChoiceQuestion from "./MultipleChoiceQuestion";
@@ -25,7 +25,7 @@ interface props {
     questionId: string,
     answer: string
   ) => void;
-  validationResults: ValidationResults;
+  validationResults: QuizValidationAnswers;
   disabled: boolean;
 }
 
@@ -58,7 +58,7 @@ const SectionWrapper = ({
             correctAnswer={q.answer}
             sectionType={sectionType}
             onAnswerChange={onAnswerChange}
-            isCorrect={validationResults[q.id]}
+            isCorrect={validationResults.mcq[q.id]}
             disabled={disabled}
           />
         ));
@@ -74,7 +74,7 @@ const SectionWrapper = ({
             correctAnswer={q.answer}
             sectionType={sectionType}
             onAnswerChange={onAnswerChange}
-            isCorrect={validationResults[q.id]}
+            isCorrect={validationResults.tf[q.id]}
             disabled={disabled}
           />
         ));
@@ -117,7 +117,7 @@ const SectionWrapper = ({
             answerReference={q.answerReference}
             sectionType={sectionType}
             onAnswerChange={onAnswerChange}
-            isCorrect={validationResults[q.id]}
+            isCorrect={validationResults.fill_in_blank[q.id]}
             disabled={disabled}
           />
         ));
@@ -125,14 +125,12 @@ const SectionWrapper = ({
   };
 
   return (
-    <>
-      <Container fluid w="57%" py="45px" ml="5%">
-        <Title order={2} fw={700} fz={"30px"} pb="35px">
-          {questions.length > 0 && sectionLabel}
-        </Title>
-        {renderQuestions()}
-      </Container>
-    </>
+    <Container fluid w="80%" py="45px" ml="5%">
+      <Title order={2} fw={700} fz={"30px"} pb="35px">
+        {questions.length > 0 && sectionLabel}
+      </Title>
+      {renderQuestions()}
+    </Container>
   );
 };
 
