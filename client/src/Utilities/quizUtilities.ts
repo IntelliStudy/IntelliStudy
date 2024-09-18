@@ -27,7 +27,6 @@ export const createAttemptDocument = async (
     const attemptedQuestions: Record<string, AttemptedQuestion[]> = {};
 
     Object.keys(questions).forEach((questionType) => {
-      // Check if the current questionType is in the allowed list
       const answers = quizFormValues as any;
       const answerPoints = validationResults as any;
 
