@@ -45,7 +45,6 @@ const Navbar = () => {
                   Login
                 </List.Item>
               </Link>
-              {/* <Link to={ pathname: "/login" } state> */}
               <Link to={"/login"} state={{ isSignup: true }}>
                 <List.Item>
                   <Button
