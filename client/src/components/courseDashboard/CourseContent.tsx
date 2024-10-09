@@ -9,13 +9,14 @@ import {
   Title,
 } from "@mantine/core";
 import { IconArrowRightBar, IconCheck, IconTrash } from "@tabler/icons-react";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, getDoc, getDocs, onSnapshot } from "firebase/firestore";
 import { motion } from "framer-motion"; // Import motion for animation
 import { useContext, useEffect, useState } from "react";
 import { PrevQuizMenu } from "..";
 import { UserContext } from "../../App";
 import { db } from "../../firebase/firebase";
 import { Course, courseFile } from "../../types";
+import { FirebaseQuiz } from "../../types/quiz";
 import { handleFileDelete } from "../../utilities/fileUploadUtilities";
 import "../components.css";
 import CourseContentFileUpload from "./CourseContentFileUpload";
@@ -28,6 +29,8 @@ interface props {
 const CourseContent = ({ selectedCourse, modalOpen }: props) => {
   const { currentUser } = useContext(UserContext);
   const [files, setFiles] = useState<courseFile[]>();
+  const [quizzes, setQuizzes] = useState<FirebaseQuiz[]>([]);
+  const [filesUploading, setFilesUploading] = useState<boolean>();
 
   // Switches files displayed based on current course
   useEffect(() => {
@@ -58,8 +61,34 @@ const CourseContent = ({ selectedCourse, modalOpen }: props) => {
       return () => unsubscribe();
     };
 
+    const fetchQuizes = async () => {
+      const quizzesRef = collection(
+        db,
+        `users/${currentUser?.uid}/courses/${selectedCourse.id}/quizzes`
+      );
+
+      const quizzesSnapshot = await getDocs(quizzesRef);
+      const quizDocs = quizzesSnapshot.docs;
+
+      const quizNames: FirebaseQuiz[] = quizDocs.map((quiz) => ({
+        quizName: quiz.data().quizName,
+        id: quiz.id,
+      }));
+
+      setQuizzes(quizNames);
+    };
+
+    fetchQuizes();
     fetchCourseFiles();
   }, [currentUser?.uid, selectedCourse]);
+
+  useEffect(() => {
+    if (files) {
+      // Check if all files are processed
+      const allProcessed = files.every((file) => file.processed);
+      setFilesUploading(!allProcessed);
+    }
+  }, [files]);
 
   return (
     <>
@@ -160,12 +189,18 @@ const CourseContent = ({ selectedCourse, modalOpen }: props) => {
             size="50px"
             radius={10}
             onClick={modalOpen}
+            disabled={(files?.length ?? 0) < 1 || filesUploading}
           >
             <Text size="24px" fw={600}>
               Create Quiz
             </Text>
           </Button>
-          <PrevQuizMenu />
+          {quizzes.length > 0 && (
+            <PrevQuizMenu
+              quizzes={quizzes}
+              selectedCourseId={selectedCourse.id}
+            />
+          )}
         </Flex>
       </Container>
     </>

@@ -14,6 +14,7 @@ import AnswerReferenceBox from "./quiz/AnswerReferenceBox";
 import FillInBlankQuestion from "./quiz/FillInBlankQuestion";
 import MultipleChoiceOption from "./quiz/MultipleChoiceOption";
 import MultipleChoiceQuestion from "./quiz/MultipleChoiceQuestion";
+import QuizScore from "./quiz/QuizScore";
 import SectionWrapper from "./quiz/SectionWrapper";
 import TypedAnswerQuestion from "./quiz/TypedAnswerQuestion";
 
@@ -34,6 +35,7 @@ export {
   Navbar,
   PrevQuizMenu,
   Quiz,
+  QuizScore,
   SectionWrapper,
   TypedAnswerQuestion,
 };

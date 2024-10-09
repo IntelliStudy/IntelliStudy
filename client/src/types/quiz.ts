@@ -61,6 +61,14 @@ export type QuizQuestions = {
 export type Quiz = {
   files: string[];
   questions: QuizQuestions;
+  graded?: boolean;
+  totalScore?: number;
+  userScore?: number;
+};
+
+export type FirebaseQuiz = {
+  quizName: string;
+  id: string;
 };
 
 export interface QuizFormValues {
@@ -84,4 +92,11 @@ export type AttemptedQuestion = {
   userAnswer: string;
   correctAnswer: string;
   pointsScored: number;
+};
+
+export type GradedQuestions = {
+  correctAnswwer: string;
+  pointsScored: number;
+  questionId: string;
+  userAnswer: string;
 };

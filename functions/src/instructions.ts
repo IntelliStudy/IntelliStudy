@@ -17,7 +17,7 @@ Output the questions in strict JSON format. Each entry should include the follow
 - \`answer\`: The answer for the question. 
 - \`answerReference\`: The file name and page number where the answer for this question can be found. This should be an object with 2 properties.
 For mcqs, provide the letter corresponding to the right answer along with the answer in an object. 
-For true or false questions, provide the key as the letter option, and the value as the boolean value of the answer as defined in the format.
+For true or false questions, provide the key as the letter option, and the value as the boolean value of the answer as defined in the format. Also for true or false, make sure that True always has key "A" and false always has key "B".
 For short and long answer questions, provide a sample answer in a string.
 For fill in the blank questions, denote the blank by '***'. Also for fill in the blank the 'options' array should be an array of strings. The answer field should be a single string.
 

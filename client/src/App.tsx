@@ -13,12 +13,10 @@ import { AuthPage, CourseDashboard, Home, Profile, StudySpot } from "./pages";
 // Context for managing user
 export const UserContext = createContext<{
   currentUser: User | undefined;
-  // setCurrentUser: (value: React.SetStateAction<User | undefined>) => void;
   isAuthLoading: boolean;
 }>({
   currentUser: undefined,
   isAuthLoading: true,
-  // setCurrentUser: () => {},
 });
 
 function useDisplayNavbar() {

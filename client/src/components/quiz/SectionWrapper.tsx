@@ -27,6 +27,8 @@ interface props {
   ) => void;
   validationResults: QuizValidationAnswers;
   disabled: boolean;
+  isSubmitted: boolean;
+  userAnswer: { [key: string]: string };
 }
 
 const SectionWrapper = ({
@@ -36,6 +38,8 @@ const SectionWrapper = ({
   onAnswerChange,
   validationResults,
   disabled,
+  isSubmitted,
+  userAnswer,
 }: props) => {
   // True or false options
   const trueFalseOptions = {
@@ -60,6 +64,8 @@ const SectionWrapper = ({
             onAnswerChange={onAnswerChange}
             isCorrect={validationResults.mcq[q.id]}
             disabled={disabled}
+            isSubmitted={isSubmitted}
+            userAnswer={userAnswer[q.id]}
           />
         ));
 
@@ -76,6 +82,8 @@ const SectionWrapper = ({
             onAnswerChange={onAnswerChange}
             isCorrect={validationResults.tf[q.id]}
             disabled={disabled}
+            isSubmitted={isSubmitted}
+            userAnswer={userAnswer[q.id]}
           />
         ));
 
@@ -90,6 +98,8 @@ const SectionWrapper = ({
             ansBoxSize={2}
             onAnswerChange={onAnswerChange}
             disabled={disabled}
+            isSubmitted={isSubmitted}
+            userAnswer={userAnswer[q.id]}
           />
         ));
 
@@ -104,6 +114,8 @@ const SectionWrapper = ({
             ansBoxSize={6}
             onAnswerChange={onAnswerChange}
             disabled={disabled}
+            isSubmitted={isSubmitted}
+            userAnswer={userAnswer[q.id]}
           />
         ));
 
@@ -119,6 +131,8 @@ const SectionWrapper = ({
             onAnswerChange={onAnswerChange}
             isCorrect={validationResults.fill_in_blank[q.id]}
             disabled={disabled}
+            isSubmitted={isSubmitted}
+            userAnswer={userAnswer[q.id]}
           />
         ));
     }

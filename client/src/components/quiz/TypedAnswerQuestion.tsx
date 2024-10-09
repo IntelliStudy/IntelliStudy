@@ -1,5 +1,5 @@
 import { Flex, Textarea, Title } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnswerReference } from "../../types/quiz";
 
 interface props {
@@ -14,6 +14,8 @@ interface props {
     answer: string
   ) => void;
   disabled: boolean;
+  isSubmitted: boolean;
+  userAnswer: string;
 }
 
 const TypedAnswerQuestion = ({
@@ -23,11 +25,17 @@ const TypedAnswerQuestion = ({
   ansBoxSize,
   onAnswerChange,
   disabled,
+  isSubmitted,
+  userAnswer,
 }: props) => {
-  const [userAnswer, setUserAnswer] = useState<string>("");
+  const [answerEntered, setAnswerEntered] = useState<string>("");
+
+  useEffect(() => {
+    isSubmitted ? setAnswerEntered(userAnswer) : setAnswerEntered("");
+  }, [isSubmitted]);
 
   const handleAnswerChange = (answer: string) => {
-    setUserAnswer(answer);
+    setAnswerEntered(answer);
     onAnswerChange(sectionType, questionId, answer);
   };
   return (
@@ -38,7 +46,7 @@ const TypedAnswerQuestion = ({
 
       <Textarea
         autosize
-        value={userAnswer}
+        value={answerEntered}
         placeholder="Enter your answer"
         minRows={ansBoxSize}
         disabled={disabled}
