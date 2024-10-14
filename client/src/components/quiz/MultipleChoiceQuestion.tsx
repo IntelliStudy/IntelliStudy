@@ -1,5 +1,5 @@
 import { Flex, Radio, Title } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnswerReference, McqOption } from "../../types/quiz";
 import AnswerReferenceBox from "./AnswerReferenceBox";
 import MultipleChoiceOption from "./MultipleChoiceOption";
@@ -18,6 +18,8 @@ interface props {
   correctAnswer: McqOption;
   isCorrect: boolean | undefined;
   disabled: boolean;
+  isSubmitted: boolean;
+  userAnswer: string;
 }
 
 const MultipleChoiceQuestion = ({
@@ -30,8 +32,14 @@ const MultipleChoiceQuestion = ({
   correctAnswer,
   isCorrect,
   disabled,
+  isSubmitted,
+  userAnswer,
 }: props) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
+  useEffect(() => {
+    isSubmitted ? setSelectedOption(userAnswer) : setSelectedOption(null);
+  }, [isSubmitted]);
 
   const handleOptionChange = (optionKey: string) => {
     setSelectedOption(optionKey);

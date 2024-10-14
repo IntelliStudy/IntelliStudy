@@ -1,6 +1,6 @@
 import { Button, Flex, Text } from "@mantine/core";
 import { Dropzone, FileWithPath } from "@mantine/dropzone";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 import { useContext, useState } from "react";
 import { UserContext } from "../../App";
@@ -41,12 +41,16 @@ const CourseContentFileUpload = ({ selectedCourse }: props) => {
           `users/${currentUser?.uid}/courses/${selectedCourse.id}/files`
         );
 
-        await addDoc(fileUploadRef, {
+        // Add the file document to Firestore
+        const docRef = await addDoc(fileUploadRef, {
           fileName: fileRef.name,
           fileReference: fileRef.fullPath,
           uploadedAt: new Date(),
           processed: false,
         });
+
+        // Update the document with the new id field
+        await updateDoc(docRef, { id: docRef.id });
       });
 
       // Wait for all upload promises to resolve

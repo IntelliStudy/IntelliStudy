@@ -1,6 +1,10 @@
-import { Group, Stack, Text } from "@mantine/core";
-import { Link } from "react-router-dom";
+import { Grid, Group, Stack, Text } from "@mantine/core";
+import { IconTrash } from "@tabler/icons-react";
+import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../../App";
 import { Course } from "../../types";
+import { handleCourseDelete } from "../../utilities/fileUploadUtilities";
 
 interface props {
   courses: Course[];
@@ -13,6 +17,10 @@ const CourseDashboardSidebar = ({
   selectedCourseId,
   onSelectCourse,
 }: props) => {
+  const { currentUser } = useContext(UserContext);
+
+  const navigate = useNavigate();
+
   return (
     <>
       <Stack
@@ -44,18 +52,51 @@ const CourseDashboardSidebar = ({
           <Link key={course.id} to={`/course/${course.id}`}>
             <Group
               onClick={() => onSelectCourse(course)}
-              className={`course-item ${
+              className={`showTrash course-item ${
                 course.id === selectedCourseId ? "selected" : ""
               }`}
               h={"40px"}
               mx={"12px"}
               style={{
                 borderRadius: "4px",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                verticalAlign: "center",
               }}
             >
-              <Text pl={"8px"} fz={"20px"} lts={"0.5px"} fw={"400"}>
+              <Text
+                pl={"8px"}
+                fz={"20px"}
+                lts={"0.5px"}
+                fw={"400"}
+                // pt="4px"
+                style={{
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  flexGrow: 1,
+                  maxWidth: "calc(97% - 40px)",
+                }}
+              >
                 {course.courseCode}
               </Text>
+              <IconTrash
+                className="hide"
+                stroke={2}
+                color="red"
+                style={{
+                  cursor: "pointer",
+                  alignSelf: "flex-start",
+                  marginTop: "6px",
+                  marginRight: "5px",
+                }}
+                onClick={() =>
+                  handleCourseDelete(currentUser!.uid, course.id).then(() =>
+                    navigate("/studyspot")
+                  )
+                }
+              />
             </Group>
           </Link>
         ))}

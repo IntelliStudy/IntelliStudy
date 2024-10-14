@@ -8,11 +8,12 @@ import {
   Select,
   Stack,
   Text,
+  TextInput,
   Title,
   createTheme,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, getDocs, updateDoc } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
@@ -89,7 +90,11 @@ const CreateQuizModal = ({ courseId }: props) => {
           count: 0,
         },
       ],
-      // duration: [{ label: 'Timed', checked: false, duration: 0 }],
+      quizName: "",
+    },
+
+    validate: {
+      quizName: (val: string) => (val.length <= 1 ? "Invalid quiz name" : null),
     },
   });
 
@@ -138,35 +143,6 @@ const CreateQuizModal = ({ courseId }: props) => {
       </Flex>
     )
   );
-
-  // const durationCheckBoxes = quizForm.values.duration.map((value, index) => (
-  //   <Flex key={index} direction={'column'}>
-  //     <Checkbox
-  //       key={index}
-  //       label={value.label}
-  //       checked={value.checked}
-  //       onChange={(event) =>
-  //         quizForm.setFieldValue(
-  //           `duration.${index}.checked`,
-  //           event.currentTarget.checked
-  //         )
-  //       }
-  //     />
-  //     {value.checked && (
-  //       <Select
-  //         placeholder="Duration"
-  //         data={quizCountOptions}
-  //         value={value.duration.toString()}
-  //         onChange={(selectedValue) =>
-  //           quizForm.setFieldValue(
-  //             `duration.${index}.duration`,
-  //             parseInt(selectedValue ?? '0', 10)
-  //           )
-  //         }
-  //       />
-  //     )}
-  //   </Flex>
-  // ));
 
   function getRandomValues(array: any[], n: number): any[] {
     // Check if n is greater than the array length
@@ -220,7 +196,7 @@ const CreateQuizModal = ({ courseId }: props) => {
 
   const handleSubmit = async (values: (typeof quizForm)["values"]) => {
     const errors: { [key: string]: string } = {}; // This allows dynamic string keys
-    console.log("form values", values);
+
     values.questionTypes.forEach((questionType, index) => {
       if (questionType.checked && questionType.count <= 0) {
         // Use a dynamic key for the error
@@ -241,9 +217,13 @@ const CreateQuizModal = ({ courseId }: props) => {
       );
 
       const quiz = await fetchQuestions(values);
-      console.log("quiz", quiz);
-      const quizzesDoc = await addDoc(quizzesCollection, {});
-      console.log("new quiz id", quizzesDoc.id);
+
+      // Create quiz document
+      const quizzesDoc = await addDoc(quizzesCollection, {
+        quizName: quizForm.values.quizName,
+      });
+      await updateDoc(quizzesDoc, { id: quizzesDoc.id });
+
       const quizItemsCollection = collection(
         db,
         `users/${currentUser!.uid}/courses/${courseId}/quizzes/${quizzesDoc.id}/questions`
@@ -272,11 +252,20 @@ const CreateQuizModal = ({ courseId }: props) => {
               <Stack gap={"md"}>
                 {questionTypeCheckBoxes}
 
-                {/* <Title order={3} fw={500}>
-                  Duration
-                </Title> */}
-
-                {/* {durationCheckBoxes} */}
+                <TextInput
+                  size="md"
+                  label="Quiz Name"
+                  placeholder="Enter your quiz name"
+                  value={quizForm.values.quizName}
+                  onChange={(event) => {
+                    quizForm.setFieldValue(
+                      "quizName",
+                      event.currentTarget.value
+                    );
+                  }}
+                  error={quizForm.errors.quizName && "Invalid quiz name"}
+                  w="40%"
+                />
 
                 <Flex justify={"right"} mt={"20px"} mb={"20px"} mr={"15px"}>
                   <Button

@@ -9,6 +9,7 @@ export type Course = {
 };
 
 export type courseFile = {
+  id: string;
   fileName: string;
   fileReference: string;
   uploadedAt: Timestamp;

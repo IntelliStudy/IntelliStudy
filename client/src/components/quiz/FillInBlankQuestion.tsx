@@ -1,5 +1,5 @@
 import { Flex, Select, Title } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnswerReference } from "../../types/quiz";
 import AnswerReferenceBox from "./AnswerReferenceBox";
 
@@ -16,6 +16,8 @@ interface props {
   ) => void;
   isCorrect: boolean;
   disabled: boolean;
+  isSubmitted: boolean;
+  userAnswer: string;
 }
 
 const FillInBlankQuestion = ({
@@ -27,8 +29,14 @@ const FillInBlankQuestion = ({
   isCorrect,
   disabled,
   answerReference,
+  isSubmitted,
+  userAnswer,
 }: props) => {
   const [selectedOption, setSelectedOption] = useState<string | null>("");
+
+  useEffect(() => {
+    isSubmitted ? setSelectedOption(userAnswer) : setSelectedOption(null);
+  }, [isSubmitted]);
 
   const handleOptionChange = (optionKey: string) => {
     setSelectedOption(optionKey);

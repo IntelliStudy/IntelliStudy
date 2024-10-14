@@ -3,7 +3,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import OpenAI from "openai";
 import { db } from "../../client/src/firebase/firebase";
 import { gradingInstructions } from "./instructions";
-import { GradedQuestions, TypedQuestion } from "./types";
+import { TypedGradedQuestions, TypedQuestion } from "./types";
 
 export const GradeTypedQuestions = onDocumentCreated(
   "users/{userId}/courses/{courseId}/quizzes/{quizId}/attempt/{attemptId}",
@@ -37,11 +37,9 @@ export const GradeTypedQuestions = onDocumentCreated(
       });
 
       const gradedQuestions = response.choices[0].message.content;
-      const gradedQuestionsObject: GradedQuestions = JSON.parse(
+      const gradedQuestionsObject: TypedGradedQuestions = JSON.parse(
         gradedQuestions!
       ).questions;
-
-      console.log(gradedQuestions);
 
       // Get attempt collection
       const attemptDocument = doc(
@@ -56,7 +54,6 @@ export const GradeTypedQuestions = onDocumentCreated(
         event.params.attemptId
       );
 
-      // FIX
       // Fetch the existing attempt document data
       const attemptDocSnap = await getDoc(attemptDocument);
       if (!attemptDocSnap.exists()) {
@@ -65,6 +62,8 @@ export const GradeTypedQuestions = onDocumentCreated(
 
       const currentData = attemptDocSnap.data();
       const updatedQuestions = { ...currentData.questions };
+
+      let userScore = currentData.userScore;
 
       // Iterate over the graded questions and update only the pointsScored field
       Object.keys(gradedQuestionsObject).forEach((questionType) => {
@@ -75,13 +74,22 @@ export const GradeTypedQuestions = onDocumentCreated(
               const gradedQuestion = gradedQuestionsObject[questionType].find(
                 (gq: TypedQuestion) => gq.questionId === question.questionId
               );
-              return gradedQuestion
-                ? { ...question, pointsScored: gradedQuestion.pointsScored }
-                : question;
+              if (gradedQuestion) {
+                userScore = userScore + gradedQuestion.pointsScored;
+
+                return {
+                  ...question,
+                  pointsScored: gradedQuestion.pointsScored,
+                };
+              } else {
+                return question;
+              }
             }
           );
         }
       });
+
+      // await calculateFinalScore(attemptDocument);
 
       // Perform the Firestore update
       await setDoc(
@@ -89,6 +97,7 @@ export const GradeTypedQuestions = onDocumentCreated(
         {
           questions: updatedQuestions,
           graded: true,
+          userScore: userScore,
         },
         { merge: true }
       );
@@ -97,3 +106,51 @@ export const GradeTypedQuestions = onDocumentCreated(
     }
   }
 );
+
+// const calculateFinalScore = async (
+//   attemptDocument: DocumentReference<DocumentData, DocumentData>
+// ) => {
+//   // Fetch the existing attempt document data
+//   const attemptDocSnap = await getDoc(attemptDocument);
+//   if (!attemptDocSnap.exists()) {
+//     throw new Error("Attempt document not found.");
+//   }
+
+//   const questions = attemptDocSnap.data().questions;
+//   const multipleChoiceQuestions = new Set(["mcq", "tf", "fill_in_blank"]);
+
+//   let totalScore = 0;
+//   let userScore = 0;
+
+//   Object.keys(questions).forEach((key) => {
+//     const questionArray = questions[key];
+
+//     console.log(key);
+
+//     questionArray.forEach((question: GradedQuestions) => {
+//       // Updating total score
+//       if (multipleChoiceQuestions.has(key)) {
+//         totalScore++;
+//       } else if (key === "s_ans") {
+//         totalScore = totalScore + 2;
+//       } else {
+//         totalScore = totalScore + 5;
+//       }
+
+//       // Updating userScore
+//       userScore = userScore + question.pointsScored;
+
+//       console.log(userScore);
+//     });
+//   });
+
+//   // Update Forestore
+//   await setDoc(
+//     attemptDocument,
+//     {
+//       userScore: userScore,
+//       totalScore: totalScore,
+//     },
+//     { merge: true }
+//   );
+// };
