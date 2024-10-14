@@ -371,85 +371,87 @@ const Quiz = () => {
           userScore={quizScore.userScore}
         />
       )}
-      <form onSubmit={handleQuizSubmit}>
-        {/* MCQ */}
-        {quiz.quiz.questions.mcq.length > 0 && (
-          <SectionWrapper
-            sectionType={QuestionType.mcq}
-            sectionLabel={QuestionLabel.mcq}
-            questions={quiz.quiz.questions.mcq}
-            onAnswerChange={handleAnswerChange}
-            validationResults={validationResults}
-            disabled={disabled}
-            isSubmitted={isSubmitted}
-            userAnswer={quizForm.values.mcq}
-          />
-        )}
+      {!loading && (
+        <form onSubmit={handleQuizSubmit}>
+          {/* MCQ */}
+          {quiz.quiz.questions.mcq.length > 0 && (
+            <SectionWrapper
+              sectionType={QuestionType.mcq}
+              sectionLabel={QuestionLabel.mcq}
+              questions={quiz.quiz.questions.mcq}
+              onAnswerChange={handleAnswerChange}
+              validationResults={validationResults}
+              disabled={disabled}
+              isSubmitted={isSubmitted}
+              userAnswer={quizForm.values.mcq}
+            />
+          )}
 
-        {/* TF */}
-        {quiz.quiz.questions.tf.length > 0 && (
-          <SectionWrapper
-            sectionType={QuestionType.tf}
-            sectionLabel={QuestionLabel.tf}
-            questions={quiz.quiz.questions.tf}
-            onAnswerChange={handleAnswerChange}
-            validationResults={validationResults}
-            disabled={disabled}
-            isSubmitted={isSubmitted}
-            userAnswer={quizForm.values.tf}
-          />
-        )}
+          {/* TF */}
+          {quiz.quiz.questions.tf.length > 0 && (
+            <SectionWrapper
+              sectionType={QuestionType.tf}
+              sectionLabel={QuestionLabel.tf}
+              questions={quiz.quiz.questions.tf}
+              onAnswerChange={handleAnswerChange}
+              validationResults={validationResults}
+              disabled={disabled}
+              isSubmitted={isSubmitted}
+              userAnswer={quizForm.values.tf}
+            />
+          )}
 
-        {/* SHORT ANS */}
+          {/* SHORT ANS */}
 
-        {quiz.quiz.questions.s_ans.length > 0 && (
-          <SectionWrapper
-            sectionType={QuestionType.s_ans}
-            sectionLabel={QuestionLabel.s_ans}
-            questions={quiz.quiz.questions.s_ans}
-            onAnswerChange={handleAnswerChange}
-            validationResults={validationResults}
-            disabled={disabled}
-            isSubmitted={isSubmitted}
-            userAnswer={quizForm.values.s_ans}
-          />
-        )}
+          {quiz.quiz.questions.s_ans.length > 0 && (
+            <SectionWrapper
+              sectionType={QuestionType.s_ans}
+              sectionLabel={QuestionLabel.s_ans}
+              questions={quiz.quiz.questions.s_ans}
+              onAnswerChange={handleAnswerChange}
+              validationResults={validationResults}
+              disabled={disabled}
+              isSubmitted={isSubmitted}
+              userAnswer={quizForm.values.s_ans}
+            />
+          )}
 
-        {/* LONG ANS */}
-        {quiz.quiz.questions.l_ans.length > 0 && (
-          <SectionWrapper
-            sectionType={QuestionType.l_ans}
-            sectionLabel={QuestionLabel.l_ans}
-            questions={quiz.quiz.questions.l_ans}
-            onAnswerChange={handleAnswerChange}
-            validationResults={validationResults}
-            disabled={disabled}
-            isSubmitted={isSubmitted}
-            userAnswer={quizForm.values.l_ans}
-          />
-        )}
+          {/* LONG ANS */}
+          {quiz.quiz.questions.l_ans.length > 0 && (
+            <SectionWrapper
+              sectionType={QuestionType.l_ans}
+              sectionLabel={QuestionLabel.l_ans}
+              questions={quiz.quiz.questions.l_ans}
+              onAnswerChange={handleAnswerChange}
+              validationResults={validationResults}
+              disabled={disabled}
+              isSubmitted={isSubmitted}
+              userAnswer={quizForm.values.l_ans}
+            />
+          )}
 
-        {/* FILL IN BLANK */}
+          {/* FILL IN BLANK */}
 
-        {quiz.quiz.questions.fill_in_blank.length > 0 && (
-          <SectionWrapper
-            sectionType={QuestionType.fill_in_blank}
-            sectionLabel={QuestionLabel.fill_in_blank}
-            questions={quiz.quiz.questions.fill_in_blank}
-            onAnswerChange={handleAnswerChange}
-            validationResults={validationResults}
-            disabled={disabled}
-            isSubmitted={isSubmitted}
-            userAnswer={quizForm.values.fill_in_blank}
-          />
-        )}
+          {quiz.quiz.questions.fill_in_blank.length > 0 && (
+            <SectionWrapper
+              sectionType={QuestionType.fill_in_blank}
+              sectionLabel={QuestionLabel.fill_in_blank}
+              questions={quiz.quiz.questions.fill_in_blank}
+              onAnswerChange={handleAnswerChange}
+              validationResults={validationResults}
+              disabled={disabled}
+              isSubmitted={isSubmitted}
+              userAnswer={quizForm.values.fill_in_blank}
+            />
+          )}
 
-        {!isSubmitted && (
-          <Button type="submit" w={"90px"} ml="115px" mb="70px">
-            Submit
-          </Button>
-        )}
-      </form>
+          {!isSubmitted && (
+            <Button type="submit" w={"90px"} ml="115px" mb="70px">
+              Submit
+            </Button>
+          )}
+        </form>
+      )}
     </>
   );
 };

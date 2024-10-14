@@ -63,9 +63,12 @@ export const createAttemptDocument = async (
       );
     });
 
+    const gradedFlag =
+      questions.s_ans.length > 0 || questions.l_ans.length > 0 ? false : true;
+
     // Create attempts doc mapping to current quiz structure
     await addDoc(quizAttempsCollection, {
-      graded: false,
+      graded: gradedFlag,
       files: quiz.files,
       questions: attemptedQuestions,
     });

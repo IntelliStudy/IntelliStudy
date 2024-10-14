@@ -1,15 +1,9 @@
 import { onDocumentCreated } from "firebase-functions/v2/firestore";
-import {
-  doc,
-  DocumentData,
-  DocumentReference,
-  getDoc,
-  setDoc,
-} from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import OpenAI from "openai";
 import { db } from "../../client/src/firebase/firebase";
 import { gradingInstructions } from "./instructions";
-import { GradedQuestions, TypedGradedQuestions, TypedQuestion } from "./types";
+import { TypedGradedQuestions, TypedQuestion } from "./types";
 
 export const GradeTypedQuestions = onDocumentCreated(
   "users/{userId}/courses/{courseId}/quizzes/{quizId}/attempt/{attemptId}",
