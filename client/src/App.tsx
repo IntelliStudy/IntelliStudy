@@ -10,14 +10,16 @@ import { getCurrentlySignedInUserHandler } from "./firebase/auth";
 import { auth } from "./firebase/firebase";
 import { AuthPage, CourseDashboard, Home, Profile, StudySpot } from "./pages";
 
-// Context for managing user
-export const UserContext = createContext<{
+interface UserContextType {
   currentUser: User | undefined;
-  isAuthLoading: boolean;
-}>({
-  currentUser: undefined,
-  isAuthLoading: true,
-});
+  isAuthLoading?: boolean;
+  setCurrentUser?: (user: User | null) => void;
+}
+
+// Context for managing user
+export const UserContext = createContext<UserContextType | undefined>(
+  undefined
+);
 
 function useDisplayNavbar() {
   const location = useLocation();
@@ -45,7 +47,9 @@ function App() {
   return (
     <>
       <MantineProvider>
-        <UserContext.Provider value={{ currentUser, isAuthLoading }}>
+        <UserContext.Provider
+          value={{ currentUser, setCurrentUser, isAuthLoading }}
+        >
           {displayNavbar && <Navbar />}
 
           {!currentUser && isAuthLoading && (

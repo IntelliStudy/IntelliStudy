@@ -3,17 +3,18 @@ import { Flex, Group, Text, Title } from "@mantine/core";
 interface props {
   file: string;
   page: string;
+  correctAnswer?: string;
 }
 
-const AnswerReferenceBox = ({ file, page }: props) => {
+const AnswerReferenceBox = ({ file, page, correctAnswer }: props) => {
   return (
     <Flex
       direction="row"
       w="fit-content"
-      maw="100%"
+      maw="70%"
       mt="15px"
       p="5px"
-      bg="#EA3A1480"
+      bg="#EA3A1460"
       style={{ borderColor: "red", borderWidth: "1.5px", borderRadius: "5px" }}
     >
       <Flex direction="column" px="10px">
@@ -29,6 +30,9 @@ const AnswerReferenceBox = ({ file, page }: props) => {
           <Group display="inline" fw="700">
             {page}
           </Group>
+        </Text>
+        <Text mt="15px" fz="14px" fs="italic">
+          {correctAnswer}
         </Text>
       </Flex>
     </Flex>

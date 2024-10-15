@@ -8,8 +8,8 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { IconArrowRightBar, IconCheck, IconTrash } from "@tabler/icons-react";
-import { collection, getDoc, getDocs, onSnapshot } from "firebase/firestore";
+import { IconCheck, IconTrash } from "@tabler/icons-react";
+import { collection, getDocs, onSnapshot } from "firebase/firestore";
 import { motion } from "framer-motion"; // Import motion for animation
 import { useContext, useEffect, useState } from "react";
 import { PrevQuizMenu } from "..";

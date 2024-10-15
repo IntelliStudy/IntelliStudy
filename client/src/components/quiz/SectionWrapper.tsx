@@ -100,6 +100,7 @@ const SectionWrapper = ({
             disabled={disabled}
             isSubmitted={isSubmitted}
             userAnswer={userAnswer[q.id]}
+            correctAnswer={q.answer}
           />
         ));
 
@@ -116,6 +117,7 @@ const SectionWrapper = ({
             disabled={disabled}
             isSubmitted={isSubmitted}
             userAnswer={userAnswer[q.id]}
+            correctAnswer={q.answer}
           />
         ));
 

@@ -3,10 +3,10 @@ name: GitHub Actions Pipeline
 on:
   push:
     branches:
-      - main
+      - dev
   pull_request:
     branches:
-      - main
+      - dev
 
 jobs:
   build:
@@ -25,6 +25,15 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
+          cache-dependency-path: |
+            ./client/package-lock.json
+            ./functions/package-lock.json
+
+      - name: Cache Client Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ./client/node_modules
+          key: client-${{ runner.os }}-node-${{ hashFiles('./client/package-lock.json') }}
 
       - name: Install dependencies for Client
         working-directory: ./client
@@ -33,6 +42,12 @@ jobs:
       - name: Build Client
         working-directory: ./client
         run: npm run build
+
+      - name: Cache Functions Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ./functions/node_modules
+          key: functions-${{ runner.os }}-node-${{ hashFiles('./functions/package-lock.json') }}
 
       - name: Install dependencies for Functions
         working-directory: ./functions
@@ -60,6 +75,15 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
+          cache-dependency-path: |
+            ./client/package-lock.json
+            ./functions/package-lock.json
+
+      - name: Cache Client Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ./client/node_modules
+          key: client-${{ runner.os }}-node-${{ hashFiles('./client/package-lock.json') }}
 
       - name: Install dependencies for Client
         working-directory: ./client
@@ -67,4 +91,4 @@ jobs:
 
       - name: Run Client tests
         working-directory: ./client
-        run: npm run test -- --coverage
+        run: npm run test

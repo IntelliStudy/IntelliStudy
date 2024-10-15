@@ -35,8 +35,8 @@ const MultipleChoiceOption = ({
       }}
     >
       <Group wrap="nowrap" align="flex-start">
-        <Text>{option.value}</Text>
-        <Radio.Indicator ml="auto" color="#68D1F2" />
+        <Radio.Indicator color="#68D1F2" />
+        <Text mr="auto">{option.value}</Text>
       </Group>
     </Radio.Card>
   );
