@@ -11,4 +11,7 @@ export default {
     "\\.(jpg|jpeg|png|gif|svg)$": "<rootDir>/src/__mocks__/fileMock.ts",
   },
   testMatch: ["**/*.test.(ts|tsx)"],
+  collectCoverage: true,
+  coverageDirectory: "coverage",
+  collectCoverageFrom: ["src/**/*.{js,jsx,ts,tsx}"],
 };
