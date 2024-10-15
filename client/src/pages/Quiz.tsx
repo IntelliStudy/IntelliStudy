@@ -1,7 +1,7 @@
 import { Button, LoadingOverlay } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
-import { createContext, useContext, useEffect, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { UserContext } from "../App";
 import { QuizScore, SectionWrapper } from "../components";
@@ -14,13 +14,6 @@ import {
   validateAnswers,
   validateAnswersForAttempt,
 } from "../utilities/quizUtilities";
-
-// // Context for quiz grading
-// export const QuizGradingContext = createContext<{
-//   isGraded: boolean;
-// }>({
-//   isGraded: false,
-// });
 
 const Quiz = () => {
   const { currentUser } = useContext(UserContext);
