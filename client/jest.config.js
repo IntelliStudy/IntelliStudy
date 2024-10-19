@@ -18,6 +18,7 @@ export default {
     "src/firebase",
     "src/utilities",
     "main.tsx",
+    "src/App.tsx",
     "src/pages/Home.tsx",
     "src/components/courseDashboard/CreateQuizModal.tsx", // Ignore node_modules
   ],
