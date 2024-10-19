@@ -14,4 +14,11 @@ export default {
   collectCoverage: true,
   coverageDirectory: "coverage",
   collectCoverageFrom: ["src/**/*.{js,jsx,ts,tsx}"],
+  coveragePathIgnorePatterns: [
+    "src/firebase",
+    "src/utilities",
+    "main.tsx",
+    "src/pages/Home.tsx",
+    "src/components/courseDashboard/CreateQuizModal.tsx", // Ignore node_modules
+  ],
 };

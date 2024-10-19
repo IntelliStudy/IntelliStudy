@@ -118,270 +118,6 @@ describe("Quiz Component", () => {
     });
   });
 
-  test("renders loading overlay initially", async () => {
-    render(
-      <MantineProvider>
-        <UserContext.Provider
-          value={{
-            currentUser: completeMockUser,
-            setCurrentUser: mockSetCurrentUser,
-            isAuthLoading: true,
-          }}
-        >
-          <MemoryRouter
-            initialEntries={["/courses/test-course/quizzes/test-quiz"]}
-          >
-            <Routes>
-              <Route
-                path="/courses/:courseId/quizzes/:quizId"
-                element={<Quiz />}
-              />
-            </Routes>
-          </MemoryRouter>
-        </UserContext.Provider>
-      </MantineProvider>
-    );
-
-    // Expect the LoadingOverlay to be in the document
-    waitFor(() => {
-      expect(screen.findByTestId("loading")).toBeInTheDocument();
-    });
-  });
-
-  test("renders loading overlay initially", async () => {
-    render(
-      <MantineProvider>
-        <UserContext.Provider
-          value={{
-            currentUser: completeMockUser,
-            setCurrentUser: mockSetCurrentUser,
-            isAuthLoading: true,
-          }}
-        >
-          <MemoryRouter
-            initialEntries={["/courses/test-course/quizzes/test-quiz"]}
-          >
-            <Routes>
-              <Route
-                path="/courses/:courseId/quizzes/:quizId"
-                element={<Quiz />}
-              />
-            </Routes>
-          </MemoryRouter>
-        </UserContext.Provider>
-      </MantineProvider>
-    );
-
-    // Expect the LoadingOverlay to be in the document
-    waitFor(() => {
-      expect(screen.findByTestId("loading")).toBeInTheDocument();
-    });
-  });
-
-  test("renders loading overlay initially", async () => {
-    render(
-      <MantineProvider>
-        <UserContext.Provider
-          value={{
-            currentUser: completeMockUser,
-            setCurrentUser: mockSetCurrentUser,
-            isAuthLoading: true,
-          }}
-        >
-          <MemoryRouter
-            initialEntries={["/courses/test-course/quizzes/test-quiz"]}
-          >
-            <Routes>
-              <Route
-                path="/courses/:courseId/quizzes/:quizId"
-                element={<Quiz />}
-              />
-            </Routes>
-          </MemoryRouter>
-        </UserContext.Provider>
-      </MantineProvider>
-    );
-
-    // Expect the LoadingOverlay to be in the document
-    waitFor(() => {
-      expect(screen.findByTestId("loading")).toBeInTheDocument();
-    });
-  });
-  test("renders loading overlay initially", async () => {
-    render(
-      <MantineProvider>
-        <UserContext.Provider
-          value={{
-            currentUser: completeMockUser,
-            setCurrentUser: mockSetCurrentUser,
-            isAuthLoading: true,
-          }}
-        >
-          <MemoryRouter
-            initialEntries={["/courses/test-course/quizzes/test-quiz"]}
-          >
-            <Routes>
-              <Route
-                path="/courses/:courseId/quizzes/:quizId"
-                element={<Quiz />}
-              />
-            </Routes>
-          </MemoryRouter>
-        </UserContext.Provider>
-      </MantineProvider>
-    );
-
-    // Expect the LoadingOverlay to be in the document
-    waitFor(() => {
-      expect(screen.findByTestId("loading")).toBeInTheDocument();
-    });
-  });
-  test("renders loading overlay initially", async () => {
-    render(
-      <MantineProvider>
-        <UserContext.Provider
-          value={{
-            currentUser: completeMockUser,
-            setCurrentUser: mockSetCurrentUser,
-            isAuthLoading: true,
-          }}
-        >
-          <MemoryRouter
-            initialEntries={["/courses/test-course/quizzes/test-quiz"]}
-          >
-            <Routes>
-              <Route
-                path="/courses/:courseId/quizzes/:quizId"
-                element={<Quiz />}
-              />
-            </Routes>
-          </MemoryRouter>
-        </UserContext.Provider>
-      </MantineProvider>
-    );
-
-    // Expect the LoadingOverlay to be in the document
-    waitFor(() => {
-      expect(screen.findByTestId("loading")).toBeInTheDocument();
-    });
-  });
-  test("renders loading overlay initially", async () => {
-    render(
-      <MantineProvider>
-        <UserContext.Provider
-          value={{
-            currentUser: completeMockUser,
-            setCurrentUser: mockSetCurrentUser,
-            isAuthLoading: true,
-          }}
-        >
-          <MemoryRouter
-            initialEntries={["/courses/test-course/quizzes/test-quiz"]}
-          >
-            <Routes>
-              <Route
-                path="/courses/:courseId/quizzes/:quizId"
-                element={<Quiz />}
-              />
-            </Routes>
-          </MemoryRouter>
-        </UserContext.Provider>
-      </MantineProvider>
-    );
-
-    // Expect the LoadingOverlay to be in the document
-    waitFor(() => {
-      expect(screen.findByTestId("loading")).toBeInTheDocument();
-    });
-  });
-  test("renders loading overlay initially", async () => {
-    render(
-      <MantineProvider>
-        <UserContext.Provider
-          value={{
-            currentUser: completeMockUser,
-            setCurrentUser: mockSetCurrentUser,
-            isAuthLoading: true,
-          }}
-        >
-          <MemoryRouter
-            initialEntries={["/courses/test-course/quizzes/test-quiz"]}
-          >
-            <Routes>
-              <Route
-                path="/courses/:courseId/quizzes/:quizId"
-                element={<Quiz />}
-              />
-            </Routes>
-          </MemoryRouter>
-        </UserContext.Provider>
-      </MantineProvider>
-    );
-
-    // Expect the LoadingOverlay to be in the document
-    waitFor(() => {
-      expect(screen.findByTestId("loading")).toBeInTheDocument();
-    });
-  });
-  test("renders loading overlay initially", async () => {
-    render(
-      <MantineProvider>
-        <UserContext.Provider
-          value={{
-            currentUser: completeMockUser,
-            setCurrentUser: mockSetCurrentUser,
-            isAuthLoading: true,
-          }}
-        >
-          <MemoryRouter
-            initialEntries={["/courses/test-course/quizzes/test-quiz"]}
-          >
-            <Routes>
-              <Route
-                path="/courses/:courseId/quizzes/:quizId"
-                element={<Quiz />}
-              />
-            </Routes>
-          </MemoryRouter>
-        </UserContext.Provider>
-      </MantineProvider>
-    );
-
-    // Expect the LoadingOverlay to be in the document
-    waitFor(() => {
-      expect(screen.findByTestId("loading")).toBeInTheDocument();
-    });
-  });
-  test("renders loading overlay initially", async () => {
-    render(
-      <MantineProvider>
-        <UserContext.Provider
-          value={{
-            currentUser: completeMockUser,
-            setCurrentUser: mockSetCurrentUser,
-            isAuthLoading: true,
-          }}
-        >
-          <MemoryRouter
-            initialEntries={["/courses/test-course/quizzes/test-quiz"]}
-          >
-            <Routes>
-              <Route
-                path="/courses/:courseId/quizzes/:quizId"
-                element={<Quiz />}
-              />
-            </Routes>
-          </MemoryRouter>
-        </UserContext.Provider>
-      </MantineProvider>
-    );
-
-    // Expect the LoadingOverlay to be in the document
-    waitFor(() => {
-      expect(screen.findByTestId("loading")).toBeInTheDocument();
-    });
-  });
-
   test("displays quiz mcq questions", async () => {
     render(
       <MantineProvider>
@@ -502,43 +238,42 @@ describe("Quiz Component", () => {
     });
   });
 
-  // test("submits quiz and shows final score", async () => {
-  //   const mockSubmit = jest.fn();
+  test("submits quiz and shows final score", async () => {
+    render(
+      <MantineProvider>
+        <UserContext.Provider
+          value={{
+            currentUser: completeMockUser,
+            setCurrentUser: mockSetCurrentUser,
+            isAuthLoading: false,
+          }}
+        >
+          <MemoryRouter
+            initialEntries={["/courses/test-course/quizzes/test-quiz"]}
+          >
+            <Routes>
+              <Route
+                path="/courses/:courseId/quizzes/:quizId"
+                element={<Quiz />}
+              />
+            </Routes>
+          </MemoryRouter>
+        </UserContext.Provider>
+      </MantineProvider>
+    );
 
-  //   render(
-  //     <MantineProvider>
-  //       <UserContext.Provider
-  //         value={{
-  //           currentUser: completeMockUser,
-  //           setCurrentUser: mockSetCurrentUser,
-  //           isAuthLoading: false,
-  //         }}
-  //       >
-  //         <MemoryRouter
-  //           initialEntries={["/courses/test-course/quizzes/test-quiz"]}
-  //         >
-  //           <Routes>
-  //             <Route
-  //               path="/courses/:courseId/quizzes/:quizId"
-  //               element={<Quiz />}
-  //             />
-  //           </Routes>
-  //         </MemoryRouter>
-  //       </UserContext.Provider>
-  //     </MantineProvider>
-  //   );
+    await waitFor(async () => {
+      expect(screen.getByText("What is 2 + 2?")).toBeInTheDocument();
 
-  //   waitFor(() => {
-  //     expect(screen.getByText("What is 2 + 2?")).toBeInTheDocument();
-  //   });
+      // Wait for the submit button to appear
+      const submitButton = await screen.findByRole("button", {
+        name: /Submit/i,
+      });
+      fireEvent.click(submitButton);
+    });
 
-  //   act(() => {
-  //     fireEvent.click(screen.getByRole("submit", { name: /Submit/i }));
-
-  //     waitFor(() => {
-  //       expect(mockSubmit).toHaveBeenCalledTimes(1); // Ensure submit was called
-  //       expect(screen.getByText("Your Score:")).toBeInTheDocument(); // Ensure score display appears
-  //     });
-  //   });
-  // });
+    await waitFor(() => {
+      expect(screen.getByText("Your Score:")).toBeInTheDocument();
+    });
+  });
 });
