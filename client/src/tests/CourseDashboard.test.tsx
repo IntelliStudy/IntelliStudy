@@ -1,4 +1,4 @@
-import { MantineProvider } from "@mantine/core";
+import { MantineProvider, LoadingOverlay, Modal } from "@mantine/core";
 import {
   act,
   fireEvent,
@@ -7,134 +7,174 @@ import {
   waitFor,
 } from "@testing-library/react";
 import { User } from "firebase/auth";
-import { getDocs } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  serverTimestamp,
+  Timestamp,
+} from "firebase/firestore";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { UserContext } from "../App";
-import CourseDashboard, { fetchAllCourses } from "../pages/CourseDashboard";
-import StudySpot from "../pages/StudySpot";
+import CourseDashboard from "../pages/CourseDashboard";
+import { Course } from "../types";
 
-// Mock the Firebase functions
+// Mock Firebase Firestore functions
 jest.mock("firebase/firestore", () => ({
-  getFirestore: jest.fn(() => ({})),
-  connectFirestoreEmulator: jest.fn(() => ({})),
   collection: jest.fn(),
   getDocs: jest.fn(),
+  getFirestore: jest.fn(() => ({})),
+  connectFirestoreEmulator: jest.fn(),
 }));
 
-jest.mock("../pages/CourseDashboard", () => ({
-  fetchAllCourses: jest.fn(),
-  CourseDashboard: jest.fn(),
+// Mock Firebase Auth functions
+jest.mock("firebase/auth", () => ({
+  getAuth: jest.fn(() => ({})),
+  connectAuthEmulator: jest.fn(),
 }));
 
-// Mock user data
-const mockUser: User = {
-  uid: "123",
-  displayName: "John Doe",
-  email: "john.doe@example.com",
+const completeMockUser: User = {
+  uid: "mockUid",
+  displayName: "Mock User",
+  email: "mock@example.com",
 } as User;
 
-// Test suite for CourseDashboard component
+const mockCourses: Course[] = [
+  {
+    id: "course1",
+    courseCode: "CS101",
+    courseName: "Introduction to Computer Science",
+    userId: "mockUid",
+    createdAt: "0001-01-01T00:00:00Z" as unknown as Timestamp,
+  } as Course,
+  {
+    id: "course2",
+    courseCode: "CS102",
+    courseName: "Data Structures",
+    userId: "mockUid",
+    createdAt: "0001-01-01T00:00:00Z" as unknown as Timestamp,
+  } as Course,
+];
+
+// Mock setCurrentUser function
+const mockSetCurrentUser = jest.fn();
+
+beforeEach(() => {
+  // Mock Firestore data fetching
+  (collection as jest.Mock).mockReturnValue({});
+  (getDocs as jest.Mock).mockResolvedValue({
+    empty: false,
+    docs: mockCourses.map((course) => ({
+      id: course.id,
+      data: () => course,
+    })),
+  });
+});
+
 describe("CourseDashboard Component", () => {
-  beforeAll(() => {
-    const mockCourses = [
-      {
-        id: "1",
-        courseCode: "CS101",
-        courseName: "Computer Science 101",
-        userId: "mockUserId",
-        createdAt: new Date(),
-      },
-      {
-        id: "2",
-        courseCode: "MATH201",
-        courseName: "Mathematics 201",
-        userId: "mockUserId",
-        createdAt: new Date(),
-      },
-    ];
-
-    // Ensure that fetchAllCourses is treated as a mock function
-    (fetchAllCourses as jest.Mock).mockResolvedValue(mockCourses);
-  });
-
-  beforeEach(() => {
-    jest.clearAllMocks(); // Clear mocks before each test
-  });
-
-  it("fetches and displays courses correctly", async () => {
-    // Mock implementation of getDocs
-    (getDocs as jest.Mock).mockResolvedValueOnce({
-      docs: [
-        {
-          id: "course1",
-          data: () => ({
-            courseCode: "CS101",
-            courseName: "Computer Science 101",
-            userId: mockUser.uid,
-          }),
-        },
-        {
-          id: "course2",
-          data: () => ({
-            courseCode: "MATH201",
-            courseName: "Mathematics 201",
-            userId: mockUser.uid,
-          }),
-        },
-      ],
-    });
-
-    // Wait for courses to be displayed
-    waitFor(() => {
-      expect(screen.getByText("CS101")).toBeInTheDocument();
-      expect(screen.getByText("Mathematics 201")).toBeInTheDocument();
-    });
-  });
-
-  it("opens Create Quiz modal on button click", async () => {
-    // Check if the Create Quiz button is rendered
-
+  test("renders loading overlay initially", async () => {
     render(
       <MantineProvider>
-        <UserContext.Provider value={{ currentUser: mockUser }}>
-          <button>Create Quiz</button>
+        <UserContext.Provider
+          value={{
+            currentUser: completeMockUser,
+            setCurrentUser: mockSetCurrentUser,
+            isAuthLoading: true,
+          }}
+        >
+          <MemoryRouter initialEntries={["/courses/course1"]}>
+            <Routes>
+              <Route path="/courses/:courseId" element={<CourseDashboard />} />
+            </Routes>
+          </MemoryRouter>
         </UserContext.Provider>
       </MantineProvider>
     );
 
-    const createQuizButton = screen.getByRole("button", {
-      name: "Create Quiz",
-    });
-    expect(createQuizButton).toBeInTheDocument();
-
-    // Open the modal
-    act(() => {
-      fireEvent.click(createQuizButton);
-    });
-
-    // Check if the modal is displayed
-    expect(screen.getByText("Create Quiz")).toBeInTheDocument();
+    // Check if LoadingOverlay is visible
+    expect(screen.getByTestId("loading")).toBeInTheDocument();
   });
 
-  it("displays the selected course content", async () => {
-    // Mock implementation of getDocs to fetch courses
-    (getDocs as jest.Mock).mockResolvedValueOnce({
-      docs: [
-        {
-          id: "course1",
-          data: () => ({
-            courseCode: "CS101",
-            courseName: "Computer Science 101",
-            userId: mockUser.uid,
-          }),
-        },
-      ],
+  test("displays course content after fetching data", async () => {
+    render(
+      <MantineProvider>
+        <UserContext.Provider
+          value={{
+            currentUser: completeMockUser,
+            setCurrentUser: mockSetCurrentUser,
+            isAuthLoading: false,
+          }}
+        >
+          <MemoryRouter initialEntries={["/courses/course1"]}>
+            <Routes>
+              <Route path="/courses/:courseId" element={<CourseDashboard />} />
+            </Routes>
+          </MemoryRouter>
+        </UserContext.Provider>
+      </MantineProvider>
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.getByText("Introduction to Computer Science")
+      ).toBeInTheDocument();
+    });
+  });
+
+  test("displays modal for creating quiz", async () => {
+    render(
+      <MantineProvider>
+        <UserContext.Provider
+          value={{
+            currentUser: completeMockUser,
+            setCurrentUser: mockSetCurrentUser,
+            isAuthLoading: false,
+          }}
+        >
+          <MemoryRouter initialEntries={["/courses/course1"]}>
+            <Routes>
+              <Route path="/courses/:courseId" element={<CourseDashboard />} />
+            </Routes>
+          </MemoryRouter>
+        </UserContext.Provider>
+      </MantineProvider>
+    );
+
+    // Simulate opening the quiz modal
+    act(() => {
+      fireEvent.click(screen.getByText("Create Quiz"));
     });
 
-    // Verify that the selected course name is displayed in the content area
-    waitFor(() => {
-      expect(screen.getByText("Computer Science 101")).toBeInTheDocument();
-      expect(screen.getByText("CS101")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText("Create Quiz")).toBeInTheDocument(); // Modal header
+    });
+  });
+
+  test("switches to a different course when a new course is selected", async () => {
+    render(
+      <MantineProvider>
+        <UserContext.Provider
+          value={{
+            currentUser: completeMockUser,
+            setCurrentUser: mockSetCurrentUser,
+            isAuthLoading: false,
+          }}
+        >
+          <MemoryRouter initialEntries={["/courses/course1"]}>
+            <Routes>
+              <Route path="/courses/:courseId" element={<CourseDashboard />} />
+            </Routes>
+          </MemoryRouter>
+        </UserContext.Provider>
+      </MantineProvider>
+    );
+
+    // Simulate selecting a different course from the sidebar
+    act(() => {
+      fireEvent.click(screen.getByText("Data Structures"));
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText("Data Structures")).toBeInTheDocument();
     });
   });
 });

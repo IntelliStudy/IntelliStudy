@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import React from "react";
 import { MemoryRouter } from "react-router-dom"; // Import MemoryRouter
 import AuthPage from "../pages/AuthPage";
+import userEvent from "@testing-library/user-event";
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => (
   <MantineProvider>
@@ -69,5 +70,40 @@ describe("AuthPage", () => {
       name: /forgot password\?/i,
     });
     expect(forgotPasswordLink).toBeInTheDocument();
+  });
+
+  test("submits login form", async () => {
+    const emailInput = screen.getAllByLabelText(/Email/i);
+    const passwordInput = screen.getAllByLabelText(/Password/i);
+    const loginButton = screen.getAllByRole("button", { name: /Login/i });
+
+    await userEvent.type(emailInput[0], "testuser@example.com");
+    await userEvent.type(passwordInput[0], "password123");
+    await userEvent.click(loginButton[0]);
+
+    // You can check for side effects like a navigation call or a success message
+    // Add mock or assertion for API call or navigation
+    expect(screen.queryByText(/Logging in with:/i)).toBeInTheDocument();
+  });
+
+  // Test for sign-up form submission
+  test("submits sign-up form", async () => {
+    const firstNameInput = screen.getByLabelText(/First Name/i);
+    const lastNameInput = screen.getByLabelText(/Last Name/i);
+    const emailInput = screen.getByLabelText(/Email/i);
+    const passwordInput = screen.getByLabelText(/Password/i);
+    const confirmPasswordInput = screen.getByLabelText(/Confirm Password/i);
+    const signUpButton = screen.getByRole("button", { name: /Sign up/i });
+
+    await userEvent.type(firstNameInput, "John");
+    await userEvent.type(lastNameInput, "Doe");
+    await userEvent.type(emailInput, "test@example.com");
+    await userEvent.type(passwordInput, "password123");
+    await userEvent.type(confirmPasswordInput, "password123");
+
+    await userEvent.click(signUpButton);
+
+    // Similar to login, check for side effects (like navigation or notification)
+    expect(screen.queryByText(/Signing up with:/i)).toBeInTheDocument();
   });
 });

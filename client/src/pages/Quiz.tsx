@@ -356,6 +356,7 @@ const Quiz = () => {
         visible={loading}
         zIndex={1000}
         overlayProps={{ radius: "sm", blur: 20 }}
+        data-testid="loading"
       />
       {/* Quiz Score Section */}
       {isSubmitted && isQuizGraded && (
