@@ -55,8 +55,6 @@ const CourseContentFileUpload = ({ selectedCourse, courseFiles }: props) => {
   const { currentUser } = useContext(UserContext);
 
   const previews = filesToUpload?.map((file, index) => {
-    console.log(file.type);
-    console.log(file.size);
     return (
       <>
         <Flex direction="row">
@@ -134,7 +132,6 @@ const CourseContentFileUpload = ({ selectedCourse, courseFiles }: props) => {
       setFilesToUpload([]);
       console.log("All files uploaded and state cleared");
     } catch (error) {
-      console.log("error", getErrorMessage(error.code));
       notifications.show({
         icon: xIcon,
         radius: "lg",
