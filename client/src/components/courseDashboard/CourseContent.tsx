@@ -105,7 +105,10 @@ const CourseContent = ({ selectedCourse, modalOpen }: props) => {
               Upload
             </Title>
 
-            <CourseContentFileUpload selectedCourse={selectedCourse} />
+            <CourseContentFileUpload
+              courseFiles={files}
+              selectedCourse={selectedCourse}
+            />
           </Flex>
 
           <Flex direction={"column"} mt={"180px"} justify="start">

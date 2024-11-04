@@ -1,24 +1,73 @@
-import { Button, Flex, Text } from "@mantine/core";
+import { Button, Flex, Group, rem, Text } from "@mantine/core";
 import { Dropzone, FileWithPath } from "@mantine/dropzone";
+import { Notifications, notifications } from "@mantine/notifications";
+import { IconTrash, IconX } from "@tabler/icons-react";
 import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../App";
 import { db, storage } from "../../firebase/firebase";
-import { Course } from "../../types";
+import { Course, courseFile } from "../../types";
+import "../components.css";
+
+const errorMessages = {
+  "upload/more-than-5-files": {
+    title: "Max Number of Files Reached",
+    message: "A maximum of 5 files per course is allowed",
+  },
+};
+
+type ErrorCode = "upload/more-than-5-files";
+
+function getErrorMessage(errorCode: ErrorCode) {
+  return errorMessages[errorCode];
+}
+
+class UploadError extends Error {
+  code: ErrorCode;
+
+  constructor(code: ErrorCode) {
+    super(errorMessages[code].message);
+    this.code = code;
+    this.name = "UploadError";
+  }
+}
 
 interface props {
   selectedCourse: Course;
+  courseFiles: courseFile[] | undefined;
 }
 
-const CourseContentFileUpload = ({ selectedCourse }: props) => {
+const CourseContentFileUpload = ({ selectedCourse, courseFiles }: props) => {
   // This state is only used to keep track of files that the user is uplaoding, not all the files they have uploaded in total
   const [filesToUpload, setFilesToUpload] = useState<FileWithPath[]>([]);
   const { currentUser } = useContext(UserContext);
 
   const previews = filesToUpload?.map((file, index) => {
-    return <Text key={index}>{file.name}</Text>;
+    return (
+      <>
+        <Flex direction="row">
+          <Group className="showTrash" pr="40px">
+            <Text key={index}>{file.name}</Text>
+            <IconTrash
+              className="hide"
+              stroke={2}
+              color="red"
+              style={{ marginLeft: 10, cursor: "pointer" }}
+              onClick={() => {
+                const updatedFiles = filesToUpload.filter(
+                  (_file, i) => i !== index
+                );
+                setFilesToUpload(updatedFiles);
+              }}
+            />
+          </Group>
+        </Flex>
+      </>
+    );
   });
+
+  const xIcon = <IconX style={{ width: rem(20), height: rem(20) }} />;
 
   const handleDrop = (newFiles: FileWithPath[]) => {
     setFilesToUpload((currentFiles) => [...currentFiles, ...newFiles]);
@@ -26,6 +75,10 @@ const CourseContentFileUpload = ({ selectedCourse }: props) => {
 
   const handleUpload = async () => {
     try {
+      if (courseFiles?.length ?? 0 + filesToUpload.length >= 5) {
+        throw new UploadError("upload/more-than-5-files");
+      }
+
       // Map through the files array and create upload promises
       const uploadPromises = filesToUpload?.map(async (file) => {
         // fIles ref from cloud storage
@@ -60,12 +113,25 @@ const CourseContentFileUpload = ({ selectedCourse }: props) => {
       setFilesToUpload([]);
       console.log("All files uploaded and state cleared");
     } catch (error) {
-      console.error("Error during file upload or Firestore update:", error);
+      console.log("error", getErrorMessage(error.code));
+      notifications.show({
+        icon: xIcon,
+        radius: "lg",
+        title: getErrorMessage(error.code).title,
+        message: getErrorMessage(error.code).message,
+        color: "red",
+      });
     }
   };
 
+  // Reset files uploaded
+  useEffect(() => {
+    setFilesToUpload([]);
+  }, [selectedCourse]);
+
   return (
     <>
+      <Notifications position="top-right" />
       <Flex direction={"column"}>
         <Dropzone onDrop={handleDrop} w={"350px"}>
           <Text ta="center">Drop your files here</Text>
