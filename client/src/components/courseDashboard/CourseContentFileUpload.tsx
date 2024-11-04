@@ -15,9 +15,20 @@ const errorMessages = {
     title: "Max Number of Files Reached",
     message: "A maximum of 5 files per course is allowed",
   },
+  "upload/invalid-file-type": {
+    title: "Invalid File Type",
+    message: "Please upload a PDF, only PDFs are accepted",
+  },
+  "upload/invalid-file-size": {
+    title: "File Size is too Large",
+    message: "Each file must not exceed 1 MB in size",
+  },
 };
 
-type ErrorCode = "upload/more-than-5-files";
+type ErrorCode =
+  | "upload/more-than-5-files"
+  | "upload/invalid-file-type"
+  | "upload/invalid-file-size";
 
 function getErrorMessage(errorCode: ErrorCode) {
   return errorMessages[errorCode];
@@ -75,12 +86,20 @@ const CourseContentFileUpload = ({ selectedCourse, courseFiles }: props) => {
 
   const handleUpload = async () => {
     try {
-      if (courseFiles?.length ?? 0 + filesToUpload.length >= 5) {
+      if ((courseFiles?.length ?? 0 + filesToUpload.length) >= 5) {
         throw new UploadError("upload/more-than-5-files");
       }
 
       // Map through the files array and create upload promises
       const uploadPromises = filesToUpload?.map(async (file) => {
+        // Validations and checks
+        if (file.type !== "application/pdf") {
+          throw new UploadError("upload/invalid-file-type");
+        }
+        if (file.size > 1000000) {
+          throw new UploadError("upload/invalid-file-size");
+        }
+
         // fIles ref from cloud storage
         const fileRef = ref(storage, `users/${currentUser?.uid}/${file.name}`);
 
@@ -113,7 +132,6 @@ const CourseContentFileUpload = ({ selectedCourse, courseFiles }: props) => {
       setFilesToUpload([]);
       console.log("All files uploaded and state cleared");
     } catch (error) {
-      console.log("error", getErrorMessage(error.code));
       notifications.show({
         icon: xIcon,
         radius: "lg",
