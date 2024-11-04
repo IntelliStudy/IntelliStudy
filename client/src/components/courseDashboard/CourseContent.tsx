@@ -19,6 +19,7 @@ import { Course, courseFile } from "../../types";
 import { FirebaseQuiz } from "../../types/quiz";
 import { handleFileDelete } from "../../utilities/fileUploadUtilities";
 import "../components.css";
+import { ConfirmDelete } from "../ConfirmDelete";
 import CourseContentFileUpload from "./CourseContentFileUpload";
 
 interface props {
@@ -169,10 +170,17 @@ const CourseContent = ({ selectedCourse, modalOpen }: props) => {
                         color="red"
                         style={{ marginLeft: 10, cursor: "pointer" }}
                         onClick={() =>
-                          handleFileDelete(
-                            file,
-                            currentUser!.uid,
-                            selectedCourse.id
+                          ConfirmDelete(
+                            "Delete File",
+                            "Are you sure you want to delete this file? This action cannot be undone.",
+                            "Cancel",
+                            "Delete File",
+                            () =>
+                              handleFileDelete(
+                                file,
+                                currentUser!.uid,
+                                selectedCourse.id
+                              )
                           )
                         }
                       />
