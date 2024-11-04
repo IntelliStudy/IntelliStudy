@@ -10,6 +10,23 @@ import CreateQuizModal from "../components/courseDashboard/CreateQuizModal";
 import { db } from "../firebase/firebase";
 import { Course } from "../types";
 
+export const fetchAllCourses = async (userId: string) => {
+  const coursesCollectionRef = collection(db, `users/${userId}/courses/`);
+  const allCoursesSnapshot = await getDocs(coursesCollectionRef);
+
+  // Map Firestore data to `Course` type
+  return allCoursesSnapshot.docs.map((docSnapshot) => {
+    const data = docSnapshot.data();
+    return {
+      id: docSnapshot.id,
+      courseCode: data.courseCode,
+      courseName: data.courseName,
+      userId: data.userId,
+      createdAt: data.createdAt,
+    };
+  });
+};
+
 const CourseDashboard = () => {
   const { currentUser } = useContext(UserContext);
   const { courseId } = useParams();
@@ -22,32 +39,14 @@ const CourseDashboard = () => {
   const [opened, { open, close }] = useDisclosure(false);
 
   useEffect(() => {
-    const fetchAllCourses = async () => {
-      const coursesCollectionRef = collection(
-        db,
-        `users/${currentUser?.uid}/courses/`
-      );
-
-      const allCoursesSnapshot = await getDocs(coursesCollectionRef);
-
-      // Map Firestore data to `Course` type
-      const coursesData: Course[] = allCoursesSnapshot.docs.map(
-        (docSnapshot) => {
-          const data = docSnapshot.data();
-          return {
-            id: docSnapshot.id,
-            courseCode: data.courseCode,
-            courseName: data.courseName,
-            userId: data.userId,
-            createdAt: data.createdAt,
-          };
-        }
-      );
-
-      setAllCourse(coursesData);
+    const loadCourses = async () => {
+      if (currentUser) {
+        const coursesData = await fetchAllCourses(currentUser.uid);
+        setAllCourse(coursesData);
+      }
     };
 
-    fetchAllCourses();
+    loadCourses();
   }, [currentUser]);
 
   useEffect(() => {
@@ -66,6 +65,7 @@ const CourseDashboard = () => {
         visible={true}
         zIndex={1000}
         overlayProps={{ radius: "sm", blur: 2 }}
+        data-testid="loading"
       />
     );
   }

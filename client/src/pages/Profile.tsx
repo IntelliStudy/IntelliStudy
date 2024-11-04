@@ -15,7 +15,8 @@ const Profile = () => {
     console.log("Deleting user account:", currentUser?.displayName);
 
     deleteUserHandler().then(() => {
-      setCurrentUser(getCurrentlySignedInUserHandler);
+      const signedInUser = getCurrentlySignedInUserHandler();
+      setCurrentUser(signedInUser);
     });
   };
 
@@ -24,7 +25,8 @@ const Profile = () => {
     console.log("Logging out user:", currentUser?.displayName);
 
     userLogoutHandler().then(() => {
-      setCurrentUser(getCurrentlySignedInUserHandler);
+      const signedInUser = getCurrentlySignedInUserHandler();
+      setCurrentUser(signedInUser);
     });
   };
 

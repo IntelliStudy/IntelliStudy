@@ -1,6 +1,7 @@
 import { Flex, Textarea, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { AnswerReference } from "../../types/quiz";
+import AnswerReferenceBox from "./AnswerReferenceBox";
 
 interface props {
   question: string;
@@ -16,6 +17,7 @@ interface props {
   disabled: boolean;
   isSubmitted: boolean;
   userAnswer: string;
+  correctAnswer: string;
 }
 
 const TypedAnswerQuestion = ({
@@ -27,6 +29,8 @@ const TypedAnswerQuestion = ({
   disabled,
   isSubmitted,
   userAnswer,
+  answerReference,
+  correctAnswer,
 }: props) => {
   const [answerEntered, setAnswerEntered] = useState<string>("");
 
@@ -51,6 +55,12 @@ const TypedAnswerQuestion = ({
         minRows={ansBoxSize}
         disabled={disabled}
         onChange={(event) => handleAnswerChange(event.currentTarget.value)}
+      />
+
+      <AnswerReferenceBox
+        file={answerReference.fileName}
+        page={answerReference.pageNumber}
+        correctAnswer={correctAnswer}
       />
     </Flex>
   );
