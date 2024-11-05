@@ -32,9 +32,8 @@ const CourseDashboardSidebar = ({
             w={"15%"}
             justify="flex-start"
             gap={"0px"}
-            bg={"#FAFAFA"}
             style={{
-              borderRight: "solid 1px rgba(90, 90, 90, 0.65)",
+              borderRight: "solid 1px rgba(90, 90, 90, 0.20)",
             }}
           >
             <Group
@@ -43,9 +42,9 @@ const CourseDashboardSidebar = ({
               mx={"auto"}
               pb={"5px"}
               mb={"15px"}
-              style={{
-                borderBottom: "solid 1px rgba(90, 90, 90, 0.65)",
-              }}
+              // style={{
+              //   borderBottom: "solid 1px rgba(90, 90, 90, 0.65)",
+              // }}
             >
               <Text fz={"30px"} fw={"600"} pl={"14px"}>
                 Courses

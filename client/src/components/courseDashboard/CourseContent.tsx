@@ -93,39 +93,39 @@ const CourseContent = ({ selectedCourse, modalOpen }: props) => {
 
   return (
     <>
-      <Container fluid ml={"70px"} mt={"60px"}>
-        <Flex direction={"row"} gap={"400px"}>
-          <Flex direction={"column"} w={"450px"}>
-            <Title order={1} fw={800} fz={"44px"}>
-              {selectedCourse.courseCode}
+      <Container fluid mt={"60px"}>
+        <Flex direction="column" align="center" gap="md">
+          {/* Course Title */}
+          <Title order={1} fw={800} fz={"44px"} ta="center">
+            {selectedCourse.courseCode}
+          </Title>
+          <Title order={3} fw={500} fz={"30px"} ta="center">
+            {selectedCourse.courseName}
+          </Title>
+          {/* File Upload Section */}
+          <Box w="100%" mt="xl">
+            <Title order={2} fz={"28px"} fw={500} mb="md" ta="center">
+              {files?.length > 0
+                ? "Upload"
+                : "Upload your notes to get started!"}
             </Title>
-            <Title order={3} fw={500} fz={"30px"}>
-              {selectedCourse.courseName}
-            </Title>
-            <Title order={2} fz={"28px"} fw={500} mt={"75px"} mb={"15px"}>
-              Upload
-            </Title>
-
             <CourseContentFileUpload
               courseFiles={files}
               selectedCourse={selectedCourse}
             />
-          </Flex>
-
-          <Flex direction={"column"} mt={"180px"} justify="start">
-            <Title order={2} fz={"28px"} fw={500}>
-              Files Uploaded
-            </Title>
-            {files &&
-              files.map((file, index) => {
-                return (
-                  <Grid
-                    key={index}
-                    align="center"
-                    py="3px"
-                    className="showTrash"
-                    style={{ cursor: "default" }}
-                  >
+          </Box>
+          {/* Files Uploaded & Actions */}
+          <Flex direction="row" align="center" gap="10px" w="100%">
+            {/* Uploaded Files List */}
+            <Flex direction="column" w="30%">
+              {files?.length > 0 ? (
+                <Title order={2} fz={"28px"} fw={500}>
+                  Files Uploaded
+                </Title>
+              ) : null}
+              {files &&
+                files.map((file, index) => (
+                  <Grid key={index} py="3px" className="showTrash">
                     <Grid.Col span={1}>
                       <Box
                         mr={5}
@@ -154,8 +154,6 @@ const CourseContent = ({ selectedCourse, modalOpen }: props) => {
                         key={index}
                         style={{
                           flexGrow: 1,
-                          flexShrink: 1,
-                          minWidth: 0,
                           overflow: "hidden",
                           textOverflow: "ellipsis",
                           whiteSpace: "nowrap",
@@ -186,32 +184,28 @@ const CourseContent = ({ selectedCourse, modalOpen }: props) => {
                       />
                     </Grid.Col>
                   </Grid>
-                );
-              })}
+                ))}
+            </Flex>
           </Flex>
-        </Flex>
-
-        <Flex direction={"row"} mt={"200px"} gap="75px">
-          <Button
-            maw={"220px"}
-            px="15px"
-            variant="gradient"
-            gradient={{ from: "#2FAED7", to: "#0280C7", deg: 180 }}
-            size="50px"
-            radius={10}
-            onClick={modalOpen}
-            disabled={(files?.length ?? 0) < 1 || filesUploading}
-          >
-            <Text size="24px" fw={600}>
+          {/* Action Buttons */}
+          <Flex direction="row" mt="xl" gap="lg">
+            <Button
+              variant="gradient"
+              gradient={{ from: "#2FAED7", to: "#0280C7", deg: 180 }}
+              radius="lg"
+              size="md"
+              onClick={modalOpen}
+              disabled={(files?.length ?? 0) < 1 || filesUploading}
+            >
               Create Quiz
-            </Text>
-          </Button>
-          {quizzes.length > 0 && (
-            <PrevQuizMenu
-              quizzes={quizzes}
-              selectedCourseId={selectedCourse.id}
-            />
-          )}
+            </Button>
+            {quizzes.length > 0 && (
+              <PrevQuizMenu
+                quizzes={quizzes}
+                selectedCourseId={selectedCourse.id}
+              />
+            )}
+          </Flex>
         </Flex>
       </Container>
     </>

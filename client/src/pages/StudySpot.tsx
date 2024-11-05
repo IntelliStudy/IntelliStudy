@@ -116,13 +116,21 @@ const StudySpot = () => {
               radius={15}
               onClick={handleAddCourseSubmit}
             >
-              Submit
+              Create
             </Button>
           </Center>
         </Stack>
       </Modal>
       <Center p="2%">
-        <Title order={1}>Study Spot</Title>
+        <Text
+          size="25px"
+          fw={750}
+          variant="gradient"
+          gradient={{ from: "#2faed7", to: "#0280c7", deg: 180 }}
+          pb={10}
+        >
+          {currentUser?.displayName}'s Study Spot
+        </Text>
       </Center>
 
       <Center>

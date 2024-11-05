@@ -150,22 +150,21 @@ const CourseContentFileUpload = ({ selectedCourse, courseFiles }: props) => {
   return (
     <>
       <Notifications position="top-right" />
-      <Flex direction={"column"}>
-        <Dropzone onDrop={handleDrop} w={"350px"}>
-          <Text ta="center">Drop your files here</Text>
+
+      <Flex direction="column" align="center" gap="md">
+        <Dropzone onDrop={handleDrop} w={"1000px"}>
+          <Text ta="center">Drop your notes here (PDF only)</Text>
         </Dropzone>
         {previews}
         <Button
-          mt={"30px"}
-          px={"10px"}
-          color="#26B0DC"
-          radius={5}
-          maw={"80px"}
+          radius="lg"
+          variant="gradient"
+          gradient={{ from: "#2faed7", to: "#0280c7", deg: 180 }}
+          w={100}
+          p={10}
           onClick={handleUpload}
         >
-          <Text size="17px" fw={600}>
-            Upload
-          </Text>
+          Upload
         </Button>
       </Flex>
     </>

@@ -191,7 +191,6 @@ const AuthPage = () => {
           }}
         >
           <GoBackArrow login={isSignUp} />
-          <Title ta="center">Welcome back!</Title>
 
           <Paper withBorder shadow="md" p={30} mt={30} w={500} radius="md">
             <Group grow mb="md" mt="md">
@@ -286,8 +285,6 @@ const AuthPage = () => {
             transition: "transform 0.4s ease",
           }}
         >
-          <Title ta="center">Sign up now!</Title>
-
           <Paper withBorder shadow="md" p={30} mt={30} w={500} radius="md">
             <Group grow mb="md" mt="md">
               <GoogleButton radius="xl" onClick={handleGoogleLogin}>

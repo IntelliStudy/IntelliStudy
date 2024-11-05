@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities; */
 
-@import '@mantine/core/styles.css';
-@import '@mantine/dropzone/styles.css';
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@import "@mantine/core/styles.css";
+@import "@mantine/dropzone/styles.css";
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 
 @tailwind components;
 @tailwind utilities;
@@ -15,9 +15,9 @@
 
 html,
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 400;
-  background-color: #fafafa;
+  background-color: white;
 }
 
 .course-item {
@@ -30,7 +30,7 @@ body {
 }
 
 .course-item.selected {
-  background-color: #26afdca7;
+  background-color: #94ddf5;
 }
 
 /* :root {
