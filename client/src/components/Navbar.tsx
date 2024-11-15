@@ -72,21 +72,21 @@
 
 // export default Navbar;
 import {
-  HoverCard,
-  Group,
-  Button,
-  UnstyledButton,
-  Text,
-  SimpleGrid,
-  ThemeIcon,
   Anchor,
-  Divider,
-  Center,
   Box,
   Burger,
-  Drawer,
+  Button,
+  Center,
   Collapse,
+  Divider,
+  Drawer,
+  Group,
+  HoverCard,
   ScrollArea,
+  SimpleGrid,
+  Text,
+  ThemeIcon,
+  UnstyledButton,
   rem,
   useMantineTheme,
 } from "@mantine/core";
@@ -114,9 +114,9 @@ const Navbar = () => {
         <Group justify="space-between" h="100%">
           <Link to={currentUser ? "/studyspot" : "/"}>
             {currentUser ? (
-              <img src="../logo/logo-with-text-nav.png" width="250px" />
+              <img src="../../logo/logo-with-text-nav.png" width="250px" />
             ) : (
-              <img src="../logo/logo-no-text.png" width="60px" />
+              <img src="../../logo/logo-no-text.png" width="60px" />
             )}
           </Link>
 

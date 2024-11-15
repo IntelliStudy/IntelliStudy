@@ -22,6 +22,7 @@ const Quiz = () => {
 
   const [quizQuestions, setQuizQuestions] = useState<any>();
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [quizScoreFetched, setQuizScoreFetched] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
   const [quizScore, setQuizScore] = useState({
     userScore: 0,
@@ -172,6 +173,7 @@ const Quiz = () => {
             userScore: attemptData.userScore,
             totalScore: attemptData.totalScore,
           });
+          setQuizScoreFetched(true);
         }
       } catch (error) {
         console.error("Error fetching attempt data:", error);
@@ -181,12 +183,6 @@ const Quiz = () => {
     // Call the async function
     fetchAttemptData();
   }, [isQuizGraded]);
-
-  // useEffect(() => {
-  //   if (isQuizGraded && isSubmitted) {
-  //     window.location.reload();
-  //   }
-  // }, [isQuizGraded, isSubmitted]);
 
   const quiz = {
     quiz: {
@@ -250,6 +246,8 @@ const Quiz = () => {
   const handleQuizSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
+    setLoading(true);
+
     // VALIDATION
     const results: QuizValidationAnswers = {
       mcq: {},
@@ -297,6 +295,8 @@ const Quiz = () => {
     const handleCreateAttempt = async () => {
       if (shouldCreateAttempt) {
         try {
+          setLoading(true);
+
           // Create attempt under users/{userId}/courses/{courseId}/quizzes/{quizId}/attempts
           await createAttemptDocument(
             currentUser!.uid,
@@ -307,10 +307,7 @@ const Quiz = () => {
             validationResults
           );
 
-          // Set loading to true and delay for 2 seconds
-          setLoading(true);
-          await new Promise((resolve) => setTimeout(resolve, 3000)); // 3-second delay
-          setLoading(false);
+          await new Promise((resolve) => setTimeout(resolve, 5000)); // 5-second delay
 
           // Calculate the final score and update the state
           const finalScore = await calculateFinalScore(
@@ -321,7 +318,8 @@ const Quiz = () => {
 
           // Update the score after calculation
           setQuizScore(finalScore); // Now the state gets updated with both userScore and totalScore
-          setIsQuizGraded(true); // Set the graded flag once the score is updated
+
+          setLoading(false);
 
           // Scroll to top after submission
           window.scrollTo({
@@ -347,6 +345,7 @@ const Quiz = () => {
         userScore: quizScore.userScore,
         totalScore: quizScore.totalScore,
       });
+      setQuizScoreFetched(true);
     }
   }, [isQuizGraded, isSubmitted, quizScore.userScore, quizScore.totalScore]);
 
@@ -359,93 +358,94 @@ const Quiz = () => {
         data-testid="loading"
       />
       {/* Quiz Score Section */}
-      {isSubmitted && isQuizGraded && (
+      {isSubmitted && isQuizGraded && quizScoreFetched && (
         <QuizScore
           totalScore={quizScore.totalScore}
           userScore={quizScore.userScore}
         />
       )}
-      {!loading && (
-        <form onSubmit={handleQuizSubmit}>
-          {/* MCQ */}
-          {quiz.quiz.questions.mcq.length > 0 && (
-            <SectionWrapper
-              sectionType={QuestionType.mcq}
-              sectionLabel={QuestionLabel.mcq}
-              questions={quiz.quiz.questions.mcq}
-              onAnswerChange={handleAnswerChange}
-              validationResults={validationResults}
-              disabled={disabled}
-              isSubmitted={isSubmitted}
-              userAnswer={quizForm.values.mcq}
-            />
-          )}
+      {!loading &&
+        (!isSubmitted || (isSubmitted && isQuizGraded && quizScoreFetched)) && (
+          <form onSubmit={handleQuizSubmit}>
+            {/* MCQ */}
+            {quiz.quiz.questions.mcq.length > 0 && (
+              <SectionWrapper
+                sectionType={QuestionType.mcq}
+                sectionLabel={QuestionLabel.mcq}
+                questions={quiz.quiz.questions.mcq}
+                onAnswerChange={handleAnswerChange}
+                validationResults={validationResults}
+                disabled={disabled}
+                isSubmitted={isSubmitted}
+                userAnswer={quizForm.values.mcq}
+              />
+            )}
 
-          {/* TF */}
-          {quiz.quiz.questions.tf.length > 0 && (
-            <SectionWrapper
-              sectionType={QuestionType.tf}
-              sectionLabel={QuestionLabel.tf}
-              questions={quiz.quiz.questions.tf}
-              onAnswerChange={handleAnswerChange}
-              validationResults={validationResults}
-              disabled={disabled}
-              isSubmitted={isSubmitted}
-              userAnswer={quizForm.values.tf}
-            />
-          )}
+            {/* TF */}
+            {quiz.quiz.questions.tf.length > 0 && (
+              <SectionWrapper
+                sectionType={QuestionType.tf}
+                sectionLabel={QuestionLabel.tf}
+                questions={quiz.quiz.questions.tf}
+                onAnswerChange={handleAnswerChange}
+                validationResults={validationResults}
+                disabled={disabled}
+                isSubmitted={isSubmitted}
+                userAnswer={quizForm.values.tf}
+              />
+            )}
 
-          {/* SHORT ANS */}
+            {/* SHORT ANS */}
 
-          {quiz.quiz.questions.s_ans.length > 0 && (
-            <SectionWrapper
-              sectionType={QuestionType.s_ans}
-              sectionLabel={QuestionLabel.s_ans}
-              questions={quiz.quiz.questions.s_ans}
-              onAnswerChange={handleAnswerChange}
-              validationResults={validationResults}
-              disabled={disabled}
-              isSubmitted={isSubmitted}
-              userAnswer={quizForm.values.s_ans}
-            />
-          )}
+            {quiz.quiz.questions.s_ans.length > 0 && (
+              <SectionWrapper
+                sectionType={QuestionType.s_ans}
+                sectionLabel={QuestionLabel.s_ans}
+                questions={quiz.quiz.questions.s_ans}
+                onAnswerChange={handleAnswerChange}
+                validationResults={validationResults}
+                disabled={disabled}
+                isSubmitted={isSubmitted}
+                userAnswer={quizForm.values.s_ans}
+              />
+            )}
 
-          {/* LONG ANS */}
-          {quiz.quiz.questions.l_ans.length > 0 && (
-            <SectionWrapper
-              sectionType={QuestionType.l_ans}
-              sectionLabel={QuestionLabel.l_ans}
-              questions={quiz.quiz.questions.l_ans}
-              onAnswerChange={handleAnswerChange}
-              validationResults={validationResults}
-              disabled={disabled}
-              isSubmitted={isSubmitted}
-              userAnswer={quizForm.values.l_ans}
-            />
-          )}
+            {/* LONG ANS */}
+            {quiz.quiz.questions.l_ans.length > 0 && (
+              <SectionWrapper
+                sectionType={QuestionType.l_ans}
+                sectionLabel={QuestionLabel.l_ans}
+                questions={quiz.quiz.questions.l_ans}
+                onAnswerChange={handleAnswerChange}
+                validationResults={validationResults}
+                disabled={disabled}
+                isSubmitted={isSubmitted}
+                userAnswer={quizForm.values.l_ans}
+              />
+            )}
 
-          {/* FILL IN BLANK */}
+            {/* FILL IN BLANK */}
 
-          {quiz.quiz.questions.fill_in_blank.length > 0 && (
-            <SectionWrapper
-              sectionType={QuestionType.fill_in_blank}
-              sectionLabel={QuestionLabel.fill_in_blank}
-              questions={quiz.quiz.questions.fill_in_blank}
-              onAnswerChange={handleAnswerChange}
-              validationResults={validationResults}
-              disabled={disabled}
-              isSubmitted={isSubmitted}
-              userAnswer={quizForm.values.fill_in_blank}
-            />
-          )}
+            {quiz.quiz.questions.fill_in_blank.length > 0 && (
+              <SectionWrapper
+                sectionType={QuestionType.fill_in_blank}
+                sectionLabel={QuestionLabel.fill_in_blank}
+                questions={quiz.quiz.questions.fill_in_blank}
+                onAnswerChange={handleAnswerChange}
+                validationResults={validationResults}
+                disabled={disabled}
+                isSubmitted={isSubmitted}
+                userAnswer={quizForm.values.fill_in_blank}
+              />
+            )}
 
-          {!isSubmitted && (
-            <Button type="submit" w={"90px"} ml="115px" mb="70px">
-              Submit
-            </Button>
-          )}
-        </form>
-      )}
+            {!isSubmitted && (
+              <Button type="submit" w={"90px"} ml="115px" mb="70px">
+                Submit
+              </Button>
+            )}
+          </form>
+        )}
     </>
   );
 };
