@@ -7,7 +7,7 @@ import { ref, uploadBytes } from "firebase/storage";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../App";
 import { db, storage } from "../../firebase/firebase";
-import { Course, courseFile } from "../../types";
+import { Course, CourseFile } from "../../types";
 import "../components.css";
 
 const errorMessages = {
@@ -46,7 +46,7 @@ class UploadError extends Error {
 
 interface props {
   selectedCourse: Course;
-  courseFiles: courseFile[] | undefined;
+  courseFiles: CourseFile[] | undefined;
 }
 
 const CourseContentFileUpload = ({ selectedCourse, courseFiles }: props) => {

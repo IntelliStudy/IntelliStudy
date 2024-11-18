@@ -15,7 +15,7 @@ import { useContext, useEffect, useState } from "react";
 import { PrevQuizMenu } from "..";
 import { UserContext } from "../../App";
 import { db } from "../../firebase/firebase";
-import { Course, courseFile } from "../../types";
+import { Course, CourseFile } from "../../types";
 import { FirebaseQuiz } from "../../types/quiz";
 import { handleFileDelete } from "../../utilities/fileUploadUtilities";
 import "../components.css";
@@ -29,7 +29,7 @@ interface props {
 
 const CourseContent = ({ selectedCourse, modalOpen }: props) => {
   const { currentUser } = useContext(UserContext);
-  const [files, setFiles] = useState<courseFile[]>();
+  const [files, setFiles] = useState<CourseFile[]>();
   const [quizzes, setQuizzes] = useState<FirebaseQuiz[]>([]);
   const [filesUploading, setFilesUploading] = useState<boolean>();
 
@@ -43,7 +43,7 @@ const CourseContent = ({ selectedCourse, modalOpen }: props) => {
 
       // Real-time listener for file changes (onSnapshot)
       const unsubscribe = onSnapshot(fileCollectionRef, (snapshot) => {
-        const updatedFiles: courseFile[] = snapshot.docs.map((doc) => {
+        const updatedFiles: CourseFile[] = snapshot.docs.map((doc) => {
           const data = doc.data();
           return {
             id: data.id,

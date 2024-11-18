@@ -12,6 +12,8 @@ import {
 import {
   addDoc,
   collection,
+  doc,
+  getDoc,
   getDocs,
   orderBy,
   query,
@@ -21,11 +23,12 @@ import { SetStateAction, useContext, useEffect, useState } from "react";
 import { UserContext } from "../App";
 import { AddCourseCard, CourseCard } from "../components";
 import { db } from "../firebase/firebase";
-import { Course } from "../types";
+import { Course, User } from "../types";
 
 const StudySpot = () => {
   const { currentUser } = useContext(UserContext);
   const [courses, setCourses] = useState<Course[]>([]);
+  const [userInfo, setUserInfo] = useState<User>();
   const [loading, setLoading] = useState(true);
   const [courseName, setCourseName] = useState<string>("");
   const [courseCode, setCourseCode] = useState<string>("");
@@ -67,9 +70,31 @@ const StudySpot = () => {
     }
   };
 
+  const fetchUserInfo = async () => {
+    try {
+      const userRef = doc(db, `users/${currentUser?.uid}`);
+      const userDoc = (await getDoc(userRef)).data();
+      const userData: User = {
+        displayName: userDoc.displayName,
+        email: userDoc.email,
+        fName: userDoc.fName,
+        lName: userDoc.lName,
+        password: userDoc.password,
+        signedIn: userDoc.signedIn,
+        uid: userDoc.uid,
+        uploadedFiles: userDoc.uploadedFiles,
+      };
+
+      setUserInfo(userData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     if (!currentUser) return;
     fetchData();
+    fetchUserInfo();
   }, [currentUser]);
 
   return (
@@ -129,7 +154,7 @@ const StudySpot = () => {
           gradient={{ from: "#2faed7", to: "#0280c7", deg: 180 }}
           pb={10}
         >
-          {currentUser?.displayName}'s Study Spot
+          {userInfo?.displayName}'s Study Spot
         </Text>
       </Center>
 

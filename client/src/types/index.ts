@@ -8,10 +8,21 @@ export type Course = {
   createdAt: Timestamp;
 };
 
-export type courseFile = {
+export type CourseFile = {
   id: string;
   fileName: string;
   fileReference: string;
   uploadedAt: Timestamp;
   processed: boolean;
+};
+
+export type User = {
+  displayName: string;
+  email: string;
+  fName: string;
+  lName: string;
+  password: string;
+  signedIn: boolean;
+  uid: string;
+  uploadedFiles: boolean;
 };
