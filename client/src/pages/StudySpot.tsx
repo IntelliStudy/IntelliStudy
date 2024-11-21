@@ -21,12 +21,12 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { SetStateAction, useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { UserContext } from "../App";
 import { AddCourseCard, CourseCard } from "../components";
+import { allowedUUIDs } from "../constants";
 import { db } from "../firebase/firebase";
 import { Course, User } from "../types";
-import { allowedUUIDs } from "../constants";
-import { Link } from "react-router-dom";
 
 const StudySpot = () => {
   const { currentUser } = useContext(UserContext);
@@ -112,6 +112,10 @@ const StudySpot = () => {
       setLoading(false); // Stop the loader if access is restricted
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    fetchUserInfo();
+  }, [currentUser, userInfo]);
 
   if (userInfoLoading || loading) {
     return (
