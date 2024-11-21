@@ -146,15 +146,21 @@ const StudySpot = () => {
           </Center>
         </Stack>
       </Modal>
-      <Center p="2%">
+      <Center pt="2%" pb="1%">
         <Text
-          size="25px"
+          size="35px"
           fw={750}
           variant="gradient"
           gradient={{ from: "#2faed7", to: "#0280c7", deg: 180 }}
           pb={10}
         >
           {userInfo?.displayName}'s Study Spot
+        </Text>
+        <br />
+      </Center>
+      <Center pb="2%">
+        <Text size="18px" fw={600} pb={10}>
+          Let the studying begin.
         </Text>
       </Center>
 
@@ -176,7 +182,7 @@ const StudySpot = () => {
             <AddCourseCard onClick={() => setModalOpened(true)} />
             <Text c="#808080">
               It looks like you have any courses setup... click the plus icon to
-              get create one now!
+              create one now!
             </Text>
           </Stack>
         )}
