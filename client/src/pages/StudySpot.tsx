@@ -107,7 +107,7 @@ const StudySpot = () => {
 
     if (isUserAllowed) {
       fetchData();
-      fetchUserInfo();
+      // fetchUserInfo();
     } else {
       setLoading(false); // Stop the loader if access is restricted
     }
@@ -115,7 +115,8 @@ const StudySpot = () => {
 
   useEffect(() => {
     fetchUserInfo();
-  }, [currentUser, userInfo]);
+    console.log(currentUser, userInfo);
+  }, [currentUser]);
 
   if (userInfoLoading || loading) {
     return (
