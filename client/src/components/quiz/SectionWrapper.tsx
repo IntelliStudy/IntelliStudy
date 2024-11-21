@@ -1,4 +1,4 @@
-import { Center, Container, Title } from "@mantine/core";
+import { Text, Container, Title } from "@mantine/core";
 import {
   FillInBlankQuestionType,
   LongAnswerQuestionType,
@@ -141,7 +141,7 @@ const SectionWrapper = ({
   };
 
   return (
-    <Container fluid w="80%" py="45px" ml="5%">
+    <Container fluid maw={1000} py="45px">
       <Title order={2} fw={700} fz={"30px"} pb="35px">
         {questions.length > 0 && sectionLabel}
       </Title>

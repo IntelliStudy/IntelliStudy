@@ -21,7 +21,7 @@ const errorMessages = {
   },
   "upload/invalid-file-size": {
     title: "File Size is too Large",
-    message: "Each file must not exceed 1 MB in size",
+    message: "Each file must not exceed 5 MB in size",
   },
 };
 
@@ -96,7 +96,7 @@ const CourseContentFileUpload = ({ selectedCourse, courseFiles }: props) => {
         if (file.type !== "application/pdf") {
           throw new UploadError("upload/invalid-file-type");
         }
-        if (file.size > 1000000) {
+        if (file.size > 5000000) {
           throw new UploadError("upload/invalid-file-size");
         }
 
