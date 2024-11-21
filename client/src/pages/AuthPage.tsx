@@ -106,7 +106,7 @@ const AuthPage = () => {
         // setCurrentUser(getCurrentlySignedInUserHandler);
       })
       .catch((error) => {
-        console.log("error", getErrorMessage(error.code));
+        console.log("error", error);
         notifications.show({
           icon: xIcon,
           radius: "lg",
@@ -190,7 +190,7 @@ const AuthPage = () => {
             transition: "transform 0.4s ease",
           }}
         >
-          <GoBackArrow login={isSignUp} />
+          {/* <GoBackArrow login={isSignUp} /> */}
 
           <Paper withBorder shadow="md" p={30} mt={30} w={500} radius="md">
             <Group grow mb="md" mt="md">

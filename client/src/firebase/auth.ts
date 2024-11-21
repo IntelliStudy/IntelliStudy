@@ -169,8 +169,6 @@ export const userLogoutHandler = () => {
   if (user) {
     return signOut(auth)
       .then(() => {
-        console.log(`User ${user.uid} signed out`);
-
         // Updating DB record to indicate that user is signed out
         setDoc(
           doc(db, "users", user.uid),

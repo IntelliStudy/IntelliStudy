@@ -28,3 +28,5 @@ export enum QuestionLabel {
   tf = "True or False Questions",
   fill_in_blank = "Fill in the Blank Questions",
 }
+
+export const allowedUUIDs = ["qlAXizzn2kX3NNrm9T6dIwDLFCy1"];

@@ -1,104 +1,26 @@
-// import { Button, Flex, Image, List, Text } from "@mantine/core";
-// import { IconUserCircle } from "@tabler/icons-react";
-// import { useContext } from "react";
-// import { Link } from "react-router-dom";
-// import { UserContext } from "../App";
-
-// const Navbar = () => {
-//   const { currentUser } = useContext(UserContext);
-
-//   return (
-//     <>
-//       <nav className="w-full flex justify-between items-center px-4 h-[80px] bg-gradient-to-r from-navbarDark to-navbarLight">
-//         <Link to={currentUser ? "/studyspot" : "/"}>
-//           <Image
-//             radius="sm"
-//             w={240}
-//             ml={"10px"}
-//             mt={"10px"}
-//             src="/logo/logo-with-text-nav.png"
-//           />
-//         </Link>
-
-//         <List type="unordered" listStyleType="none" pr={"2.5rem"}>
-//           {currentUser && (
-//             // User logged in
-//             <Flex direction={"row"} ml={"1rem"}>
-//               <Link to={"/profile"}>
-//                 <List.Item display={"inline"}>
-//                   <IconUserCircle
-//                     color="white"
-//                     stroke={1.75}
-//                     width={"50px"}
-//                     height={"50px"}
-//                   />
-//                 </List.Item>
-//               </Link>
-//             </Flex>
-//           )}
-
-//           {!currentUser && (
-//             // User not logged in
-//             <Flex align={"center"}>
-//               <Link to={"/login"}>
-//                 <List.Item display={"inline"} fz={"22px"} fw={"600"} c="white">
-//                   Login
-//                 </List.Item>
-//               </Link>
-//               <Link to={"/login"} state={{ isSignup: true }}>
-//                 <List.Item>
-//                   <Button
-//                     p={0}
-//                     ml={"1.8rem"}
-//                     variant="gradient"
-//                     gradient={{ from: "#FFFFFF", to: "#E0E0E0" }}
-//                     radius={10}
-//                     w="110px"
-//                     h="45px"
-//                   >
-//                     <Text fz={"22px"} fw={"600"} c={"black"}>
-//                       Sign up
-//                     </Text>
-//                   </Button>
-//                 </List.Item>
-//               </Link>
-//             </Flex>
-//           )}
-//         </List>
-//       </nav>
-//     </>
-//   );
-// };
-
-// export default Navbar;
-import {
-  Anchor,
-  Box,
-  Burger,
-  Button,
-  Center,
-  Collapse,
-  Divider,
-  Drawer,
-  Group,
-  HoverCard,
-  ScrollArea,
-  SimpleGrid,
-  Text,
-  ThemeIcon,
-  UnstyledButton,
-  rem,
-  useMantineTheme,
-} from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { Box, Button, Group } from "@mantine/core";
 import { IconUserCircle } from "@tabler/icons-react";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../App";
 import classes from "./HeaderMegaMenu.module.css";
+import { allowedUUIDs } from "../constants";
 
 const Navbar = () => {
   const { currentUser } = useContext(UserContext);
+  const [isAllowed, setIsAllowed] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (currentUser) {
+      setIsAllowed(allowedUUIDs.includes(currentUser.uid));
+    } else {
+      setIsAllowed(true);
+    }
+  }, [currentUser]);
+
+  if (!isAllowed) {
+    return null;
+  }
 
   return (
     <Box>

@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Center,
   LoadingOverlay,
@@ -24,15 +25,19 @@ import { UserContext } from "../App";
 import { AddCourseCard, CourseCard } from "../components";
 import { db } from "../firebase/firebase";
 import { Course, User } from "../types";
+import { allowedUUIDs } from "../constants";
+import { Link } from "react-router-dom";
 
 const StudySpot = () => {
   const { currentUser } = useContext(UserContext);
   const [courses, setCourses] = useState<Course[]>([]);
   const [userInfo, setUserInfo] = useState<User>();
   const [loading, setLoading] = useState(true);
+  const [userInfoLoading, setUserInfoLoading] = useState(true);
   const [courseName, setCourseName] = useState<string>("");
   const [courseCode, setCourseCode] = useState<string>("");
   const [modalOpened, setModalOpened] = useState<boolean>(false);
+  const [isAllowed, setIsAllowed] = useState<boolean>(false);
 
   const handleAddCourseSubmit = () => {
     addDoc(collection(db, "users", currentUser!.uid, "courses"), {
@@ -71,39 +76,94 @@ const StudySpot = () => {
   };
 
   const fetchUserInfo = async () => {
+    setUserInfoLoading(true);
     try {
       const userRef = doc(db, `users/${currentUser?.uid}`);
       const userDoc = (await getDoc(userRef)).data();
-      const userData: User = {
-        displayName: userDoc.displayName,
-        email: userDoc.email,
-        fName: userDoc.fName,
-        lName: userDoc.lName,
-        password: userDoc.password,
-        signedIn: userDoc.signedIn,
-        uid: userDoc.uid,
-        uploadedFiles: userDoc.uploadedFiles,
-      };
-
-      setUserInfo(userData);
+      if (userDoc) {
+        const userData: User = {
+          displayName: userDoc.displayName,
+          email: userDoc.email,
+          fName: userDoc.fName,
+          lName: userDoc.lName,
+          password: userDoc.password,
+          signedIn: userDoc.signedIn,
+          uid: userDoc.uid,
+          uploadedFiles: userDoc.uploadedFiles,
+        };
+        setUserInfo(userData);
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching user info:", error);
+    } finally {
+      setUserInfoLoading(false);
     }
   };
 
   useEffect(() => {
     if (!currentUser) return;
-    fetchData();
-    fetchUserInfo();
+    const isUserAllowed = allowedUUIDs.includes(currentUser.uid);
+    setIsAllowed(isUserAllowed);
+
+    if (isUserAllowed) {
+      fetchData();
+      fetchUserInfo();
+    } else {
+      setLoading(false); // Stop the loader if access is restricted
+    }
   }, [currentUser]);
 
-  return (
-    <>
+  if (userInfoLoading || loading) {
+    return (
       <LoadingOverlay
         visible={loading}
         zIndex={1000}
         overlayProps={{ radius: "sm", blur: 20 }}
       />
+    );
+  }
+
+  if (!isAllowed) {
+    return (
+      <Box pt="10%" style={{ height: "10vh" }}>
+        <Center>
+          <img src="../../logo/logo-no-text.png" width="300px" />
+        </Center>
+        <Center pt="50px">
+          <Text size="30px" c="black" fw={700}>
+            Hey there, thank you for your interest in IntelliStudy!
+          </Text>
+        </Center>
+        <Center pt="50px">
+          <Text size="25px" c="black" fw={500}>
+            We're just as excited as you are.
+          </Text>
+        </Center>
+        <Center pt="50px">
+          <Text size="20px" c="black" fw={500}>
+            IntelliStudy is currently invite-only. Check back soon for our
+            public release.
+          </Text>
+        </Center>
+
+        <Center pt="50px">
+          <Link to="/login">
+            <Button
+              radius="lg"
+              size="md"
+              variant="gradient"
+              gradient={{ from: "#2faed7", to: "#0280c7", deg: 180 }}
+            >
+              Back to Login
+            </Button>
+          </Link>
+        </Center>
+      </Box>
+    );
+  }
+
+  return (
+    <>
       <Modal
         opened={modalOpened}
         onClose={() => setModalOpened(false)}
@@ -146,6 +206,7 @@ const StudySpot = () => {
           </Center>
         </Stack>
       </Modal>
+
       <Center pt="2%" pb="1%">
         <Text
           size="35px"
@@ -156,7 +217,6 @@ const StudySpot = () => {
         >
           {userInfo?.displayName}'s Study Spot
         </Text>
-        <br />
       </Center>
       <Center pb="2%">
         <Text size="18px" fw={600} pb={10}>
@@ -181,7 +241,7 @@ const StudySpot = () => {
           <Stack align="center" gap="5vh">
             <AddCourseCard onClick={() => setModalOpened(true)} />
             <Text c="#808080">
-              It looks like you have any courses setup... click the plus icon to
+              It looks like you have no courses setup... click the plus icon to
               create one now!
             </Text>
           </Stack>

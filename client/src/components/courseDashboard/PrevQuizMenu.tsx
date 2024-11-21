@@ -25,7 +25,10 @@ const PrevQuizMenu = ({ quizzes, selectedCourseId }: props) => {
         <Menu.Label fz="14px">Quizzes</Menu.Label>
         {quizzes.map((quiz, index) => {
           return (
-            <Link to={`/course/${selectedCourseId}/quiz/${quiz.id}`}>
+            <Link
+              to={`/course/${selectedCourseId}/quiz/${quiz.id}`}
+              key={index}
+            >
               <Menu.Item
                 key={index}
                 fz="16px"
