@@ -1,4 +1,4 @@
-import { Button, LoadingOverlay } from "@mantine/core";
+import { Text, Button, Center, LoadingOverlay } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { collection, getDocs } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
@@ -354,7 +354,7 @@ const Quiz = () => {
       <LoadingOverlay
         visible={loading}
         zIndex={1000}
-        overlayProps={{ radius: "sm", blur: 20 }}
+        overlayProps={{ radius: "sm", blur: 100 }}
         data-testid="loading"
       />
       {/* Quiz Score Section */}
@@ -366,85 +366,95 @@ const Quiz = () => {
       )}
       {!loading &&
         (!isSubmitted || (isSubmitted && isQuizGraded && quizScoreFetched)) && (
-          <form onSubmit={handleQuizSubmit}>
-            {/* MCQ */}
-            {quiz.quiz.questions.mcq.length > 0 && (
-              <SectionWrapper
-                sectionType={QuestionType.mcq}
-                sectionLabel={QuestionLabel.mcq}
-                questions={quiz.quiz.questions.mcq}
-                onAnswerChange={handleAnswerChange}
-                validationResults={validationResults}
-                disabled={disabled}
-                isSubmitted={isSubmitted}
-                userAnswer={quizForm.values.mcq}
-              />
-            )}
+          <Center>
+            <form onSubmit={handleQuizSubmit}>
+              {/* MCQ */}
+              {quiz.quiz.questions.mcq.length > 0 && (
+                <SectionWrapper
+                  sectionType={QuestionType.mcq}
+                  sectionLabel={QuestionLabel.mcq}
+                  questions={quiz.quiz.questions.mcq}
+                  onAnswerChange={handleAnswerChange}
+                  validationResults={validationResults}
+                  disabled={disabled}
+                  isSubmitted={isSubmitted}
+                  userAnswer={quizForm.values.mcq}
+                />
+              )}
 
-            {/* TF */}
-            {quiz.quiz.questions.tf.length > 0 && (
-              <SectionWrapper
-                sectionType={QuestionType.tf}
-                sectionLabel={QuestionLabel.tf}
-                questions={quiz.quiz.questions.tf}
-                onAnswerChange={handleAnswerChange}
-                validationResults={validationResults}
-                disabled={disabled}
-                isSubmitted={isSubmitted}
-                userAnswer={quizForm.values.tf}
-              />
-            )}
+              {/* TF */}
+              {quiz.quiz.questions.tf.length > 0 && (
+                <SectionWrapper
+                  sectionType={QuestionType.tf}
+                  sectionLabel={QuestionLabel.tf}
+                  questions={quiz.quiz.questions.tf}
+                  onAnswerChange={handleAnswerChange}
+                  validationResults={validationResults}
+                  disabled={disabled}
+                  isSubmitted={isSubmitted}
+                  userAnswer={quizForm.values.tf}
+                />
+              )}
 
-            {/* SHORT ANS */}
+              {/* SHORT ANS */}
 
-            {quiz.quiz.questions.s_ans.length > 0 && (
-              <SectionWrapper
-                sectionType={QuestionType.s_ans}
-                sectionLabel={QuestionLabel.s_ans}
-                questions={quiz.quiz.questions.s_ans}
-                onAnswerChange={handleAnswerChange}
-                validationResults={validationResults}
-                disabled={disabled}
-                isSubmitted={isSubmitted}
-                userAnswer={quizForm.values.s_ans}
-              />
-            )}
+              {quiz.quiz.questions.s_ans.length > 0 && (
+                <SectionWrapper
+                  sectionType={QuestionType.s_ans}
+                  sectionLabel={QuestionLabel.s_ans}
+                  questions={quiz.quiz.questions.s_ans}
+                  onAnswerChange={handleAnswerChange}
+                  validationResults={validationResults}
+                  disabled={disabled}
+                  isSubmitted={isSubmitted}
+                  userAnswer={quizForm.values.s_ans}
+                />
+              )}
 
-            {/* LONG ANS */}
-            {quiz.quiz.questions.l_ans.length > 0 && (
-              <SectionWrapper
-                sectionType={QuestionType.l_ans}
-                sectionLabel={QuestionLabel.l_ans}
-                questions={quiz.quiz.questions.l_ans}
-                onAnswerChange={handleAnswerChange}
-                validationResults={validationResults}
-                disabled={disabled}
-                isSubmitted={isSubmitted}
-                userAnswer={quizForm.values.l_ans}
-              />
-            )}
+              {/* LONG ANS */}
+              {quiz.quiz.questions.l_ans.length > 0 && (
+                <SectionWrapper
+                  sectionType={QuestionType.l_ans}
+                  sectionLabel={QuestionLabel.l_ans}
+                  questions={quiz.quiz.questions.l_ans}
+                  onAnswerChange={handleAnswerChange}
+                  validationResults={validationResults}
+                  disabled={disabled}
+                  isSubmitted={isSubmitted}
+                  userAnswer={quizForm.values.l_ans}
+                />
+              )}
 
-            {/* FILL IN BLANK */}
+              {/* FILL IN BLANK */}
 
-            {quiz.quiz.questions.fill_in_blank.length > 0 && (
-              <SectionWrapper
-                sectionType={QuestionType.fill_in_blank}
-                sectionLabel={QuestionLabel.fill_in_blank}
-                questions={quiz.quiz.questions.fill_in_blank}
-                onAnswerChange={handleAnswerChange}
-                validationResults={validationResults}
-                disabled={disabled}
-                isSubmitted={isSubmitted}
-                userAnswer={quizForm.values.fill_in_blank}
-              />
-            )}
+              {quiz.quiz.questions.fill_in_blank.length > 0 && (
+                <SectionWrapper
+                  sectionType={QuestionType.fill_in_blank}
+                  sectionLabel={QuestionLabel.fill_in_blank}
+                  questions={quiz.quiz.questions.fill_in_blank}
+                  onAnswerChange={handleAnswerChange}
+                  validationResults={validationResults}
+                  disabled={disabled}
+                  isSubmitted={isSubmitted}
+                  userAnswer={quizForm.values.fill_in_blank}
+                />
+              )}
 
-            {!isSubmitted && (
-              <Button type="submit" w={"90px"} ml="115px" mb="70px">
-                Submit
-              </Button>
-            )}
-          </form>
+              {!isSubmitted && (
+                <Center>
+                  <Button
+                    radius="lg"
+                    size="md"
+                    type="submit"
+                    variant="gradient"
+                    gradient={{ from: "#2faed7", to: "#0280c7", deg: 180 }}
+                  >
+                    Submit
+                  </Button>
+                </Center>
+              )}
+            </form>
+          </Center>
         )}
     </>
   );
