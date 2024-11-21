@@ -7,7 +7,7 @@ import { ref, uploadBytes } from "firebase/storage";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../App";
 import { db, storage } from "../../firebase/firebase";
-import { Course, courseFile } from "../../types";
+import { Course, CourseFile } from "../../types";
 import "../components.css";
 
 const errorMessages = {
@@ -21,7 +21,7 @@ const errorMessages = {
   },
   "upload/invalid-file-size": {
     title: "File Size is too Large",
-    message: "Each file must not exceed 1 MB in size",
+    message: "Each file must not exceed 5 MB in size",
   },
 };
 
@@ -46,7 +46,7 @@ class UploadError extends Error {
 
 interface props {
   selectedCourse: Course;
-  courseFiles: courseFile[] | undefined;
+  courseFiles: CourseFile[] | undefined;
 }
 
 const CourseContentFileUpload = ({ selectedCourse, courseFiles }: props) => {
@@ -96,7 +96,7 @@ const CourseContentFileUpload = ({ selectedCourse, courseFiles }: props) => {
         if (file.type !== "application/pdf") {
           throw new UploadError("upload/invalid-file-type");
         }
-        if (file.size > 1000000) {
+        if (file.size > 5000000) {
           throw new UploadError("upload/invalid-file-size");
         }
 
@@ -150,22 +150,21 @@ const CourseContentFileUpload = ({ selectedCourse, courseFiles }: props) => {
   return (
     <>
       <Notifications position="top-right" />
-      <Flex direction={"column"}>
-        <Dropzone onDrop={handleDrop} w={"350px"}>
-          <Text ta="center">Drop your files here</Text>
+
+      <Flex direction="column" align="center" gap="md">
+        <Dropzone onDrop={handleDrop} w={"1000px"}>
+          <Text ta="center">Drop your notes here (PDF only)</Text>
         </Dropzone>
         {previews}
         <Button
-          mt={"30px"}
-          px={"10px"}
-          color="#26B0DC"
-          radius={5}
-          maw={"80px"}
+          radius="lg"
+          variant="gradient"
+          gradient={{ from: "#2faed7", to: "#0280c7", deg: 180 }}
+          w={100}
+          p={10}
           onClick={handleUpload}
         >
-          <Text size="17px" fw={600}>
-            Upload
-          </Text>
+          Upload
         </Button>
       </Flex>
     </>

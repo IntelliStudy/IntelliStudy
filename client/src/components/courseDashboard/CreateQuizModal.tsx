@@ -150,7 +150,7 @@ const CreateQuizModal = ({ courseId }: props) => {
       throw new Error("n cannot be greater than the length of the array");
     }
 
-    // Shuffle the array using Fisher-Yates algorithm
+    // Shuffle the array
     const shuffledArray = [...array];
     for (let i = shuffledArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -171,26 +171,40 @@ const CreateQuizModal = ({ courseId }: props) => {
     const fileIds = files.docs.map((doc) => doc.id);
     const questions: any[] = [];
 
-    const fetchFileQuestions = fileIds.map(async (fileId: string) => {
-      const questionsCollectionRef = collection(
-        db,
-        `users/${currentUser?.uid}/courses/${courseId}/files/${fileId}/questions`
-      );
-      const allQuestionsQuery = await getDocs(questionsCollectionRef);
-      const allQuestions = allQuestionsQuery.docs.map((doc) => doc.data());
-      values.questionTypes.forEach((questionType: any) => {
-        if (questionType.checked) {
-          const typeFilteredQuestions = allQuestions.filter(
-            (question) => question.type === questionType.type
-          );
-          questions.push(
-            ...getRandomValues(typeFilteredQuestions, questionType.count)
-          );
-        }
-      });
+    // Step 1: Create a mapping for each question type to collect all questions of that type.
+    const questionsByType: Record<string, any[]> = {};
+
+    // Step 2: Fetch questions from all files and group them by type.
+    await Promise.all(
+      fileIds.map(async (fileId: string) => {
+        const questionsCollectionRef = collection(
+          db,
+          `users/${currentUser?.uid}/courses/${courseId}/files/${fileId}/questions`
+        );
+        const allQuestionsQuery = await getDocs(questionsCollectionRef);
+        const allQuestions = allQuestionsQuery.docs.map((doc) => doc.data());
+
+        allQuestions.forEach((question) => {
+          if (!questionsByType[question.type]) {
+            questionsByType[question.type] = [];
+          }
+          questionsByType[question.type].push(question);
+        });
+      })
+    );
+
+    // Step 3: For each checked question type, randomly select the required number of questions.
+    values.questionTypes.forEach((questionType: any) => {
+      if (questionType.checked) {
+        const typeQuestions = questionsByType[questionType.type] || [];
+        const selectedQuestions = getRandomValues(
+          typeQuestions,
+          questionType.count
+        );
+        questions.push(...selectedQuestions);
+      }
     });
 
-    await Promise.all(fetchFileQuestions);
     return questions;
   };
 

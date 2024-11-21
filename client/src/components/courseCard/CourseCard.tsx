@@ -24,7 +24,7 @@ const courseCard = (props: courseCardProps) => {
       <Center>
         <Box pt="sm">
           <Link to={`/course/${props.courseId}`}>
-            <Button variant="white" color="dark">
+            <Button variant="white" color="dark" radius="lg">
               Study
             </Button>
           </Link>

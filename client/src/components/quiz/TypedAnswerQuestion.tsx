@@ -57,11 +57,13 @@ const TypedAnswerQuestion = ({
         onChange={(event) => handleAnswerChange(event.currentTarget.value)}
       />
 
-      <AnswerReferenceBox
-        file={answerReference.fileName}
-        page={answerReference.pageNumber}
-        correctAnswer={correctAnswer}
-      />
+      {isSubmitted && (
+        <AnswerReferenceBox
+          file={answerReference.fileName}
+          page={answerReference.pageNumber}
+          correctAnswer={correctAnswer}
+        />
+      )}
     </Flex>
   );
 };

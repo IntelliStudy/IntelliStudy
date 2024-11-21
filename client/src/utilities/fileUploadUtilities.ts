@@ -1,10 +1,10 @@
 import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 import { db, storage } from "../firebase/firebase";
-import { courseFile } from "../types";
+import { CourseFile } from "../types";
 
 export const handleFileDelete = (
-  file: courseFile,
+  file: CourseFile,
   currentUserId: string,
   selectedCourseId: string
 ) => {
@@ -53,7 +53,7 @@ export const handleCourseDelete = async (
 
     const snapshot = await getDocs(filesCollectionRef);
 
-    const files: courseFile[] = snapshot.docs.map((doc) => {
+    const files: CourseFile[] = snapshot.docs.map((doc) => {
       const data = doc.data();
       return {
         id: data.id,

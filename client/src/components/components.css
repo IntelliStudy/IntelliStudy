@@ -3,5 +3,5 @@
 }
 
 .showTrash:hover .hide {
-  display: block;
+  display: flow-root;
 }

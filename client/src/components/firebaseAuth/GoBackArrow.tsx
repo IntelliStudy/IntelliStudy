@@ -10,7 +10,7 @@ const GoBackArrow = ({ login }: props) => {
   return (
     <>
       <Container pos={"absolute"} top={"25px"} left={"10px"}>
-        <Link to={"/"}>
+        <Link to={"/"} key={23}>
           <Flex direction={"row"} align={"center"}>
             <IconCircleArrowLeftFilled
               style={{

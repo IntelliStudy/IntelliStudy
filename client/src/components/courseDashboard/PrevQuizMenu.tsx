@@ -13,27 +13,22 @@ const PrevQuizMenu = ({ quizzes, selectedCourseId }: props) => {
     <Menu position="top">
       <Menu.Target>
         <Button
-          maw={"300px"}
-          px="15px"
           variant="gradient"
           gradient={{ from: "#2FAED7", to: "#0280C7", deg: 180 }}
-          size="50px"
-          radius={10}
+          radius="lg"
+          size="md"
         >
-          <Flex direction="row" align="center">
-            <Text size="21px" fw={600} mr="10px">
-              Previous Quizes
-            </Text>
-            <IconArrowRightBar stroke={2} size="40px" />
-          </Flex>
+          Previous Quizzes
         </Button>
       </Menu.Target>
-
       <Menu.Dropdown>
-        <Menu.Label fz="14px">Quizes</Menu.Label>
+        <Menu.Label fz="14px">Quizzes</Menu.Label>
         {quizzes.map((quiz, index) => {
           return (
-            <Link to={`/course/${selectedCourseId}/quiz/${quiz.id}`}>
+            <Link
+              to={`/course/${selectedCourseId}/quiz/${quiz.id}`}
+              key={index}
+            >
               <Menu.Item
                 key={index}
                 fz="16px"
