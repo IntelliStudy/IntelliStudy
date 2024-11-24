@@ -241,7 +241,6 @@ const AuthPage = () => {
                   radius="md"
                 />
                 <Group justify="space-between" mt="lg">
-                  <Checkbox label="Remember me" />
                   <Anchor component="button" size="sm">
                     Forgot password?
                   </Anchor>

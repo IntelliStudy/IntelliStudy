@@ -1,5 +1,5 @@
-import { Button, Flex, Menu, rem, Text } from "@mantine/core";
-import { IconArrowRightBar, IconBook2 } from "@tabler/icons-react";
+import { Button, Menu, rem } from "@mantine/core";
+import { IconBook2 } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { FirebaseQuiz } from "../../types/quiz";
 
@@ -15,7 +15,7 @@ const PrevQuizMenu = ({ quizzes, selectedCourseId }: props) => {
         <Button
           variant="gradient"
           gradient={{ from: "#2FAED7", to: "#0280C7", deg: 180 }}
-          radius="lg"
+          radius="md"
           size="md"
         >
           Previous Quizzes
@@ -32,6 +32,7 @@ const PrevQuizMenu = ({ quizzes, selectedCourseId }: props) => {
               <Menu.Item
                 key={index}
                 fz="16px"
+                pr="80px"
                 leftSection={
                   <IconBook2 style={{ width: rem(20), height: rem(20) }} />
                 }

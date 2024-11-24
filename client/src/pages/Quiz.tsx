@@ -1,4 +1,4 @@
-import { Text, Button, Center, LoadingOverlay, Box } from "@mantine/core";
+import { Box, Button, Center, LoadingOverlay, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { collection, getDocs } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
@@ -444,7 +444,7 @@ const Quiz = () => {
                 {!isSubmitted && (
                   <Center pb="100px">
                     <Button
-                      radius="lg"
+                      radius="md"
                       size="md"
                       type="submit"
                       variant="gradient"

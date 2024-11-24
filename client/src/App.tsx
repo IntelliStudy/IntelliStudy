@@ -1,5 +1,6 @@
 import { LoadingOverlay, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
+import { ModalsProvider } from "@mantine/modals";
 import "@mantine/notifications/styles.css";
 import { User, onAuthStateChanged } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
@@ -47,33 +48,35 @@ function App() {
   return (
     <>
       <MantineProvider>
-        <UserContext.Provider
-          value={{ currentUser, setCurrentUser, isAuthLoading }}
-        >
-          {displayNavbar && <Navbar />}
+        <ModalsProvider>
+          <UserContext.Provider
+            value={{ currentUser, setCurrentUser, isAuthLoading }}
+          >
+            {displayNavbar && <Navbar />}
 
-          {!currentUser && isAuthLoading && (
+            {!currentUser && isAuthLoading && (
+              <LoadingOverlay
+                visible={true}
+                zIndex={1000}
+                overlayProps={{ radius: "sm", blur: 2 }}
+              />
+            )}
             <LoadingOverlay
-              visible={true}
+              visible={isAuthLoading}
               zIndex={1000}
               overlayProps={{ radius: "sm", blur: 2 }}
             />
-          )}
-          <LoadingOverlay
-            visible={isAuthLoading}
-            zIndex={1000}
-            overlayProps={{ radius: "sm", blur: 2 }}
-          />
 
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<AuthPage />} />
-            <Route path="/studyspot" element={<StudySpot />} />
-            <Route path="/course/:courseId" element={<CourseDashboard />} />
-            <Route path="/course/:courseId/quiz/:quizId" element={<Quiz />} />
-            <Route path="/profile" element={<Profile />} />
-          </Routes>
-        </UserContext.Provider>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<AuthPage />} />
+              <Route path="/studyspot" element={<StudySpot />} />
+              <Route path="/course/:courseId" element={<CourseDashboard />} />
+              <Route path="/course/:courseId/quiz/:quizId" element={<Quiz />} />
+              <Route path="/profile" element={<Profile />} />
+            </Routes>
+          </UserContext.Provider>
+        </ModalsProvider>
       </MantineProvider>
     </>
   );

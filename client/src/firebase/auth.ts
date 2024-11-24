@@ -134,9 +134,9 @@ export const googleLoginHandler = (onSuccess: () => void) => {
       onSuccess();
     })
     .catch((error) => {
-      // const errorCode = error.code;
-      // const errorMessage = error.message;
-      // console.log(errorCode, errorMessage);
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode, errorMessage);
       throw error;
     });
 };
@@ -146,16 +146,15 @@ export const deleteUserHandler = () => {
   const user = auth.currentUser;
 
   if (user) {
-    return deleteUser(user)
+    return deleteDoc(doc(db, "users", user.uid))
       .then(() => {
-        // Delete DB record of user
-        deleteDoc(doc(db, "users", user.uid));
-        console.log(`User ${user.uid} deleted`);
+        return deleteUser(user);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        console.error(`Error deleting user: ${errorCode} - ${errorMessage}`);
+        throw error;
       });
   } else {
     return Promise.resolve();

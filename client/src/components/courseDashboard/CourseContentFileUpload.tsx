@@ -157,7 +157,7 @@ const CourseContentFileUpload = ({ selectedCourse, courseFiles }: props) => {
         </Dropzone>
         {previews}
         <Button
-          radius="lg"
+          radius="md"
           variant="gradient"
           gradient={{ from: "#2faed7", to: "#0280c7", deg: 180 }}
           w={100}

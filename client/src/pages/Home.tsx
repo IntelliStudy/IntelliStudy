@@ -12,10 +12,10 @@ import {
 } from "@mantine/core";
 import { Link, useNavigate } from "react-router-dom";
 
+import { IconCheck } from "@tabler/icons-react";
 import { useContext } from "react";
 import { UserContext } from "../App";
 import classes from "./HeroTitle.module.css";
-import { IconCheck } from "@tabler/icons-react";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -93,7 +93,7 @@ const Home = () => {
             <Group mt={60}>
               <Link to="/login">
                 <Button
-                  radius="lg"
+                  radius="md"
                   size="md"
                   variant="gradient"
                   gradient={{ from: "#2faed7", to: "#0280c7", deg: 180 }}

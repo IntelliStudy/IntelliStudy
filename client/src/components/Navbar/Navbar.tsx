@@ -1,10 +1,11 @@
-import { Box, Button, Group } from "@mantine/core";
+import { Avatar, Box, Button, Group } from "@mantine/core";
 import { IconUserCircle } from "@tabler/icons-react";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { UserContext } from "../App";
-import classes from "./HeaderMegaMenu.module.css";
-import { allowedUUIDs } from "../constants";
+import { UserContext } from "../../App";
+import { allowedUUIDs } from "../../constants";
+import classes from "../HeaderMegaMenu.module.css";
+import ProfileDropdown from "./ProfileDropdown";
 
 const Navbar = () => {
   const { currentUser } = useContext(UserContext);
@@ -44,25 +45,18 @@ const Navbar = () => {
 
           <Group visibleFrom="sm">
             {currentUser ? (
-              <Link to="/profile">
-                <IconUserCircle
-                  color="white"
-                  stroke={1.75}
-                  width="50px"
-                  height="50px"
-                />
-              </Link>
+              <ProfileDropdown />
             ) : (
               <>
                 <Link to="/login" state={{ isSignup: false }}>
-                  <Button radius="lg" variant="default">
+                  <Button radius="md" variant="default">
                     Log in
                   </Button>
                 </Link>
                 <Link to="/login" state={{ isSignup: true }}>
                   <Button
                     variant="gradient"
-                    radius="lg"
+                    radius="md"
                     gradient={{ from: "#2faed7", to: "#0280c7", deg: 180 }}
                   >
                     Sign up

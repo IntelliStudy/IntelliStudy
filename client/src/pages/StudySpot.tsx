@@ -33,7 +33,7 @@ const StudySpot = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [userInfo, setUserInfo] = useState<User>();
   const [loading, setLoading] = useState(true);
-  const [userInfoLoading, setUserInfoLoading] = useState(true);
+  const [userInfoLoading, setUserInfoLoading] = useState<boolean>();
   const [courseName, setCourseName] = useState<string>("");
   const [courseCode, setCourseCode] = useState<string>("");
   const [modalOpened, setModalOpened] = useState<boolean>(false);
@@ -106,16 +106,12 @@ const StudySpot = () => {
     setIsAllowed(isUserAllowed);
 
     if (isUserAllowed) {
-      fetchData();
-      // fetchUserInfo();
+      fetchData()
+        .then(() => fetchUserInfo())
+        .finally(() => setLoading(false));
     } else {
       setLoading(false); // Stop the loader if access is restricted
     }
-  }, [currentUser]);
-
-  useEffect(() => {
-    fetchUserInfo();
-    console.log(currentUser, userInfo);
   }, [currentUser]);
 
   if (userInfoLoading || loading) {
@@ -154,7 +150,7 @@ const StudySpot = () => {
         <Center pt="50px">
           <Link to="/login">
             <Button
-              radius="lg"
+              radius="md"
               size="md"
               variant="gradient"
               gradient={{ from: "#2faed7", to: "#0280c7", deg: 180 }}
