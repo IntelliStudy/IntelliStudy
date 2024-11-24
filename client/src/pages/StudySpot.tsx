@@ -201,6 +201,7 @@ const StudySpot = () => {
               gradient={{ from: "#2FAED7", to: "#0280C7", deg: 180 }}
               radius={15}
               onClick={handleAddCourseSubmit}
+              disabled={!courseName.trim() || !courseCode.trim()}
             >
               Create
             </Button>
