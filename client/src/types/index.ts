@@ -19,9 +19,9 @@ export type CourseFile = {
 export type User = {
   displayName: string;
   email: string;
-  fName: string;
-  lName: string;
-  password: string;
+  fName?: string;
+  lName?: string;
+  password?: string;
   signedIn: boolean;
   uid: string;
   uploadedFiles: boolean;

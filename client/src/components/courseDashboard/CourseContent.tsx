@@ -8,7 +8,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { IconCheck, IconTrash } from "@tabler/icons-react";
+import { IconCheck, IconTrashFilled } from "@tabler/icons-react";
 import { collection, getDocs, onSnapshot } from "firebase/firestore";
 import { motion } from "framer-motion"; // Import motion for animation
 import { useContext, useEffect, useState } from "react";
@@ -163,10 +163,14 @@ const CourseContent = ({ selectedCourse, modalOpen }: props) => {
                       </Text>
                     </Grid.Col>
                     <Grid.Col span={2} p={0} className="hide">
-                      <IconTrash
+                      <IconTrashFilled
                         stroke={2}
                         color="red"
-                        style={{ marginLeft: 10, cursor: "pointer" }}
+                        style={{
+                          marginLeft: 10,
+                          cursor: "pointer",
+                          marginTop: "6px",
+                        }}
                         onClick={() =>
                           ConfirmDelete(
                             "Delete File",
@@ -192,7 +196,7 @@ const CourseContent = ({ selectedCourse, modalOpen }: props) => {
             <Button
               variant="gradient"
               gradient={{ from: "#2FAED7", to: "#0280C7", deg: 180 }}
-              radius="lg"
+              radius="md"
               size="md"
               onClick={modalOpen}
               disabled={(files?.length ?? 0) < 1 || filesUploading}

@@ -29,4 +29,7 @@ export enum QuestionLabel {
   fill_in_blank = "Fill in the Blank Questions",
 }
 
-export const allowedUUIDs = ["qlAXizzn2kX3NNrm9T6dIwDLFCy1"];
+export const allowedUUIDs = [
+  "qlAXizzn2kX3NNrm9T6dIwDLFCy1",
+  "KxRBAPQlgyTtALNPwQsd6Dw0wrt1",
+];

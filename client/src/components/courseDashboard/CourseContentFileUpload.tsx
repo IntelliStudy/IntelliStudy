@@ -1,7 +1,7 @@
 import { Button, Flex, Group, rem, Text } from "@mantine/core";
 import { Dropzone, FileWithPath } from "@mantine/dropzone";
 import { Notifications, notifications } from "@mantine/notifications";
-import { IconTrash, IconX } from "@tabler/icons-react";
+import { IconTrashFilled, IconX } from "@tabler/icons-react";
 import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 import { useContext, useEffect, useState } from "react";
@@ -60,7 +60,7 @@ const CourseContentFileUpload = ({ selectedCourse, courseFiles }: props) => {
         <Flex direction="row">
           <Group className="showTrash" pr="40px">
             <Text key={index}>{file.name}</Text>
-            <IconTrash
+            <IconTrashFilled
               className="hide"
               stroke={2}
               color="red"
@@ -157,7 +157,7 @@ const CourseContentFileUpload = ({ selectedCourse, courseFiles }: props) => {
         </Dropzone>
         {previews}
         <Button
-          radius="lg"
+          radius="md"
           variant="gradient"
           gradient={{ from: "#2faed7", to: "#0280c7", deg: 180 }}
           w={100}

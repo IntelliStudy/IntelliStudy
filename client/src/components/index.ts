@@ -1,6 +1,7 @@
 import Quiz from "../pages/Quiz";
 import HomePageFeature from "./HomePageFeature";
-import Navbar from "./Navbar";
+import Navbar from "./Navbar/Navbar";
+import ProfileDropdown from "./Navbar/ProfileDropdown";
 import AddCourseCard from "./courseCard/AddCourseCard";
 import CourseCard from "./courseCard/CourseCard";
 import CourseContent from "./courseDashboard/CourseContent";
@@ -34,6 +35,7 @@ export {
   MultipleChoiceQuestion,
   Navbar,
   PrevQuizMenu,
+  ProfileDropdown,
   Quiz,
   QuizScore,
   SectionWrapper,

@@ -31,9 +31,9 @@ import { Course, User } from "../types";
 const StudySpot = () => {
   const { currentUser } = useContext(UserContext);
   const [courses, setCourses] = useState<Course[]>([]);
-  const [userInfo, setUserInfo] = useState<User>();
+  const [userInfo, setUserInfo] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [userInfoLoading, setUserInfoLoading] = useState(true);
+  const [userInfoLoading, setUserInfoLoading] = useState<boolean>();
   const [courseName, setCourseName] = useState<string>("");
   const [courseCode, setCourseCode] = useState<string>("");
   const [modalOpened, setModalOpened] = useState<boolean>(false);
@@ -95,8 +95,6 @@ const StudySpot = () => {
       }
     } catch (error) {
       console.error("Error fetching user info:", error);
-    } finally {
-      setUserInfoLoading(false);
     }
   };
 
@@ -106,19 +104,17 @@ const StudySpot = () => {
     setIsAllowed(isUserAllowed);
 
     if (isUserAllowed) {
-      fetchData();
-      // fetchUserInfo();
+      fetchData()
+        .then(() => fetchUserInfo())
+        .then(() => setUserInfoLoading(false))
+        .finally(() => setLoading(false));
     } else {
+      setUserInfoLoading(false);
       setLoading(false); // Stop the loader if access is restricted
     }
   }, [currentUser]);
 
-  useEffect(() => {
-    fetchUserInfo();
-    console.log(currentUser, userInfo);
-  }, [currentUser]);
-
-  if (userInfoLoading || loading) {
+  if (userInfoLoading || loading || !userInfo) {
     return (
       <LoadingOverlay
         visible={loading}
@@ -154,7 +150,7 @@ const StudySpot = () => {
         <Center pt="50px">
           <Link to="/login">
             <Button
-              radius="lg"
+              radius="md"
               size="md"
               variant="gradient"
               gradient={{ from: "#2faed7", to: "#0280c7", deg: 180 }}
@@ -205,6 +201,7 @@ const StudySpot = () => {
               gradient={{ from: "#2FAED7", to: "#0280C7", deg: 180 }}
               radius={15}
               onClick={handleAddCourseSubmit}
+              disabled={!courseName.trim() || !courseCode.trim()}
             >
               Create
             </Button>
