@@ -31,7 +31,7 @@ import { Course, User } from "../types";
 const StudySpot = () => {
   const { currentUser } = useContext(UserContext);
   const [courses, setCourses] = useState<Course[]>([]);
-  const [userInfo, setUserInfo] = useState<User>();
+  const [userInfo, setUserInfo] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [userInfoLoading, setUserInfoLoading] = useState<boolean>();
   const [courseName, setCourseName] = useState<string>("");
@@ -95,8 +95,6 @@ const StudySpot = () => {
       }
     } catch (error) {
       console.error("Error fetching user info:", error);
-    } finally {
-      setUserInfoLoading(false);
     }
   };
 
@@ -108,13 +106,15 @@ const StudySpot = () => {
     if (isUserAllowed) {
       fetchData()
         .then(() => fetchUserInfo())
+        .then(() => setUserInfoLoading(false))
         .finally(() => setLoading(false));
     } else {
+      setUserInfoLoading(false);
       setLoading(false); // Stop the loader if access is restricted
     }
   }, [currentUser]);
 
-  if (userInfoLoading || loading) {
+  if (userInfoLoading || loading || !userInfo) {
     return (
       <LoadingOverlay
         visible={loading}

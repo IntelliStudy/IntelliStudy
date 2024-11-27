@@ -8,7 +8,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { IconCheck, IconTrash } from "@tabler/icons-react";
+import { IconCheck, IconTrashFilled } from "@tabler/icons-react";
 import { collection, getDocs, onSnapshot } from "firebase/firestore";
 import { motion } from "framer-motion"; // Import motion for animation
 import { useContext, useEffect, useState } from "react";
@@ -163,7 +163,7 @@ const CourseContent = ({ selectedCourse, modalOpen }: props) => {
                       </Text>
                     </Grid.Col>
                     <Grid.Col span={2} p={0} className="hide">
-                      <IconTrash
+                      <IconTrashFilled
                         stroke={2}
                         color="red"
                         style={{

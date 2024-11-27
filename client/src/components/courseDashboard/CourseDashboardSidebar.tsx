@@ -1,5 +1,5 @@
 import { Group, MantineProvider, Stack, Text } from "@mantine/core";
-import { IconTrash } from "@tabler/icons-react";
+import { IconTrashFilled } from "@tabler/icons-react";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
@@ -82,7 +82,7 @@ const CourseDashboardSidebar = ({
                 >
                   {course.courseCode}
                 </Text>
-                <IconTrash
+                <IconTrashFilled
                   className="hide"
                   stroke={2}
                   color="red"

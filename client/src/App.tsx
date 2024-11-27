@@ -9,7 +9,7 @@ import "./App.css";
 import { Navbar, Quiz } from "./components";
 import { getCurrentlySignedInUserHandler } from "./firebase/auth";
 import { auth } from "./firebase/firebase";
-import { AuthPage, CourseDashboard, Home, Profile, StudySpot } from "./pages";
+import { AuthPage, CourseDashboard, Home, StudySpot } from "./pages";
 
 interface UserContextType {
   currentUser: User | undefined;
@@ -73,7 +73,6 @@ function App() {
               <Route path="/studyspot" element={<StudySpot />} />
               <Route path="/course/:courseId" element={<CourseDashboard />} />
               <Route path="/course/:courseId/quiz/:quizId" element={<Quiz />} />
-              <Route path="/profile" element={<Profile />} />
             </Routes>
           </UserContext.Provider>
         </ModalsProvider>

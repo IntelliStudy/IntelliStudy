@@ -66,7 +66,7 @@ const ProfileDropdown = () => {
         )}
       </Menu.Target>
 
-      <Menu.Dropdown w="190px">
+      <Menu.Dropdown w="190px" mt="8px">
         <Menu.Item
           leftSection={<IconLogout2 stroke={2} />}
           style={{ textAlign: "center" }}
