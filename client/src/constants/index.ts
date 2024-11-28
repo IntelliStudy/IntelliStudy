@@ -30,6 +30,8 @@ export enum QuestionLabel {
 }
 
 export const allowedUUIDs = [
-  "qlAXizzn2kX3NNrm9T6dIwDLFCy1",
-  "KxRBAPQlgyTtALNPwQsd6Dw0wrt1",
+  "o87nnjDAsDd1XzGZd55KfRLVEmn2", //intellistudy gmail
+  "KxRBAPQlgyTtALNPwQsd6Dw0wrt1", //omar abt account
+  "Wk3Yp3SyJQaEUxfV17sjE7nqhej2", //demo account
+  "UdJRqefHxvdfd3z7tCa8QfIBqax2", //omar aly account
 ];

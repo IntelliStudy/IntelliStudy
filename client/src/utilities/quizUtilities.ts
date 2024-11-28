@@ -172,7 +172,7 @@ export const calculateFinalScore = async (
         }
 
         // Updating userScore
-        userScore += question.pointsScored;
+        userScore += question.pointsScored ?? 0;
       });
     });
   });

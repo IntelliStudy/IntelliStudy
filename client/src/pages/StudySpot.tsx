@@ -114,7 +114,7 @@ const StudySpot = () => {
     }
   }, [currentUser]);
 
-  if (userInfoLoading || loading || !userInfo) {
+  if (userInfoLoading || loading || !userInfo?.displayName) {
     return (
       <LoadingOverlay
         visible={loading}
