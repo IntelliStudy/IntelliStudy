@@ -1,11 +1,13 @@
-import { Avatar, Box, Button, Group } from "@mantine/core";
-import { IconUserCircle } from "@tabler/icons-react";
+import { Box, Button, Group } from "@mantine/core";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../App";
 import { allowedUUIDs } from "../../constants";
 import classes from "../HeaderMegaMenu.module.css";
 import ProfileDropdown from "./ProfileDropdown";
+
+import logoNoText from "../../../logo/logo-no-text.png";
+import logoWithText from "../../../logo/logo-with-text-nav.png";
 
 const Navbar = () => {
   const { currentUser } = useContext(UserContext);
@@ -37,9 +39,9 @@ const Navbar = () => {
         <Group justify="space-between" h="100%">
           <Link to={currentUser ? "/studyspot" : "/"}>
             {currentUser ? (
-              <img src="../../logo/logo-with-text-nav.png" width="250px" />
+              <img src={logoWithText} width="250px" />
             ) : (
-              <img src="../../logo/logo-no-text.png" width="60px" />
+              <img src={logoNoText} width="60px" />
             )}
           </Link>
 
