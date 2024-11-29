@@ -269,6 +269,7 @@ const AuthPage = () => {
         </Paper>
 
         {/* Right Side - Sign Up Form */}
+        <GoBackArrow login={isSignUp} />
         <Paper
           shadow="xs"
           p="lg"
