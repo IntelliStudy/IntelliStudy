@@ -56,7 +56,7 @@ export const parser = onDocumentCreated(
               role: "user",
               content: `Generate 5 ${type} questions from these notes: ${JSON.stringify(
                 chunk
-              )}`,
+              )}. For each question, include an answerReference field that specifies the file name as "${fileName}" and the page number.`,
             },
           ],
           model: "gpt-4o-mini",
