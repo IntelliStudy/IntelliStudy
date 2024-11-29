@@ -31,7 +31,8 @@ export const parser = onDocumentCreated(
       // Retrieve the PDF file from Cloud Storage
       const bucket = storage.bucket(bucketName);
       const file = bucket.file(filePath);
-      const fileName = file.name;
+      const fileName = filePath.split("/").pop();
+
       const [fileBuffer] = await file.download();
 
       // Parse the PDF file
