@@ -17,6 +17,8 @@ import { useContext } from "react";
 import { UserContext } from "../App";
 import classes from "./HeroTitle.module.css";
 
+import logoNoText from "../../logo/logo-no-text.png";
+
 const Home = () => {
   const navigate = useNavigate();
   const { currentUser, isAuthLoading } = useContext(UserContext);
@@ -103,7 +105,7 @@ const Home = () => {
               </Link>
             </Group>
           </div>
-          <Image src="../logo/logo-no-text.png" h={300} pl={100} pt={100} />
+          <Image src={logoNoText} h={300} pl={100} pt={100} />
         </div>
       </Container>
     </>

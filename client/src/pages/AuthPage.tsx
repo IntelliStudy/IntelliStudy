@@ -31,6 +31,8 @@ import {
   signUpHandler,
 } from "../firebase/auth";
 
+import logoWithText from "../../logo/logo-with-text.png";
+
 const errorMessages = {
   "auth/email-already-in-use": {
     title: "Email Already Exists",
@@ -194,7 +196,7 @@ const AuthPage = () => {
 
           <Paper withBorder shadow="md" p={30} mt={30} w={500} radius="md">
             <Group grow mb="md" mt="md">
-              <GoogleButton radius="xl" onClick={handleGoogleLogin}>
+              <GoogleButton radius="md" onClick={handleGoogleLogin}>
                 Sign In with Google
               </GoogleButton>
             </Group>
@@ -249,7 +251,7 @@ const AuthPage = () => {
                   type="submit"
                   variant="gradient"
                   gradient={{ from: "#2FAED7", to: "#0280C7", deg: 180 }}
-                  radius={15}
+                  radius="md"
                 >
                   Login
                 </Button>
@@ -287,7 +289,7 @@ const AuthPage = () => {
         >
           <Paper withBorder shadow="md" p={30} mt={30} w={500} radius="md">
             <Group grow mb="md" mt="md">
-              <GoogleButton radius="xl" onClick={handleGoogleLogin}>
+              <GoogleButton radius="md" onClick={handleGoogleLogin}>
                 Sign Up with Google
               </GoogleButton>
             </Group>
@@ -380,7 +382,7 @@ const AuthPage = () => {
                   type="submit"
                   variant="gradient"
                   gradient={{ from: "#2FAED7", to: "#0280C7", deg: 180 }}
-                  radius={15}
+                  radius="md"
                 >
                   Sign up
                 </Button>
@@ -416,7 +418,7 @@ const AuthPage = () => {
           {isSignUp && <GoBackArrow login={isSignUp} />}
           <Center style={{ height: "100vh" }}>
             <Stack align="center" gap="sm">
-              <Image radius="sm" w={300} src="./logo/logo-with-text.png" />
+              <Image radius="sm" w={300} src={logoWithText} />
               <Text ta="center" size="lg" fw={700} c="white">
                 The study buddy you've always wanted.
               </Text>
