@@ -31,6 +31,7 @@ export const parser = onDocumentCreated(
       // Retrieve the PDF file from Cloud Storage
       const bucket = storage.bucket(bucketName);
       const file = bucket.file(filePath);
+      const fileName = file.name;
       const [fileBuffer] = await file.download();
 
       // Parse the PDF file
@@ -42,7 +43,11 @@ export const parser = onDocumentCreated(
       console.log("PDF parsed successfully.");
 
       // Function to call OpenAI and generate questions
-      const generateQuestions = async (type: string, chunk: any[]) => {
+      const generateQuestions = async (
+        type: string,
+        chunk: any[],
+        fileName: string
+      ) => {
         const openai = new OpenAI();
         const response = await openai.chat.completions.create({
           messages: [
@@ -110,11 +115,11 @@ export const parser = onDocumentCreated(
         tfQuestions,
         fillInBlankQuestions,
       ] = await Promise.all([
-        generateQuestions("multiple choice", chunks),
-        generateQuestions("short answer", chunks),
-        generateQuestions("long answer", chunks),
-        generateQuestions("true or false", chunks),
-        generateQuestions("fill in the blank", chunks),
+        generateQuestions("multiple choice", chunks, fileName),
+        generateQuestions("short answer", chunks, fileName),
+        generateQuestions("long answer", chunks, fileName),
+        generateQuestions("true or false", chunks, fileName),
+        generateQuestions("fill in the blank", chunks, fileName),
       ]);
 
       console.log("Questions generated successfully.");

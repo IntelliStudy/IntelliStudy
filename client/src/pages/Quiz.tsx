@@ -21,6 +21,7 @@ const Quiz = () => {
   const { quizId } = useParams();
 
   const [quizQuestions, setQuizQuestions] = useState<any>();
+  const [uploadedFiles, setUploadedFiles] = useState<string[]>();
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [quizScoreFetched, setQuizScoreFetched] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
@@ -182,11 +183,37 @@ const Quiz = () => {
 
     // Call the async function
     fetchAttemptData();
-  }, [isQuizGraded]);
+  }, [courseId, currentUser?.uid, isQuizGraded, quizId]);
+
+  useEffect(() => {
+    const fetchFileNames = async () => {
+      try {
+        const filesRef = collection(
+          db,
+          `users/${currentUser?.uid}/courses/${courseId}/files`
+        );
+
+        const filesSnapshot = await getDocs(filesRef);
+
+        if (!filesSnapshot.empty) {
+          const files: string[] = [];
+          filesSnapshot.docs.map((file) => {
+            files.push(file.data().fileName);
+          });
+
+          setUploadedFiles(files);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchFileNames();
+  }, [currentUser, courseId, quizId]);
 
   const quiz = {
     quiz: {
-      files: ["file1.pdf", "file2.pdf"],
+      files: uploadedFiles,
       questions: {
         mcq: quizQuestions
           ? quizQuestions.filter((question: any) => question.type === "mcq")
