@@ -4,23 +4,32 @@ interface props {
   file: string;
   page: string;
   correctAnswer?: string;
+  type?: boolean;
 }
 
-const AnswerReferenceBox = ({ file, page, correctAnswer }: props) => {
+const AnswerReferenceBox = ({ file, page, correctAnswer, type }: props) => {
   return (
     <Flex
       direction="row"
-      w="fit-content"
-      maw="70%"
+      maw="100%"
       mt="15px"
       p="5px"
-      bg="#EA3A1460"
-      style={{ borderColor: "red", borderWidth: "1.5px", borderRadius: "5px" }}
+      bg="#ADD8E6"
+      style={{
+        borderRadius: "5px",
+        borderWidth: "1.5px",
+      }}
     >
       <Flex direction="column" px="10px">
-        <Title order={4} fz="20px">
-          Correct solution:
-        </Title>
+        {type ? (
+          <Title order={4} fz="20px">
+            Sample correct solution:
+          </Title>
+        ) : (
+          <Title order={4} fz="20px">
+            Correct solution:
+          </Title>
+        )}
         <Text>
           Refer back to file{" "}
           <Group display="inline" fw="700">

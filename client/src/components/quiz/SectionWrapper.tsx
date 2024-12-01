@@ -29,6 +29,13 @@ interface props {
   disabled: boolean;
   isSubmitted: boolean;
   userAnswer: { [key: string]: string };
+  attemptData: {
+    correctAnswer: string;
+    pointsScored: number;
+    question: string;
+    questionId: string;
+    userAnswer: string;
+  }[];
 }
 
 const SectionWrapper = ({
@@ -40,6 +47,7 @@ const SectionWrapper = ({
   disabled,
   isSubmitted,
   userAnswer,
+  attemptData,
 }: props) => {
   // True or false options
   const trueFalseOptions = {
@@ -66,6 +74,12 @@ const SectionWrapper = ({
             disabled={disabled}
             isSubmitted={isSubmitted}
             userAnswer={userAnswer[q.id]}
+            // Fallback to null if attemptData is undefined
+            attemptData={
+              isSubmitted
+                ? attemptData?.find((item) => item.questionId === q.id)
+                : null
+            }
           />
         ));
 
@@ -84,6 +98,12 @@ const SectionWrapper = ({
             disabled={disabled}
             isSubmitted={isSubmitted}
             userAnswer={userAnswer[q.id]}
+            // Fallback to null if attemptData is undefined
+            attemptData={
+              isSubmitted
+                ? attemptData?.find((item) => item.questionId === q.id)
+                : null
+            }
           />
         ));
 
@@ -101,6 +121,12 @@ const SectionWrapper = ({
             isSubmitted={isSubmitted}
             userAnswer={userAnswer[q.id]}
             correctAnswer={q.answer}
+            // Fallback to null if attemptData is undefined
+            attemptData={
+              isSubmitted
+                ? attemptData?.find((item) => item.questionId === q.id)
+                : null
+            }
           />
         ));
 
@@ -118,6 +144,12 @@ const SectionWrapper = ({
             isSubmitted={isSubmitted}
             userAnswer={userAnswer[q.id]}
             correctAnswer={q.answer}
+            // Fallback to null if attemptData is undefined
+            attemptData={
+              isSubmitted
+                ? attemptData?.find((item) => item.questionId === q.id)
+                : null
+            }
           />
         ));
 
@@ -135,8 +167,17 @@ const SectionWrapper = ({
             disabled={disabled}
             isSubmitted={isSubmitted}
             userAnswer={userAnswer[q.id]}
+            // Fallback to null if attemptData is undefined
+            attemptData={
+              isSubmitted
+                ? attemptData?.find((item) => item.questionId === q.id)
+                : null
+            }
           />
         ));
+
+      default:
+        return null;
     }
   };
 

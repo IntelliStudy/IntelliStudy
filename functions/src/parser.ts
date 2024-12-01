@@ -106,7 +106,7 @@ export const parser = onDocumentCreated(
         return chunks;
       };
 
-      const chunks = splitIntoChunks(pageContents, 1000);
+      const chunks = splitIntoChunks(pageContents, 2000);
 
       // Generate questions in parallel for all types
       const [

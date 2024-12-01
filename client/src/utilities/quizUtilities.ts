@@ -29,7 +29,7 @@ export const createAttemptDocument = async (
   validationResults: QuizValidationAnswers
 ) => {
   try {
-    // Create attempt under users/{userId}/courses/{courseId}/quizzes/{quizId}/attempts
+    // Create attempt under users/{userId}/courses/{courseId}/quizzes/{quizId}/attempt
     const quizAttempsCollection = collection(
       db,
       `users/${userId}/courses/${courseId}/quizzes/${quizId}/attempt`
@@ -45,6 +45,7 @@ export const createAttemptDocument = async (
       // Iterate over each question in the current question type
       attemptedQuestions[questionType] = (questions[questionType] as any[]).map(
         (question) => {
+          console.log("qyestions", question);
           // Determining where correctAnswer is located based on question type
           let correctAnswer;
           if (questionType === "mcq" || questionType === "tf") {
@@ -55,6 +56,7 @@ export const createAttemptDocument = async (
 
           return {
             questionId: question.id,
+            question: question.question,
             userAnswer: answers[questionType][question.id] ?? "",
             correctAnswer: correctAnswer,
             pointsScored: Number(answerPoints[questionType][question.id] ?? 0),
