@@ -67,7 +67,7 @@ const TypedAnswerQuestion = ({
     <Flex direction="column" mb="30px">
       <Title order={2} fw={500} fz={"22px"} pb={"10px"}>
         {attemptData && ( // Only show the badge if attemptData is available
-          <Badge color={badgeColour()} size="xl">
+          <Badge color={badgeColour()} size="xl" mb="5px">
             {pointsScored} {" / "} {sectionType === "s_ans" ? "2" : "5"}
           </Badge>
         )}

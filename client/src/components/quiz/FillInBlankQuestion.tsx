@@ -72,7 +72,7 @@ const FillInBlankQuestion = ({
       <Title order={2} fw={500} fz={"22px"} pb={"10px"}>
         {/* Only render the Badge if attemptData is available */}
         {attemptData && (
-          <Badge color={isCorrect ? "green" : "red"} size="xl">
+          <Badge color={isCorrect ? "green" : "red"} size="xl" mb="5px">
             {attemptData.pointsScored} {" / 1"}
             {/* Render points scored only if attemptData is available */}
           </Badge>

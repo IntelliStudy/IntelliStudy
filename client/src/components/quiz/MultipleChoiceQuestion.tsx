@@ -58,7 +58,7 @@ const MultipleChoiceQuestion = ({
     <Flex direction="column" mb="30px">
       <Title order={2} fw={500} fz={"22px"} pb={"10px"}>
         {attemptData && ( // Only render the Badge if attemptData exists
-          <Badge color={isCorrect ? "green" : "red"} size="xl">
+          <Badge color={isCorrect ? "green" : "red"} size="xl" mb="5px">
             {attemptData.pointsScored} {" / 1"}
           </Badge>
         )}
