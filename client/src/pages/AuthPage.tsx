@@ -196,7 +196,7 @@ const AuthPage = () => {
 
           <Paper withBorder shadow="md" p={30} mt={30} w={500} radius="md">
             <Group grow mb="md" mt="md">
-              <GoogleButton radius="md" onClick={handleGoogleLogin}>
+              <GoogleButton radius="xl" onClick={handleGoogleLogin}>
                 Sign In with Google
               </GoogleButton>
             </Group>

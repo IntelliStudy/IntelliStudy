@@ -1,10 +1,10 @@
-import { Flex, Radio, Title } from "@mantine/core";
+import { Badge, Flex, Radio, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { AnswerReference, McqOption } from "../../types/quiz";
 import AnswerReferenceBox from "./AnswerReferenceBox";
 import MultipleChoiceOption from "./MultipleChoiceOption";
 
-interface props {
+interface Props {
   question: string;
   questionId: string;
   options: McqOption[];
@@ -20,6 +20,13 @@ interface props {
   disabled: boolean;
   isSubmitted: boolean;
   userAnswer: string;
+  attemptData: {
+    correctAnswer: string;
+    pointsScored: number;
+    question: string;
+    questionId: string;
+    userAnswer: string;
+  } | null; // Make attemptData optional or nullable
 }
 
 const MultipleChoiceQuestion = ({
@@ -34,7 +41,8 @@ const MultipleChoiceQuestion = ({
   disabled,
   isSubmitted,
   userAnswer,
-}: props) => {
+  attemptData, // Make sure this is properly passed and not undefined
+}: Props) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   useEffect(() => {
@@ -49,6 +57,12 @@ const MultipleChoiceQuestion = ({
   return (
     <Flex direction="column" mb="30px">
       <Title order={2} fw={500} fz={"22px"} pb={"10px"}>
+        {attemptData && ( // Only render the Badge if attemptData exists
+          <Badge color={isCorrect ? "green" : "red"} size="xl">
+            {attemptData.pointsScored} {" / 1"}
+          </Badge>
+        )}
+        <br />
         {question}
       </Title>
 
@@ -77,7 +91,7 @@ const MultipleChoiceQuestion = ({
         );
       })}
 
-      {isCorrect === false && (
+      {isCorrect === false && attemptData?.correctAnswer && (
         <AnswerReferenceBox
           file={answerReference.fileName}
           page={answerReference.pageNumber}

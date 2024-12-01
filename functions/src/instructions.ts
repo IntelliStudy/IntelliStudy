@@ -42,7 +42,7 @@ Do not create any questions about course logistics (e.g. professor name, lecture
       "type": mcq,
     },
     "answerReference": {
-      "fileName": "File name here",
+      "fileName": name of file,
       "pageNumber": "Page number where answer can be found"
     },
     //fill in the blank question format
@@ -58,7 +58,7 @@ Do not create any questions about course logistics (e.g. professor name, lecture
       "type": fill_in_blank,
     },
     "answerReference": {
-      "fileName": "File name here",
+      "fileName": name of file,
       "pageNumber": "Page number where answer can be found"
     },
   // true or false question format
@@ -71,7 +71,7 @@ Do not create any questions about course logistics (e.g. professor name, lecture
       ],
       "type": "tf",
       "answerReference": {
-      "fileName": "File name here",
+      "fileName": name of file,
       "pageNumber": "Page number where answer can be found"
       }
     },
@@ -81,7 +81,7 @@ Do not create any questions about course logistics (e.g. professor name, lecture
     "answer": "answer here"
     "type": type here,
     "answerReference": {
-      "fileName": "File name here",
+      "fileName": name of file,
       "pageNumber": "Page number where answer can be found"
     }
   },
@@ -92,48 +92,69 @@ Do not create any questions about course logistics (e.g. professor name, lecture
 `;
 
 export const gradingInstructions = `
-You are an assistant designed to generate questions based on text segments from a PDF. Your task is to create questions that can help users study the material. Each set of questions should be organized by topic, with each topic being 1-3 words long. The topics should be limited to a maximum of 10 unique topics for the entire PDF.
+You are an assistant designed to grade user responses for quiz questions based on conceptual understanding. Your primary goal is to assess whether the user's answer aligns with the key ideas and concepts in the provided correct answer, ignoring any issues with spelling, grammar, or phrasing.
 
-These are the types of questions that can be on a quiz and their enums:
-- Multiple Choice: Enum value is "mcq"
-- True/False: Enum value is "tf"
-- Short Answer: Enum value is "s_ans"
-- Long Answer: Enum value is "l_ans"
-- Fill-in-the-Blank: Enum value is "fill_in_blank"
+You are given the question, a sample correct answer, as well as the user's answer. Looking at the question, try to reason if their answer is conceptually correct.
 
-We've already asked you to generate the questions and you've already done that. Now you have to be able to grade the solutions of the short answer (s_ans) and the long answer (l_ans) questions. 
+### Question Types and Points:
+- **Short Answer (s_ans):** Scored out of 2 points
+- **Long Answer (l_ans):** Scored out of 5 points
+- Partial scores can be awarded in increments of 0.5 (e.g., 1.5/2 or 4.5/5).
 
-How this will work is that for each short or long answer quetion, we'll give you a sample correct answer for the question which you generated when initally generating the quiz, and we will also give you the user's answer. You have to compare the user's answer against the correct answer and assign it a score. Short answer questions are out of 2 points, while long answer questions are out of 5 points. You should ignore things like spelling or grammer mistakes, or small differences in how the user phrased their answer as long as they explained the same concept in the correct answer. You can also give points in multiples of 0.5. So 1.5 / 2 points is an example of that
+### Grading Guidelines:
+1. **Focus on Concepts:** 
+   - Grade based on whether the user's answer covers the main ideas and concepts of the correct answer.
+   - Answers can use different wording, phrasing, or structure and still receive full points if the meaning is accurate.
 
-Try to be fair in the way you grade the questions and you can give part marks if the user's answer is close to the correct answer you provided. Small grammer or spelling differences shouldn't cause a user to lose points on a question
+2. **Be Lenient:** 
+   - Do not penalize for spelling, grammar, capitalization, or minor wording differences.
+   - If the user’s response is close to the correct answer conceptually, give full credit.
 
-For each question, I will priovide you with the questionId, the userAnswer, the correctAnswer and pointsScored (set to zero) and I need you to return to me the following JSON object:
+3. **Key Components:** 
+   - If an answer addresses the core ideas but omits or misunderstands secondary details, award partial points.
+   - Full points should be given if the user effectively conveys all key concepts in any form.
 
+### Input and Output:
+For each short or long answer question, you will be provided:
+- **questionId:** A unique identifier for the question.
+- **question:** The question on the quiz that the user is answering.
+- **userAnswer:** The answer provided by the user.
+- **correctAnswer:** What we think is the correct answer.
+- **pointsScored:** Initially set to 0; you will update this based on your grading.
+
+You must return a JSON object in the following format:
 
 \`\`\`json
 questions: {
   s_ans: [
     {
-      questionId: 'id1',
+      questionId: "id1",
+      question: "Question here",
       pointsScored: 2,
-      correctAnswer: 'Correct answer here',
-      userAnswer: 'User answer here'
+      correctAnswer: "Correct answer here",
+      userAnswer: "User answer here"
     },
     {
-      questionId: 'id2',
-      pointsScored: 0,
-      correctAnswer: 'Correct answer here',
-      userAnswer: 'User answer here'
-    },
+      questionId: "id2",
+      question: "Question here",
+      pointsScored: 1.5,
+      correctAnswer: "Correct answer here",
+      userAnswer: "User answer here"
+    }
   ],
   l_ans: [ 
     {
-      questionId: 'id1',
-      pointsScored: 4,
-      correctAnswer: 'Correct answer here',
-      userAnswer: 'User answer here'
+      questionId: "id1",
+      question: "Question here",
+      pointsScored: 4.5,
+      correctAnswer" "Correct answer here",
+      userAnswer: "User answer here"
     },
   ],
 }
 \`\`\`
+
+### Important Notes:
+- Be generous with partial credit when the user demonstrates understanding of the main ideas, even if some details are missing.
+- Only deduct points if the user's answer shows clear misunderstandings or fails to address key aspects of the correct answer.
 `;

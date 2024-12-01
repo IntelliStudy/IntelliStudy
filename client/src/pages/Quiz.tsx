@@ -24,6 +24,7 @@ const Quiz = () => {
   const [uploadedFiles, setUploadedFiles] = useState<string[]>();
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [quizScoreFetched, setQuizScoreFetched] = useState<boolean>(false);
+  const [attemptData, setAttemptData] = useState<any>();
   const [loading, setLoading] = useState(true);
   const [quizScore, setQuizScore] = useState({
     userScore: 0,
@@ -169,11 +170,14 @@ const Quiz = () => {
           const firstAttemptDoc = attemptSnapshot.docs[0];
           const attemptData = firstAttemptDoc.data();
 
+          console.log("mcq attempt", attemptData.questions.mcq);
+
           // Set score
           setQuizScore({
             userScore: attemptData.userScore,
             totalScore: attemptData.totalScore,
           });
+          setAttemptData(attemptData);
           setQuizScoreFetched(true);
         }
       } catch (error) {
@@ -407,6 +411,9 @@ const Quiz = () => {
                     disabled={disabled}
                     isSubmitted={isSubmitted}
                     userAnswer={quizForm.values.mcq}
+                    attemptData={
+                      isSubmitted ? attemptData?.questions.mcq : undefined
+                    }
                   />
                 )}
 
@@ -421,6 +428,9 @@ const Quiz = () => {
                     disabled={disabled}
                     isSubmitted={isSubmitted}
                     userAnswer={quizForm.values.tf}
+                    attemptData={
+                      isSubmitted ? attemptData?.questions.tf : undefined
+                    }
                   />
                 )}
 
@@ -436,6 +446,9 @@ const Quiz = () => {
                     disabled={disabled}
                     isSubmitted={isSubmitted}
                     userAnswer={quizForm.values.s_ans}
+                    attemptData={
+                      isSubmitted ? attemptData?.questions.s_ans : undefined
+                    }
                   />
                 )}
 
@@ -450,6 +463,9 @@ const Quiz = () => {
                     disabled={disabled}
                     isSubmitted={isSubmitted}
                     userAnswer={quizForm.values.l_ans}
+                    attemptData={
+                      isSubmitted ? attemptData?.questions.l_ans : undefined
+                    }
                   />
                 )}
 
@@ -465,6 +481,11 @@ const Quiz = () => {
                     disabled={disabled}
                     isSubmitted={isSubmitted}
                     userAnswer={quizForm.values.fill_in_blank}
+                    attemptData={
+                      isSubmitted
+                        ? attemptData?.questions.fill_in_blank
+                        : undefined
+                    }
                   />
                 )}
 

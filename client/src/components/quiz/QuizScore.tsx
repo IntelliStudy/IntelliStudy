@@ -32,7 +32,9 @@ const QuizScore = ({ totalScore, userScore }: props) => {
         overflow: "hidden",
       }}
     >
-      <Confetti tweenDuration={1000} numberOfPieces={100} />
+      {(userScore / totalScore) * 100 >= 80 && (
+        <Confetti tweenDuration={1000} numberOfPieces={100} />
+      )}
       <Flex direction="column" align="center">
         <Text fw={600} fz="23px" c="white">
           Your score is...
