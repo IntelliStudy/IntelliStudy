@@ -42,7 +42,18 @@ describe("MultipleChoiceQuestion", () => {
   });
 
   test("renders the question and options", () => {
-    renderWithMantine(<MultipleChoiceQuestion {...defaultProps} />);
+    renderWithMantine(
+      <MultipleChoiceQuestion
+        attemptData={{
+          correctAnswer: "",
+          pointsScored: 0,
+          question: "",
+          questionId: "",
+          userAnswer: "",
+        }}
+        {...defaultProps}
+      />
+    );
 
     waitFor(() => {
       expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent(
@@ -57,7 +68,16 @@ describe("MultipleChoiceQuestion", () => {
 
   test("sets selectedOption based on isSubmitted prop", async () => {
     const { rerender } = renderWithMantine(
-      <MultipleChoiceQuestion {...defaultProps} />
+      <MultipleChoiceQuestion
+        attemptData={{
+          correctAnswer: "",
+          pointsScored: 0,
+          question: "",
+          questionId: "",
+          userAnswer: "",
+        }}
+        {...defaultProps}
+      />
     );
 
     // Fire the click event on the button labeled "Paris"
@@ -77,6 +97,13 @@ describe("MultipleChoiceQuestion", () => {
     rerender(
       <MantineProvider>
         <MultipleChoiceQuestion
+          attemptData={{
+            correctAnswer: "",
+            pointsScored: 0,
+            question: "",
+            questionId: "",
+            userAnswer: "",
+          }}
           {...defaultProps}
           isSubmitted={true}
           userAnswer="c"
@@ -95,7 +122,16 @@ describe("MultipleChoiceQuestion", () => {
 
   test("applies correct styles based on isCorrect", () => {
     const { rerender } = renderWithMantine(
-      <MultipleChoiceQuestion {...defaultProps} />
+      <MultipleChoiceQuestion
+        attemptData={{
+          correctAnswer: "",
+          pointsScored: 0,
+          question: "",
+          questionId: "",
+          userAnswer: "",
+        }}
+        {...defaultProps}
+      />
     );
 
     // Initially should have no styles applied
@@ -108,7 +144,18 @@ describe("MultipleChoiceQuestion", () => {
     // Rerender with isCorrect set to true
     rerender(
       <MantineProvider>
-        <MultipleChoiceQuestion {...defaultProps} isCorrect={true} />;
+        <MultipleChoiceQuestion
+          attemptData={{
+            correctAnswer: "",
+            pointsScored: 0,
+            question: "",
+            questionId: "",
+            userAnswer: "",
+          }}
+          {...defaultProps}
+          isCorrect={true}
+        />
+        ;
       </MantineProvider>
     );
     waitFor(() => {
@@ -120,7 +167,18 @@ describe("MultipleChoiceQuestion", () => {
     // Rerender with isCorrect set to false
     rerender(
       <MantineProvider>
-        <MultipleChoiceQuestion {...defaultProps} isCorrect={false} />;
+        <MultipleChoiceQuestion
+          attemptData={{
+            correctAnswer: "",
+            pointsScored: 0,
+            question: "",
+            questionId: "",
+            userAnswer: "",
+          }}
+          {...defaultProps}
+          isCorrect={false}
+        />
+        ;
       </MantineProvider>
     );
 
@@ -134,6 +192,13 @@ describe("MultipleChoiceQuestion", () => {
   test("displays answer reference when isCorrect is false", () => {
     renderWithMantine(
       <MultipleChoiceQuestion
+        attemptData={{
+          correctAnswer: "",
+          pointsScored: 0,
+          question: "",
+          questionId: "",
+          userAnswer: "",
+        }}
         {...defaultProps}
         isCorrect={false}
         isSubmitted={true}
@@ -147,6 +212,13 @@ describe("MultipleChoiceQuestion", () => {
   test("does not display answer reference when isCorrect is true", () => {
     renderWithMantine(
       <MultipleChoiceQuestion
+        attemptData={{
+          correctAnswer: "",
+          pointsScored: 0,
+          question: "",
+          questionId: "",
+          userAnswer: "",
+        }}
         {...defaultProps}
         isCorrect={true}
         isSubmitted={true}
@@ -158,7 +230,16 @@ describe("MultipleChoiceQuestion", () => {
 
   test("displays correct answer color when selected", async () => {
     const { rerender } = renderWithMantine(
-      <MultipleChoiceQuestion {...defaultProps} />
+      <MultipleChoiceQuestion
+        attemptData={{
+          correctAnswer: "",
+          pointsScored: 0,
+          question: "",
+          questionId: "",
+          userAnswer: "",
+        }}
+        {...defaultProps}
+      />
     );
 
     await waitFor(() => {
@@ -169,6 +250,13 @@ describe("MultipleChoiceQuestion", () => {
     rerender(
       <MantineProvider>
         <MultipleChoiceQuestion
+          attemptData={{
+            correctAnswer: "",
+            pointsScored: 0,
+            question: "",
+            questionId: "",
+            userAnswer: "",
+          }}
           {...defaultProps}
           isCorrect={false}
           isSubmitted={true}

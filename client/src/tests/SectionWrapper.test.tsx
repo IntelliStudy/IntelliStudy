@@ -41,7 +41,7 @@ const defaultProps = {
 
 describe("SectionWrapper", () => {
   test("renders section label and questions", async () => {
-    renderWithMantine(<SectionWrapper {...defaultProps} />);
+    renderWithMantine(<SectionWrapper attemptData={[]} {...defaultProps} />);
 
     await waitFor(() => {
       expect(screen.getByText("Sample Section")).toBeInTheDocument();
@@ -55,7 +55,7 @@ describe("SectionWrapper", () => {
   });
 
   test("calls onAnswerChange when an answer is selected", async () => {
-    renderWithMantine(<SectionWrapper {...defaultProps} />);
+    renderWithMantine(<SectionWrapper attemptData={[]} {...defaultProps} />);
 
     const parisOption = screen.getByText("Paris").closest("button");
     await waitFor(() => {
@@ -85,7 +85,9 @@ describe("SectionWrapper", () => {
       userAnswer: { "1": "C" },
     };
 
-    renderWithMantine(<SectionWrapper {...propsWithValidation} />);
+    renderWithMantine(
+      <SectionWrapper attemptData={[]} {...propsWithValidation} />
+    );
 
     await waitFor(() => {
       expect(screen.getByText("Sample Section")).toBeInTheDocument();

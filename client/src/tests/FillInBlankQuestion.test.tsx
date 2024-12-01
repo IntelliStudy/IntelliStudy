@@ -33,7 +33,18 @@ describe("FillInBlankQuestion", () => {
   });
 
   test("renders the question and options", () => {
-    renderWithMantine(<FillInBlankQuestion {...defaultProps} />);
+    renderWithMantine(
+      <FillInBlankQuestion
+        attemptData={{
+          correctAnswer: "",
+          pointsScored: 0,
+          question: "",
+          questionId: "",
+          userAnswer: "",
+        }}
+        {...defaultProps}
+      />
+    );
 
     expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent(
       "What is the capital of France?"
@@ -43,7 +54,16 @@ describe("FillInBlankQuestion", () => {
 
   test("sets selectedOption based on isSubmitted prop", async () => {
     const { rerender } = renderWithMantine(
-      <FillInBlankQuestion {...defaultProps} />
+      <FillInBlankQuestion
+        attemptData={{
+          correctAnswer: "",
+          pointsScored: 0,
+          question: "",
+          questionId: "",
+          userAnswer: "",
+        }}
+        {...defaultProps}
+      />
     );
 
     // Fire the change event on the select element
@@ -61,6 +81,13 @@ describe("FillInBlankQuestion", () => {
     rerender(
       <MantineProvider>
         <FillInBlankQuestion
+          attemptData={{
+            correctAnswer: "",
+            pointsScored: 0,
+            question: "",
+            questionId: "",
+            userAnswer: "",
+          }}
           {...defaultProps}
           isSubmitted={true}
           userAnswer="Paris"
@@ -76,7 +103,16 @@ describe("FillInBlankQuestion", () => {
 
   test("applies correct styles based on isCorrect", async () => {
     const { rerender } = renderWithMantine(
-      <FillInBlankQuestion {...defaultProps} />
+      <FillInBlankQuestion
+        attemptData={{
+          correctAnswer: "",
+          pointsScored: 0,
+          question: "",
+          questionId: "",
+          userAnswer: "",
+        }}
+        {...defaultProps}
+      />
     );
 
     // Initially should have no styles applied
@@ -88,6 +124,13 @@ describe("FillInBlankQuestion", () => {
     rerender(
       <MantineProvider>
         <FillInBlankQuestion
+          attemptData={{
+            correctAnswer: "",
+            pointsScored: 0,
+            question: "",
+            questionId: "",
+            userAnswer: "",
+          }}
           {...defaultProps}
           isCorrect={true}
           isSubmitted={true}
@@ -105,6 +148,13 @@ describe("FillInBlankQuestion", () => {
     rerender(
       <MantineProvider>
         <FillInBlankQuestion
+          attemptData={{
+            correctAnswer: "",
+            pointsScored: 0,
+            question: "",
+            questionId: "",
+            userAnswer: "",
+          }}
           {...defaultProps}
           isCorrect={false}
           isSubmitted={true}
@@ -123,6 +173,13 @@ describe("FillInBlankQuestion", () => {
   test("displays answer reference when isCorrect is false", () => {
     renderWithMantine(
       <FillInBlankQuestion
+        attemptData={{
+          correctAnswer: "",
+          pointsScored: 0,
+          question: "",
+          questionId: "",
+          userAnswer: "",
+        }}
         {...defaultProps}
         isCorrect={false}
         isSubmitted={true}
@@ -136,6 +193,13 @@ describe("FillInBlankQuestion", () => {
   test("does not display answer reference when isCorrect is true", () => {
     renderWithMantine(
       <FillInBlankQuestion
+        attemptData={{
+          correctAnswer: "",
+          pointsScored: 0,
+          question: "",
+          questionId: "",
+          userAnswer: "",
+        }}
         {...defaultProps}
         isCorrect={true}
         isSubmitted={true}

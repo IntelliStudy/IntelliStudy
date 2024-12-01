@@ -163,6 +163,7 @@ const CourseContentFileUpload = ({ selectedCourse, courseFiles }: props) => {
           w={100}
           p={10}
           onClick={handleUpload}
+          disabled={filesToUpload.length === 0}
         >
           Upload
         </Button>

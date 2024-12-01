@@ -33,7 +33,18 @@ describe("TypedAnswerQuestion", () => {
   });
 
   test("renders the question and answer reference", () => {
-    renderWithMantine(<TypedAnswerQuestion {...defaultProps} />);
+    renderWithMantine(
+      <TypedAnswerQuestion
+        attemptData={{
+          correctAnswer: "",
+          pointsScored: 0,
+          question: "",
+          questionId: "",
+          userAnswer: "",
+        }}
+        {...defaultProps}
+      />
+    );
 
     expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent(
       defaultProps.question
@@ -46,7 +57,18 @@ describe("TypedAnswerQuestion", () => {
   });
 
   test("handles answer input change", async () => {
-    renderWithMantine(<TypedAnswerQuestion {...defaultProps} />);
+    renderWithMantine(
+      <TypedAnswerQuestion
+        attemptData={{
+          correctAnswer: "",
+          pointsScored: 0,
+          question: "",
+          questionId: "",
+          userAnswer: "",
+        }}
+        {...defaultProps}
+      />
+    );
 
     const textarea = screen.getByPlaceholderText(
       "Enter your answer"
@@ -66,13 +88,29 @@ describe("TypedAnswerQuestion", () => {
 
   test("sets answerEntered based on isSubmitted prop", async () => {
     const { rerender } = renderWithMantine(
-      <TypedAnswerQuestion {...defaultProps} />
+      <TypedAnswerQuestion
+        attemptData={{
+          correctAnswer: "",
+          pointsScored: 0,
+          question: "",
+          questionId: "",
+          userAnswer: "",
+        }}
+        {...defaultProps}
+      />
     );
 
     // Rerender with isSubmitted set to true
     rerender(
       <MantineProvider>
         <TypedAnswerQuestion
+          attemptData={{
+            correctAnswer: "",
+            pointsScored: 0,
+            question: "",
+            questionId: "",
+            userAnswer: "",
+          }}
           {...defaultProps}
           isSubmitted={true}
           userAnswer="Paris"
@@ -92,6 +130,13 @@ describe("TypedAnswerQuestion", () => {
   test("clears answerEntered when isSubmitted is false", async () => {
     const { rerender } = renderWithMantine(
       <TypedAnswerQuestion
+        attemptData={{
+          correctAnswer: "",
+          pointsScored: 0,
+          question: "",
+          questionId: "",
+          userAnswer: "",
+        }}
         {...defaultProps}
         isSubmitted={true}
         userAnswer="Paris"
@@ -101,7 +146,17 @@ describe("TypedAnswerQuestion", () => {
     // Rerender with isSubmitted set to false
     rerender(
       <MantineProvider>
-        <TypedAnswerQuestion {...defaultProps} isSubmitted={false} />
+        <TypedAnswerQuestion
+          attemptData={{
+            correctAnswer: "",
+            pointsScored: 0,
+            question: "",
+            questionId: "",
+            userAnswer: "",
+          }}
+          {...defaultProps}
+          isSubmitted={false}
+        />
       </MantineProvider>
     );
 
@@ -116,7 +171,17 @@ describe("TypedAnswerQuestion", () => {
 
   test("disables the textarea when disabled prop is true", () => {
     renderWithMantine(
-      <TypedAnswerQuestion {...defaultProps} disabled={true} />
+      <TypedAnswerQuestion
+        attemptData={{
+          correctAnswer: "",
+          pointsScored: 0,
+          question: "",
+          questionId: "",
+          userAnswer: "",
+        }}
+        {...defaultProps}
+        disabled={true}
+      />
     );
 
     const textarea = screen.getByPlaceholderText(
