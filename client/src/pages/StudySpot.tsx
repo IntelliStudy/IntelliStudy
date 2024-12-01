@@ -26,27 +26,32 @@ import { UserContext } from "../App";
 import { AddCourseCard, CourseCard } from "../components";
 import { allowedUUIDs } from "../constants";
 import { db } from "../firebase/firebase";
-import { Course, User } from "../types";
+import { Course } from "../types";
+import logoNoText from "../../logo/logo-no-text.png";
+
+interface UserInfo {
+  displayName: string;
+  uid: string;
+}
 
 const StudySpot = () => {
   const { currentUser } = useContext(UserContext);
   const [courses, setCourses] = useState<Course[]>([]);
-  const [userInfo, setUserInfo] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [userInfoLoading, setUserInfoLoading] = useState<boolean>();
   const [courseName, setCourseName] = useState<string>("");
   const [courseCode, setCourseCode] = useState<string>("");
   const [modalOpened, setModalOpened] = useState<boolean>(false);
   const [isAllowed, setIsAllowed] = useState<boolean>(false);
+  const [userInfo, setUserInfo] = useState<UserInfo>(null);
 
-  const handleAddCourseSubmit = () => {
+  const handleAddCourseSubmit = async () => {
     addDoc(collection(db, "users", currentUser!.uid, "courses"), {
       courseName: courseName,
       courseCode: courseCode,
       userId: currentUser!.uid,
       createdAt: serverTimestamp(),
     });
-    fetchData();
+    await fetchData();
     setCourseName("");
     setCourseCode("");
     setModalOpened(false);
@@ -54,6 +59,7 @@ const StudySpot = () => {
 
   const fetchData = async () => {
     try {
+      // Fetch the courses for the current user
       const requestQuery = query(
         collection(db, "users", currentUser!.uid, "courses"),
         orderBy("createdAt", "desc")
@@ -66,7 +72,28 @@ const StudySpot = () => {
         userId: doc.data().userId,
         createdAt: doc.data().createdAt,
       }));
+      console.log("current user", currentUser);
+      // Fetch the user's displayName from the users collection
+      const userRef = doc(db, "users", currentUser!.uid);
+      const userDoc = await getDoc(userRef);
 
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        console.log(userData, "userData");
+
+        if (userData?.displayName) {
+          setUserInfo({
+            displayName: userData.displayName,
+            uid: currentUser!.uid, // Only set the displayName and uid
+          });
+        } else {
+          console.error("Display name not found for user", currentUser!.uid);
+        }
+      } else {
+        console.error("User document not found for UID:", currentUser!.uid);
+      }
+
+      // Set courses data
       setCourses(courseData);
     } catch (error) {
       console.error("Error fetching data: ", error);
@@ -75,46 +102,20 @@ const StudySpot = () => {
     }
   };
 
-  const fetchUserInfo = async () => {
-    setUserInfoLoading(true);
-    try {
-      const userRef = doc(db, `users/${currentUser?.uid}`);
-      const userDoc = (await getDoc(userRef)).data();
-      if (userDoc) {
-        const userData: User = {
-          displayName: userDoc.displayName,
-          email: userDoc.email,
-          fName: userDoc.fName,
-          lName: userDoc.lName,
-          password: userDoc.password,
-          signedIn: userDoc.signedIn,
-          uid: userDoc.uid,
-          uploadedFiles: userDoc.uploadedFiles,
-        };
-        setUserInfo(userData);
-      }
-    } catch (error) {
-      console.error("Error fetching user info:", error);
-    }
-  };
-
   useEffect(() => {
-    if (!currentUser) return;
+    console.log(currentUser?.uid, "current user from use effect");
+    if (!currentUser?.uid) return;
     const isUserAllowed = allowedUUIDs.includes(currentUser.uid);
     setIsAllowed(isUserAllowed);
 
     if (isUserAllowed) {
-      fetchData()
-        .then(() => fetchUserInfo())
-        .then(() => setUserInfoLoading(false))
-        .finally(() => setLoading(false));
+      fetchData().finally(() => setLoading(false));
     } else {
-      setUserInfoLoading(false);
       setLoading(false); // Stop the loader if access is restricted
     }
-  }, [currentUser]);
+  }, [currentUser?.uid]);
 
-  if (userInfoLoading || loading || !userInfo?.displayName) {
+  if (loading) {
     return (
       <LoadingOverlay
         visible={loading}
@@ -208,7 +209,9 @@ const StudySpot = () => {
           </Center>
         </Stack>
       </Modal>
-
+      <Center pt="25px">
+        <img src={logoNoText} width="100px" />
+      </Center>
       <Center pt="2%" pb="1%">
         <Text
           size="35px"
@@ -217,7 +220,7 @@ const StudySpot = () => {
           gradient={{ from: "#2faed7", to: "#0280c7", deg: 180 }}
           pb={10}
         >
-          {userInfo?.displayName}'s Study Spot
+          Welcome to your Study Spot, {userInfo?.displayName}.
         </Text>
       </Center>
       <Center pb="2%">

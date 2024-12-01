@@ -22,7 +22,6 @@ export type User = {
   fName?: string;
   lName?: string;
   password?: string;
-  signedIn: boolean;
   uid: string;
   uploadedFiles: boolean;
 };

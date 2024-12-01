@@ -156,17 +156,19 @@ const CourseContentFileUpload = ({ selectedCourse, courseFiles }: props) => {
           <Text ta="center">Drop your notes here (PDF only)</Text>
         </Dropzone>
         {previews}
-        <Button
-          radius="md"
-          variant="gradient"
-          gradient={{ from: "#2faed7", to: "#0280c7", deg: 180 }}
-          w={100}
-          p={10}
-          onClick={handleUpload}
-          disabled={filesToUpload.length === 0}
-        >
-          Upload
-        </Button>
+
+        {filesToUpload.length > 0 && (
+          <Button
+            radius="md"
+            variant="gradient"
+            gradient={{ from: "#2faed7", to: "#0280c7", deg: 180 }}
+            w={100}
+            p={10}
+            onClick={handleUpload}
+          >
+            Upload
+          </Button>
+        )}
       </Flex>
     </>
   );

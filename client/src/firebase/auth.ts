@@ -29,11 +29,11 @@ export const signUpHandler = (
   onSuccess: () => void
 ) => {
   return createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
+    .then(async (userCredential) => {
       const user = userCredential.user;
 
       // Calls a DB call to create a record for the user who just signed up
-      setDoc(
+      await setDoc(
         doc(db, "users", user.uid),
         {
           uid: user.uid,
@@ -42,7 +42,6 @@ export const signUpHandler = (
           displayName: `${fName} ${lName}`,
           email: email,
           password: password,
-          signedIn: true,
           uploadedFiles: false,
         },
         { merge: true }
@@ -67,18 +66,6 @@ export const loginHandler = (
   onSuccess: () => void
 ) => {
   return signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-
-      // Calls the DB to update user signedIn status in DB
-      setDoc(
-        doc(db, "users", user.uid),
-        {
-          signedIn: true,
-        },
-        { merge: true }
-      );
-    })
     .then(() => {
       onSuccess();
     })
@@ -106,27 +93,17 @@ export const googleLoginHandler = (onSuccess: () => void) => {
         ? userDoc.data().uploadedFiles
         : false;
 
-      userDoc.exists()
-        ? // Case for handling if user already exists and user is just signing in using google auth
-          setDoc(
-            doc(db, "users", user.uid),
-            {
-              signedIn: true,
-            },
-            { merge: true }
-          )
-        : // Case for handling if user doesn't exists and user is signing up with google auth
-          setDoc(
-            doc(db, "users", user.uid),
-            {
-              uid: user.uid,
-              displayName: user.displayName,
-              email: user.email,
-              signedIn: true,
-              uploadedFiles: uploadedFiles,
-            },
-            { merge: true }
-          );
+      userDoc.exists();
+      await setDoc(
+        doc(db, "users", user.uid),
+        {
+          uid: user.uid,
+          displayName: user.displayName,
+          email: user.email,
+          uploadedFiles: uploadedFiles,
+        },
+        { merge: true }
+      );
 
       return user;
     })
@@ -166,22 +143,11 @@ export const userLogoutHandler = () => {
   const user = auth.currentUser;
 
   if (user) {
-    return signOut(auth)
-      .then(() => {
-        // Updating DB record to indicate that user is signed out
-        setDoc(
-          doc(db, "users", user.uid),
-          {
-            signedIn: false,
-          },
-          { merge: true }
-        );
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
+    return signOut(auth).catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode, errorMessage);
+    });
   } else {
     return Promise.resolve();
   }

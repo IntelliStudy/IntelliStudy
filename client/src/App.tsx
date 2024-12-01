@@ -45,6 +45,18 @@ function App() {
     });
   }, []);
 
+  if (isAuthLoading) {
+    return (
+      <MantineProvider>
+        <LoadingOverlay
+          visible={true}
+          zIndex={1000}
+          overlayProps={{ radius: "sm", blur: 2 }}
+        />
+      </MantineProvider>
+    );
+  }
+
   return (
     <>
       <MantineProvider>
@@ -53,19 +65,6 @@ function App() {
             value={{ currentUser, setCurrentUser, isAuthLoading }}
           >
             {displayNavbar && <Navbar />}
-
-            {!currentUser && isAuthLoading && (
-              <LoadingOverlay
-                visible={true}
-                zIndex={1000}
-                overlayProps={{ radius: "sm", blur: 2 }}
-              />
-            )}
-            <LoadingOverlay
-              visible={isAuthLoading}
-              zIndex={1000}
-              overlayProps={{ radius: "sm", blur: 2 }}
-            />
 
             <Routes>
               <Route path="/" element={<Home />} />
