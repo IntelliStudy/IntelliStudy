@@ -383,7 +383,7 @@ const Quiz = () => {
   return (
     <>
       <LoadingOverlay
-        visible={loading}
+        visible={loading || (isSubmitted && !isQuizGraded)}
         zIndex={1000}
         overlayProps={{ radius: "sm", blur: 100 }}
         data-testid="loading"
