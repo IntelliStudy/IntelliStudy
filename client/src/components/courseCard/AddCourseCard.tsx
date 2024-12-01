@@ -9,7 +9,7 @@ const AddCourseCard = (props: AddCourseCardProps) => {
   return (
     <Card
       h="150px"
-      w="400px"
+      w="360px"
       shadow="sm"
       padding="lg"
       radius="md"

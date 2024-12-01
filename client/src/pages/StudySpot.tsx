@@ -22,12 +22,12 @@ import {
 } from "firebase/firestore";
 import { SetStateAction, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import logoNoText from "../../logo/logo-no-text.png";
 import { UserContext } from "../App";
 import { AddCourseCard, CourseCard } from "../components";
 import { allowedUUIDs } from "../constants";
 import { db } from "../firebase/firebase";
 import { Course } from "../types";
-import logoNoText from "../../logo/logo-no-text.png";
 
 interface UserInfo {
   displayName: string;
@@ -79,7 +79,6 @@ const StudySpot = () => {
 
       if (userDoc.exists()) {
         const userData = userDoc.data();
-        console.log(userData, "userData");
 
         if (userData?.displayName) {
           setUserInfo({
@@ -231,7 +230,7 @@ const StudySpot = () => {
 
       <Center>
         {courses.length > 0 ? (
-          <SimpleGrid cols={4} spacing="lg" verticalSpacing="lg">
+          <SimpleGrid cols={4} spacing="20px" verticalSpacing="30px" mb="70px">
             {courses.map((course) => (
               <CourseCard
                 key={course.id}
