@@ -34,4 +34,5 @@ export const allowedUUIDs = [
   "KxRBAPQlgyTtALNPwQsd6Dw0wrt1", //omar abt account
   "Wk3Yp3SyJQaEUxfV17sjE7nqhej2", //demo account
   "UdJRqefHxvdfd3z7tCa8QfIBqax2", //omar aly account
+  "sgDqqEhAWBJhtixUGx0yLnXBd9Oe", //emulator account
 ];

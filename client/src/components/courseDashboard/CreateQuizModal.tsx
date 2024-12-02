@@ -290,9 +290,7 @@ const CreateQuizModal = ({ courseId }: props) => {
                     radius={10}
                     disabled={isCreateDisabled}
                   >
-                    <Text size="20px" fw={600}>
-                      Create
-                    </Text>
+                    Create
                   </Button>
                 </Flex>
               </Stack>

@@ -1,14 +1,4 @@
-import {
-  addDoc,
-  collection,
-  CollectionReference,
-  DocumentData,
-  DocumentReference,
-  getDoc,
-  getDocs,
-  Query,
-  setDoc,
-} from "firebase/firestore";
+import { addDoc, collection, getDocs, setDoc } from "firebase/firestore";
 import { QuestionType } from "../constants";
 import { db } from "../firebase/firebase";
 import {

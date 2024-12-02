@@ -68,34 +68,28 @@ const FillInBlankQuestion = ({
   const pointsScored = attemptData ? attemptData.pointsScored : 0;
 
   return (
-    <Flex direction="column" mb="30px">
+    <>
       <Title order={2} fw={500} fz={"22px"} pb={"10px"}>
         {/* Only render the Badge if attemptData is available */}
         {attemptData && (
           <Badge color={isCorrect ? "green" : "red"} size="xl" mb="5px">
-            {attemptData.pointsScored} {" / 1"}
-            {/* Render points scored only if attemptData is available */}
+            {pointsScored} {" / 1"}
           </Badge>
         )}
-        <Flex direction="row">
-          {questionParts[0]}
-          <Select
-            placeholder="Select..."
-            mx="10px"
-            data={options}
-            value={selectedOption}
-            onChange={(option) => handleOptionChange(option as string)}
-            disabled={disabled}
-            // style={{
-            //   borderColor: optionColour,
-            //   borderWidth: borderWidth,
-            //   borderRadius: "6px",
-            // }}
-          />
-          {questionParts[1]}
-        </Flex>
       </Title>
-
+      <Flex align="center" gap="xs">
+        <span>{questionParts[0]}</span>
+        <Select
+          placeholder="Select..."
+          mx="10px"
+          data={options}
+          value={selectedOption}
+          onChange={(option) => handleOptionChange(option as string)}
+          disabled={disabled}
+          maw="150px"
+        />
+        <span>{questionParts[1]}</span>
+      </Flex>
       {isCorrect === false && attemptData && attemptData.correctAnswer && (
         <AnswerReferenceBox
           file={answerReference.fileName}
@@ -103,7 +97,7 @@ const FillInBlankQuestion = ({
           correctAnswer={attemptData.correctAnswer}
         />
       )}
-    </Flex>
+    </>
   );
 };
 
