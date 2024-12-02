@@ -172,9 +172,9 @@ const CreateQuizModal = ({ courseId }: props) => {
     const questions: any[] = [];
 
     // Step 1: Create a mapping for each question type to collect all questions of that type.
-    const questionsByType: Record<string, any[]> = {};
+    const questionsByTypeByFile: Record<string, Record<string, any[]>> = {};
 
-    // Step 2: Fetch questions from all files and group them by type.
+    // Step 2: Fetch questions from all files and group them by type and file.
     await Promise.all(
       fileIds.map(async (fileId: string) => {
         const questionsCollectionRef = collection(
@@ -185,23 +185,33 @@ const CreateQuizModal = ({ courseId }: props) => {
         const allQuestions = allQuestionsQuery.docs.map((doc) => doc.data());
 
         allQuestions.forEach((question) => {
-          if (!questionsByType[question.type]) {
-            questionsByType[question.type] = [];
+          if (!questionsByTypeByFile[question.type]) {
+            questionsByTypeByFile[question.type] = {};
           }
-          questionsByType[question.type].push(question);
+          if (!questionsByTypeByFile[question.type][fileId]) {
+            questionsByTypeByFile[question.type][fileId] = [];
+          }
+          questionsByTypeByFile[question.type][fileId].push(question);
         });
       })
     );
 
-    // Step 3: For each checked question type, randomly select the required number of questions.
+    // Step 3: For each checked question type, distribute the required number of questions evenly across files.
     values.questionTypes.forEach((questionType: any) => {
       if (questionType.checked) {
-        const typeQuestions = questionsByType[questionType.type] || [];
-        const selectedQuestions = getRandomValues(
-          typeQuestions,
-          questionType.count
-        );
-        questions.push(...selectedQuestions);
+        const fileQuestions = questionsByTypeByFile[questionType.type] || {};
+        const fileIdsForType = Object.keys(fileQuestions);
+
+        let remainingCount = questionType.count;
+        const perFileCount = Math.floor(remainingCount / fileIdsForType.length);
+        const extraQuestions = remainingCount % fileIdsForType.length;
+
+        fileIdsForType.forEach((fileId, index) => {
+          const questionsInFile = fileQuestions[fileId] || [];
+          const toSelect = perFileCount + (index < extraQuestions ? 1 : 0);
+          const selectedQuestions = getRandomValues(questionsInFile, toSelect);
+          questions.push(...selectedQuestions);
+        });
       }
     });
 

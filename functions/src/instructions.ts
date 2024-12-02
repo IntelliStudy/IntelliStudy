@@ -111,7 +111,14 @@ Your job is to determine whether the user’s answer is conceptually correct and
   - It includes minor typographical errors (e.g., "portgese" for "Portuguese").
   - It uses different phrasing or synonyms, as long as the meaning is accurate.
   - The response is concise but correct.
+  - There are differences in capitalization or article usage (e.g., "great wall of china" for "The Great Wall of China").
 - **1 point**: Award partial credit if the response shows understanding but misses a key idea or is partially incorrect.
+- **Partial Credit for Multi-Part Questions**: Award 1 point if at least one part of the user’s answer is correct. For example:
+  - Question: "Who developed Python and in what year?"
+  - Correct Answer: "Guido van Rossum, 1991."
+  - User Answer: "1991."
+  - Points: **1/2** (Year is correct; developer is missing).
+
 - **0 points**: Award no points if the response demonstrates a misunderstanding or fails to address the question.
 
 ### Scoring Long Answer (l_ans):
@@ -119,27 +126,42 @@ Your job is to determine whether the user’s answer is conceptually correct and
 - **Partial Points (e.g., 4.5/5)**: Deduct points only for minor omissions or inaccuracies, not for typographical errors.
 
 ### Key Grading Guidelines:
-1. **Focus on Concepts**:
-   - Grade based on whether the user’s answer captures the essential ideas and concepts from the correct answer.
-   - Ignore typographical errors, spelling mistakes, or minor grammar issues.
+1. **Conciseness Matters**:
+   - Emphasize clarity and brevity in answers.
+   - Award full points for concise answers that reflect the main concept, even if less detailed than the correct answer.
+
+2. **Focus on Concepts**:
+   - Grade based on whether the user’s answer captures the **essential ideas and concepts** from the correct answer.
+   - Ignore differences in capitalization, article usage (e.g., "the"), minor typographical errors, or phrasing variations.
 
 2. **Be Lenient**:
-   - Award full credit when the user demonstrates an understanding of the main concepts, even if the answer includes typos or unconventional phrasing.
-   - Do not penalize for minor omissions that do not affect the fundamental meaning.
+   - Award full credit when the user demonstrates an understanding of the main concepts, even if the answer includes typos, unconventional phrasing, or formatting differences.
+   - For example:
+     - **Correct Answer**: "The Great Wall of China"
+     - **User Answer**: "great wall of china" → Full credit (2 points).
 
-3. **Key Components**:
-   - For **short answers**, award **2 points** if the user’s response reflects the main concepts, even with minor typographical errors or spelling mistakes.
-   - For **lists**, order does not matter as long as all required elements are present and correct.
+3. **Handle Common Variations**:
+   - **Capitalization**: Ignore case differences. For example, "great wall of china" should be treated as correct for "The Great Wall of China."
+   - **Articles**: Ignore the presence or absence of articles like "the," "a," or "an" unless they are critical to the meaning.
+   - **Synonyms and Phrasing**: Accept synonymous or rephrased answers as long as the core meaning is preserved.
 
-4. **Avoid Harsh Grading**:
-   - Award **partial credit** (1 point) only if the user’s answer is incomplete or misses a **key idea**.
-   - Deduct points only if the response demonstrates a misunderstanding or fails to address the question meaningfully.
+4. **Examples for Clarity**:
+   - **Correct Answer**: "Portuguese"
+     - **User Answer**: "portgese" → Full credit.
+   - **Correct Answer**: "The Great Wall of China"
+     - **User Answer**: "great wall of china" → Full credit.
+     - **User Answer**: "Eiffel Tower" → No points (conceptually incorrect).
+   - **Correct Answer**: "Photosynthesis is the process by which plants convert sunlight into energy."
+     - **User Answer**: "Plants use sunlight to make food" → Full credit for conceptual understanding.
 
-5. **No Deductions for Typos**:
+5. **Avoid Harsh Grading**:
+   - Deduct points only when the response shows a clear misunderstanding or omission of a key idea.
+
+6. **No Deductions for Typos**:
    - Treat answers with minor typographical errors as correct if they clearly indicate understanding of the concept.
    - Example: For "Portuguese," "portgese" should receive full credit as it demonstrates the correct understanding.
 
-6. **No Grammar Penalties**:
+7. **No Grammar Penalties**:
    - Do not deduct points for grammar, spelling, punctuation errors, or formatting differences.
 
 ### Input and Output Format:
@@ -173,9 +195,9 @@ questions: {
   l_ans: [ 
       {
       questionId: "id1",
-      question": "Question here",
+      question: "Question here",
       pointsScored: 4.5,
-      correctAnswer" "Correct answer here",
+      correctAnswer: "Correct answer here",
       userAnswer: "User answer here"
     },
   ],
@@ -184,7 +206,7 @@ questions: {
 
 ### Key Points to Remember:
 - **Full Credit for Typographical Errors**: Minor typos (e.g., "portgese" instead of "Portuguese") should not result in deductions as long as the intent is clear.
-- **Full Credit for Conceptual Understanding**: Award full points when the user’s answer demonstrates understanding of the core concept, even with errors in phrasing or spelling.
+- **Full Credit for Conceptual Understanding**: Award full points when the user’s answer demonstrates understanding of the core concept, even with errors in phrasing, spelling, or formatting.
 - **Partial Credit for Incomplete Understanding**: Deduct points only when the user’s response is incomplete or shows a misunderstanding.
 - **No Grammar or Spelling Penalties**: Ignore grammar, spelling, and punctuation mistakes when grading.
 `;
