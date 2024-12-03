@@ -46,17 +46,212 @@ const errorMessages = {
     title: "Wrong username or password",
     message: "Please try again.",
   },
+  "auth/claims-too-large": {
+    title: "Claims Too Large",
+    message:
+      "The claims payload exceeds the maximum allowed size of 1000 bytes.",
+  },
+  "auth/id-token-expired": {
+    title: "ID Token Expired",
+    message: "The provided Firebase ID token is expired.",
+  },
+  "auth/id-token-revoked": {
+    title: "ID Token Revoked",
+    message: "The Firebase ID token has been revoked.",
+  },
+  "auth/insufficient-permission": {
+    title: "Insufficient Permission",
+    message:
+      "The credentials used to initialize the Admin SDK have insufficient permissions.",
+  },
+  "auth/internal-error": {
+    title: "Internal Error",
+    message:
+      "The Authentication server encountered an unexpected error. Please try again later.",
+  },
+  "auth/invalid-argument": {
+    title: "Invalid Argument",
+    message: "An invalid argument was provided to an Authentication method.",
+  },
+  "auth/invalid-claims": {
+    title: "Invalid Claims",
+    message: "The custom claim attributes are invalid.",
+  },
+  "auth/invalid-continue-uri": {
+    title: "Invalid Continue URL",
+    message: "The continue URL must be a valid URL string.",
+  },
+  "auth/invalid-creation-time": {
+    title: "Invalid Creation Time",
+    message: "The creation time must be a valid UTC date string.",
+  },
+  "auth/invalid-credential": {
+    title: "Invalid Credential",
+    message:
+      "The credential used cannot be used to perform the desired action.",
+  },
+  "auth/invalid-disabled-field": {
+    title: "Invalid Disabled Field",
+    message: "The value for the disabled user property is invalid.",
+  },
+  "auth/invalid-display-name": {
+    title: "Invalid Display Name",
+    message:
+      "The displayName user property is invalid. It must be a non-empty string.",
+  },
+  "auth/invalid-email": {
+    title: "Invalid Email",
+    message: "The provided value for the email user property is invalid.",
+  },
+  "auth/invalid-email-verified": {
+    title: "Invalid Email Verified",
+    message: "The value for emailVerified is invalid. It must be a boolean.",
+  },
+  "auth/invalid-hash-algorithm": {
+    title: "Invalid Hash Algorithm",
+    message: "The hash algorithm is invalid or unsupported.",
+  },
+  "auth/invalid-id-token": {
+    title: "Invalid ID Token",
+    message: "The provided ID token is not a valid Firebase ID token.",
+  },
+  "auth/invalid-last-sign-in-time": {
+    title: "Invalid Last Sign-In Time",
+    message: "The last sign-in time must be a valid UTC date string.",
+  },
+  "auth/invalid-page-token": {
+    title: "Invalid Page Token",
+    message: "The provided next page token is invalid.",
+  },
+  "auth/invalid-password": {
+    title: "Invalid Password",
+    message:
+      "The provided password is invalid. It must be at least six characters long.",
+  },
+  "auth/invalid-phone-number": {
+    title: "Invalid Phone Number",
+    message:
+      "The provided phone number is invalid. It must be a non-empty E.164 compliant identifier.",
+  },
+  "auth/invalid-photo-url": {
+    title: "Invalid Photo URL",
+    message:
+      "The provided value for the photoURL user property is invalid. It must be a valid URL.",
+  },
+  "auth/invalid-provider-data": {
+    title: "Invalid Provider Data",
+    message: "The provider data must be a valid array of UserInfo objects.",
+  },
+  "auth/invalid-uid": {
+    title: "Invalid UID",
+    message:
+      "The provided uid must be a non-empty string with at most 128 characters.",
+  },
+  "auth/maximum-user-count-exceeded": {
+    title: "Maximum User Count Exceeded",
+    message: "The maximum allowed number of users to import has been exceeded.",
+  },
+  "auth/missing-android-pkg-name": {
+    title: "Missing Android Package Name",
+    message:
+      "An Android Package Name must be provided if the Android App is required to be installed.",
+  },
+  "auth/missing-continue-uri": {
+    title: "Missing Continue URL",
+    message: "A valid continue URL must be provided.",
+  },
+  "auth/missing-ios-bundle-id": {
+    title: "Missing iOS Bundle ID",
+    message: "The request is missing a Bundle ID.",
+  },
+  "auth/operation-not-allowed": {
+    title: "Operation Not Allowed",
+    message:
+      "The requested sign-in method is disabled for your Firebase project.",
+  },
+  "auth/phone-number-already-exists": {
+    title: "Phone Number Already Exists",
+    message: "The provided phone number is already in use by another account.",
+  },
+  "auth/project-not-found": {
+    title: "Project Not Found",
+    message: "No Firebase project was found for the credentials used.",
+  },
+  "auth/reserved-claims": {
+    title: "Reserved Claims",
+    message: "One or more custom user claims are reserved.",
+  },
+  "auth/session-cookie-expired": {
+    title: "Session Cookie Expired",
+    message: "The session cookie has expired.",
+  },
+  "auth/session-cookie-revoked": {
+    title: "Session Cookie Revoked",
+    message: "The session cookie has been revoked.",
+  },
+  "auth/too-many-requests": {
+    title: "Too Many Requests",
+    message: "The number of requests exceeds the maximum allowed.",
+  },
+  "auth/uid-already-exists": {
+    title: "UID Already Exists",
+    message: "The provided UID is already in use by another user.",
+  },
+  "auth/unauthorized-continue-uri": {
+    title: "Unauthorized Continue URL",
+    message: "The domain of the continue URL is not whitelisted.",
+  },
 };
 
 type ErrorCode =
   | "auth/email-already-in-use"
   | "auth/user-not-found"
-  | "auth/wrong-password";
+  | "auth/wrong-password"
+  | "auth/claims-too-large"
+  | "auth/id-token-expired"
+  | "auth/id-token-revoked"
+  | "auth/insufficient-permission"
+  | "auth/internal-error"
+  | "auth/invalid-argument"
+  | "auth/invalid-claims"
+  | "auth/invalid-continue-uri"
+  | "auth/invalid-creation-time"
+  | "auth/invalid-credential"
+  | "auth/invalid-disabled-field"
+  | "auth/invalid-display-name"
+  | "auth/invalid-email"
+  | "auth/invalid-email-verified"
+  | "auth/invalid-hash-algorithm"
+  | "auth/invalid-id-token"
+  | "auth/invalid-last-sign-in-time"
+  | "auth/invalid-page-token"
+  | "auth/invalid-password"
+  | "auth/invalid-phone-number"
+  | "auth/invalid-photo-url"
+  | "auth/invalid-provider-data"
+  | "auth/invalid-uid"
+  | "auth/maximum-user-count-exceeded"
+  | "auth/missing-android-pkg-name"
+  | "auth/missing-continue-uri"
+  | "auth/missing-ios-bundle-id"
+  | "auth/operation-not-allowed"
+  | "auth/phone-number-already-exists"
+  | "auth/project-not-found"
+  | "auth/reserved-claims"
+  | "auth/session-cookie-expired"
+  | "auth/session-cookie-revoked"
+  | "auth/too-many-requests"
+  | "auth/uid-already-exists"
+  | "auth/unauthorized-continue-uri";
 
-function getErrorMessage(errorCode: ErrorCode) {
-  return errorMessages[errorCode];
+function getErrorMessage(errorCode) {
+  return (
+    errorMessages[errorCode] || {
+      title: "Unknown Error",
+      message: "An unknown error occurred.",
+    }
+  );
 }
-
 const AuthPage = () => {
   // const { currentUser } = useContext(UserContext);
   const navigate = useNavigate();

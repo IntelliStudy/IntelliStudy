@@ -112,6 +112,7 @@ Your job is to determine whether the user’s answer is conceptually correct and
   - It uses different phrasing or synonyms, as long as the meaning is accurate.
   - The response is concise but correct.
   - There are differences in capitalization or article usage (e.g., "great wall of china" for "The Great Wall of China").
+  -  It condenses the correct answer into fewer words or phrases (e.g., "integers, complex, float" for "1. Integers 2. Floating point numbers 3. Complex numbers").
 - **1 point**: Award partial credit if the response shows understanding but misses a key idea or is partially incorrect.
 - **Partial Credit for Multi-Part Questions**: Award 1 point if at least one part of the user’s answer is correct. For example:
   - Question: "Who developed Python and in what year?"
@@ -130,22 +131,28 @@ Your job is to determine whether the user’s answer is conceptually correct and
    - Emphasize clarity and brevity in answers.
    - Award full points for concise answers that reflect the main concept, even if less detailed than the correct answer.
 
-2. **Focus on Concepts**:
+  2. **Order Irrelevance**:
+  - Ignore the order of listed items unless explicitly stated in the question.
+  - Example:
+    - **Correct Answer**: "1. Integers 2. Floating point numbers 3. Complex numbers"
+    - **User Answer**: "complex, integer, float" → Full credit (2/2).
+
+3. **Focus on Concepts**:
    - Grade based on whether the user’s answer captures the **essential ideas and concepts** from the correct answer.
    - Ignore differences in capitalization, article usage (e.g., "the"), minor typographical errors, or phrasing variations.
 
-2. **Be Lenient**:
+4. **Be Lenient**:
    - Award full credit when the user demonstrates an understanding of the main concepts, even if the answer includes typos, unconventional phrasing, or formatting differences.
    - For example:
      - **Correct Answer**: "The Great Wall of China"
      - **User Answer**: "great wall of china" → Full credit (2 points).
 
-3. **Handle Common Variations**:
-   - **Capitalization**: Ignore case differences. For example, "great wall of china" should be treated as correct for "The Great Wall of China."
+5. **Handle Common Variations**:
+   - **Capitalization**: Ignore case differences. For example, "great wall of china" should be treated as fully correct for "The Great Wall of China."
    - **Articles**: Ignore the presence or absence of articles like "the," "a," or "an" unless they are critical to the meaning.
    - **Synonyms and Phrasing**: Accept synonymous or rephrased answers as long as the core meaning is preserved.
 
-4. **Examples for Clarity**:
+6. **Examples for Clarity**:
    - **Correct Answer**: "Portuguese"
      - **User Answer**: "portgese" → Full credit.
    - **Correct Answer**: "The Great Wall of China"
@@ -154,14 +161,14 @@ Your job is to determine whether the user’s answer is conceptually correct and
    - **Correct Answer**: "Photosynthesis is the process by which plants convert sunlight into energy."
      - **User Answer**: "Plants use sunlight to make food" → Full credit for conceptual understanding.
 
-5. **Avoid Harsh Grading**:
+7. **Avoid Harsh Grading**:
    - Deduct points only when the response shows a clear misunderstanding or omission of a key idea.
 
-6. **No Deductions for Typos**:
+8. **No Deductions for Typos**:
    - Treat answers with minor typographical errors as correct if they clearly indicate understanding of the concept.
    - Example: For "Portuguese," "portgese" should receive full credit as it demonstrates the correct understanding.
 
-7. **No Grammar Penalties**:
+9. **No Grammar Penalties**:
    - Do not deduct points for grammar, spelling, punctuation errors, or formatting differences.
 
 ### Input and Output Format:
