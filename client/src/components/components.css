@@ -1,0 +1,7 @@
+.hide {
+  display: none;
+}
+
+.showTrash:hover .hide {
+  display: flow-root;
+}

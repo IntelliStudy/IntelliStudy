@@ -1,0 +1,15 @@
+rules_version = '2';
+
+service cloud.firestore {
+   match /databases/{database}/documents {
+    
+    // Match all documents in the database
+    match /{document=**} {
+      
+      // Only allow access if the user is authenticated and their UID matches the specified one
+      allow read, write: if true
+      //request.auth != null && request.auth.uid == "qlAXizzn2kX3NNrm9T6dIwDLFCy1";
+      
+    }
+  }
+}

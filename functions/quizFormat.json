@@ -1,0 +1,64 @@
+{
+  "quiz": {
+    "files": ["file1.pdf", "file2.pdf"],
+    "questions": {
+      "mcq": [
+        {
+          "question": "Question mcq 1 here?",
+          "options": [{ "key": "A", "value": "Option A here" }],
+          "answer": { "A": "Option A here" },
+          "type": "mcq",
+          "answerReference": {
+            "fileName": "File name here",
+            "pageNumber": "Page number where answer can be found"
+          }
+        }
+      ],
+      "s_ans": [
+        {
+          "question": "Question text here?",
+          "answer": "Sample answer here",
+          "type": "s_ans",
+          "answerReference": {
+            "fileName": "File name here",
+            "pageNumber": "Page number where answer can be found"
+          }
+        }
+      ],
+      "l_ans": [
+        {
+          "question": "Question text here?",
+          "answer": "Sample answer here",
+          "type": "l_ans",
+          "answerReference": {
+            "fileName": "File name here",
+            "pageNumber": "Page number where answer can be found"
+          }
+        }
+      ],
+      "tf": [
+        {
+          "question": "Question text here?",
+          "answer": true,
+          "type": "tf",
+          "answerReference": {
+            "fileName": "File name here",
+            "pageNumber": "Page number where answer can be found"
+          }
+        }
+      ],
+      "fill_in_blank": [
+        {
+          "question": "Question text here?",
+          "options": ["Option A here", "Option B here"],
+          "answer": "Option A here",
+          "type": "fill_in_blank",
+          "answerReference": {
+            "fileName": "File name here",
+            "pageNumber": "Page number where answer can be found"
+          }
+        }
+      ]
+    }
+  }
+}
