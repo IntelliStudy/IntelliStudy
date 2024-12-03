@@ -203,47 +203,6 @@ const errorMessages = {
   },
 };
 
-type ErrorCode =
-  | "auth/email-already-in-use"
-  | "auth/user-not-found"
-  | "auth/wrong-password"
-  | "auth/claims-too-large"
-  | "auth/id-token-expired"
-  | "auth/id-token-revoked"
-  | "auth/insufficient-permission"
-  | "auth/internal-error"
-  | "auth/invalid-argument"
-  | "auth/invalid-claims"
-  | "auth/invalid-continue-uri"
-  | "auth/invalid-creation-time"
-  | "auth/invalid-credential"
-  | "auth/invalid-disabled-field"
-  | "auth/invalid-display-name"
-  | "auth/invalid-email"
-  | "auth/invalid-email-verified"
-  | "auth/invalid-hash-algorithm"
-  | "auth/invalid-id-token"
-  | "auth/invalid-last-sign-in-time"
-  | "auth/invalid-page-token"
-  | "auth/invalid-password"
-  | "auth/invalid-phone-number"
-  | "auth/invalid-photo-url"
-  | "auth/invalid-provider-data"
-  | "auth/invalid-uid"
-  | "auth/maximum-user-count-exceeded"
-  | "auth/missing-android-pkg-name"
-  | "auth/missing-continue-uri"
-  | "auth/missing-ios-bundle-id"
-  | "auth/operation-not-allowed"
-  | "auth/phone-number-already-exists"
-  | "auth/project-not-found"
-  | "auth/reserved-claims"
-  | "auth/session-cookie-expired"
-  | "auth/session-cookie-revoked"
-  | "auth/too-many-requests"
-  | "auth/uid-already-exists"
-  | "auth/unauthorized-continue-uri";
-
 function getErrorMessage(errorCode) {
   return (
     errorMessages[errorCode] || {
