@@ -1,4 +1,4 @@
-## Project Description
+# IntelliStudy
 
 IntelliStudy is an AI-powered platform making studying for your upcoming tests easier than ever by using AI to customize quizzes using review materials based on your class notes. IntelliStudy will analyze your class notes to identify key concepts, using it to generate personalized quizzes in various formats based on the user’s needs. It can even look at previous evaluation formats to make a quiz that is similar to the one in the course. IntelliStudy will offer an user-friendly interface for note upload and will track user performance. IntelliStudy would be an all-around great, and powerful studying tool for students.
 
